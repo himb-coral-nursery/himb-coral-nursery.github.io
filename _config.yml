@@ -1,0 +1,10 @@
+title: HIMB Coral Nursery
+email: sucho@hawaii.edu
+description: An in-situ research space on a live reef.
+baseurl: "" 
+url: "https://himb-coral-nursery.github.io"
+
+# Build settings
+theme: null
+plugins:
+  - jekyll-feed
