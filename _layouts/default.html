@@ -6,11 +6,20 @@
   <title>{{ page.title }} | HIMB</title>
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
   <style>
-    @font-face {
-      font-family: 'HIMB-Custom';
-      src: url('{{ "/fonts/nursery-font.otf" | relative_url }}') format('opentype');
-    }
-  </style>
+  /* For your Headings (OTF) */
+  @font-face {
+    font-family: 'Nursery-Heading';
+    src: url('{{ "/fonts/heading-font.otf" | relative_url }}') format('opentype');
+    font-weight: bold;
+  }
+
+  /* For your Body Text (TTF) */
+  @font-face {
+    font-family: 'Nursery-Body';
+    src: url('{{ "/fonts/body-font.ttf" | relative_url }}') format('truetype');
+    font-weight: normal;
+  }
+</style>
 </head>
 <body>
 
