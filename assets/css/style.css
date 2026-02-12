@@ -91,3 +91,58 @@ h1, h2, h3, .logo {
   border-radius: 8px; 
   box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
 }
+
+/* Container to center the text over the video */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.2); /* Optional: adds a slight tint to help text pop */
+  text-align: center;
+  color: white;
+}
+
+/* The Title Animation */
+.fade-in-text {
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 4rem;
+  opacity: 0;
+  animation: fadeInStay 2s ease-out forwards;
+  animation-delay: 0.5s; /* Waits half a second before starting */
+  text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+/* The Subtitle Animation (fades in slightly later) */
+.fade-in-subtext {
+  font-family: 'Nursery-Body', sans-serif;
+  font-size: 1.5rem;
+  opacity: 0;
+  animation: fadeInStay 2s ease-out forwards;
+  animation-delay: 1.2s; /* Fades in after the main title */
+  margin-top: 10px;
+}
+
+/* The "Logic" for the fade */
+@keyframes fadeInStay {
+  from {
+    opacity: 0;
+    transform: translateY(20px); /* Slides up slightly as it fades in */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .fade-in-text { font-size: 2.5rem; }
+  .fade-in-subtext { font-size: 1.1rem; padding: 0 20px; }
+}
