@@ -1,7 +1,8 @@
-/* --- 1. Reset & Fonts --- */
+/* ==========================================================================
+   1. BASE STYLES & TYPOGRAPHY
+   ========================================================================== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Apply your TTF to the whole site */
 body { 
   font-family: 'Nursery-Body', sans-serif; 
   background: #fff; 
@@ -9,13 +10,14 @@ body {
   line-height: 1.6;
 }
 
-/* Apply your OTF to headers and logo */
 h1, h2, h3, .logo { 
   font-family: 'Nursery-Heading', sans-serif; 
-  color: #222;
+  color: #ffffff;
 }
 
-/* --- 2. Header --- */
+/* ==========================================================================
+   2. NAVIGATION & HEADER
+   ========================================================================== */
 .main-header {
   position: fixed;
   top: 0; width: 100%;
@@ -39,11 +41,13 @@ h1, h2, h3, .logo {
 .nav-links a { text-decoration: none; color: #333; font-weight: 500; transition: 0.3s; }
 .nav-links a:hover { color: #2da6b0; }
 
-/* --- 3. Hero Section --- */
+/* ==========================================================================
+   3. HERO & VIDEO BACKGROUND
+   ========================================================================== */
 .hero {
   position: relative;
   width: 100%;
-  height: 85vh; /* Desktop height */
+  height: 85vh; 
   background: #000;
   overflow: hidden;
 }
@@ -61,69 +65,30 @@ h1, h2, h3, .logo {
   pointer-events: none;
 }
 
-/* Visibility Switching */
-.mobile-vid { display: none; }
-
-@media (max-width: 768px) {
-  .desktop-vid { display: none; }
-  .mobile-vid { display: block; }
-  .hero { height: 90vh; } /* Taller on mobile for vertical video */
-  .video-container iframe { 
-    width: 100vw; 
-    height: 177.77vw; /* 9:16 vertical ratio */
-  }
-}
-
-/* --- 4. Content Sections --- */
-.section { 
-  padding: 80px 20px; 
-  max-width: 1100px; 
-  margin: 0 auto; 
-  display: flex; 
-  align-items: center; 
-  gap: 50px; 
-}
-.section:nth-child(even) { flex-direction: row-reverse; }
-.section-text { flex: 1; }
-.section-image { flex: 1; }
-.section-image img { 
-  width: 100%; 
-  border-radius: 8px; 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-}
-
-/* Container to center the text over the video */
+/* Hero Text Overlay */
 .hero-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0; width: 100%; height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; 
   align-items: center;
-  z-index: 9999 !important; /* Forces this to the very front */
-  background: rgba(0, 0, 0, 0.25); /* Darkens the video slightly so text is readable */
+  z-index: 9999 !important;
+  background: rgba(0, 0, 0, 0.25); 
   text-align: center;
   color: #ffffff !important;
-  pointer-events: none; /* Allows clicks to pass through to the video if needed */
+  pointer-events: none;
 }
 
-/* The Title Animation */
 .fade-in-text {
   font-family: 'Nursery-Heading', sans-serif;
   font-size: 4.5rem;
-  margin: 0;
-  padding: 0;
   opacity: 0;
-  /* We use 'both' to ensure it stays visible after finishing */
   animation: fadeInStay 1.5s ease-out forwards; 
   animation-delay: 0.8s; 
   text-shadow: 2px 2px 20px rgba(0,0,0,0.8);
 }
 
-/* The Subtitle Animation */
 .fade-in-subtext {
   font-family: 'Nursery-Body', sans-serif;
   font-size: 1.8rem;
@@ -134,20 +99,46 @@ h1, h2, h3, .logo {
   text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
 }
 
-/* The Animation Logic */
-@keyframes fadeInStay {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ==========================================================================
+   4. CONTENT SECTIONS (Research/About)
+   ========================================================================== */
+.section { 
+  padding: 80px 20px; 
+  max-width: 1100px; 
+  margin: 0 auto; 
+  display: flex; 
+  align-items: center; 
+  gap: 50px; 
 }
 
-/* Mobile Adjustments */
+.section:nth-child(even) { flex-direction: row-reverse; }
+.section-text { flex: 1; }
+.section-image { flex: 1; }
+.section-image img { 
+  width: 100%; 
+  border-radius: 8px; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+}
+
+/* ==========================================================================
+   5. ANIMATIONS & EFFECTS
+   ========================================================================== */
+@keyframes fadeInStay {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   6. RESPONSIVE / MOBILE OVERRIDES
+   ========================================================================== */
 @media (max-width: 768px) {
+  .desktop-vid { display: none; }
+  .mobile-vid { display: block; }
+  .hero { height: 90vh; }
+  .video-container iframe { width: 100vw; height: 177.77vw; }
+  
   .fade-in-text { font-size: 2.5rem; }
   .fade-in-subtext { font-size: 1.1rem; padding: 0 20px; }
+  
+  .section { flex-direction: column !important; text-align: center; }
 }
