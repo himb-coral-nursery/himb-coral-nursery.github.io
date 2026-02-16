@@ -12,7 +12,7 @@ body {
 
 h1, h2, h3, .logo { 
   font-family: 'Nursery-Heading', sans-serif; 
-  color: #ffffff;
+  color: #222;
 }
 
 /* ==========================================================================
@@ -83,6 +83,7 @@ h1, h2, h3, .logo {
 .fade-in-text {
   font-family: 'Nursery-Heading', sans-serif;
   font-size: 4.5rem;
+  color: #ffffff;
   opacity: 0;
   animation: fadeInStay 1.5s ease-out forwards; 
   animation-delay: 0.8s; 
@@ -131,9 +132,16 @@ h1, h2, h3, .logo {
 /* ==========================================================================
    6. RESPONSIVE / MOBILE OVERRIDES
    ========================================================================== */
+
+/* --- Desktop Defaults (Force these first) --- */
+.desktop-vid { display: block; }
+.mobile-vid { display: none; }
+
+/* --- Mobile Rules (Only apply if screen is 768px or less) --- */
 @media (max-width: 768px) {
-  .desktop-vid { display: none; }
-  .mobile-vid { display: block; }
+  .desktop-vid { display: none !important; }
+  .mobile-vid { display: block !important; }
+  
   .hero { height: 90vh; }
   .video-container iframe { width: 100vw; height: 177.77vw; }
   
