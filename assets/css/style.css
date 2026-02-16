@@ -59,7 +59,7 @@ h1, h2, h3, .logo {
 }
 
 .video-container iframe {
-  width: 115vw; height: 100vh; 
+  width: 130vw; height: 100vh; 
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
@@ -83,6 +83,27 @@ h1, h2, h3, .logo {
   pointer-events: none;
 }
 
+.fade-in-text {
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 5rem;
+  color: #ffffff;
+  opacity: 0;
+  animation: fadeInStay 1.5s ease-out forwards; 
+  animation-delay: 0.8s; 
+  text-shadow: 2px 2px 20px rgba(0,0,0,0.8);
+  margin: 0;
+}
+
+.fade-in-subtext {
+  font-family: 'Nursery-Body', sans-serif;
+  font-size: 1.8rem;
+  color: #ffffff;
+  opacity: 0;
+  animation: fadeInStay 1.5s ease-out forwards;
+  animation-delay: 1.6s; 
+  margin-top: 15px;
+  text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
+}
 /* ==========================================================================
    4. CONTENT SECTIONS (Research/About)
    ========================================================================== */
