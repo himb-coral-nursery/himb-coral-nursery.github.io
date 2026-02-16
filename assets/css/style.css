@@ -73,7 +73,7 @@ h1, h2, h3, .logo {
   display: flex;
   flex-direction: column;
   justify-content: flex-start; 
-  padding-top: 10vh;
+  padding-top: 5vh;
   align-items: center;
   z-index: 9999 !important;
   background: rgba(0, 0, 0, 0) !important; 
@@ -84,7 +84,7 @@ h1, h2, h3, .logo {
 
 .fade-in-text {
   font-family: 'Nursery-Heading', sans-serif;
-  font-size: 8.5rem;
+  font-size: 9rem;
   color: #ffffff;
   opacity: 0;
   animation: fadeInStay 1.5s ease-out forwards; 
@@ -100,7 +100,7 @@ h1, h2, h3, .logo {
   opacity: 0;
   animation: fadeInStay 1.5s ease-out forwards;
   animation-delay: 1.6s; 
-  margin-top: 15px;
+  margin-top: 10px;
   text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
 }
 /* ==========================================================================
