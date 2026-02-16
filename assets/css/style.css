@@ -73,7 +73,7 @@ h1, h2, h3, .logo {
   display: flex;
   flex-direction: column;
   justify-content: flex-start; 
-  padding-top: 0vh;
+  padding-top: 3vh;
   align-items: center;
   z-index: 9999 !important;
   background: rgba(0, 0, 0, 0) !important; 
