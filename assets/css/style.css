@@ -193,7 +193,7 @@ h1, h2, h3, .logo {
    ========================================================================== */
 
 /* --- Mobile Rules (Only apply if screen is 768 or less) --- */
-@media (max-width: 768) {
+@media (max-width: 768px) {
    
 * {
     -webkit-tap-highlight-color: transparent;
