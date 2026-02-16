@@ -26,13 +26,13 @@
       <a href="/" class="logo">HIMB CORAL NURSERY</a>
       
       <!-- Hamburger Icon (hidden on desktop) -->
-      <button class="hamburger" aria-label="Toggle menu">
+      <button class="hamburger" aria-label="Toggle menu" onclick="toggleMenu()">
         <span></span>
         <span></span>
         <span></span>
       </button>
       
-      <nav class="nav-menu">
+      <nav class="nav-menu" id="navMenu">
         <ul class="nav-links">
           <li><a href="/facilities">Facilities</a></li>
           <li><a href="/research">Research</a></li>
@@ -46,16 +46,25 @@
   {{ content }}
   
   <script>
-    // Hamburger menu toggle
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-    
-    hamburger.addEventListener('click', () => {
+    function toggleMenu() {
+      const hamburger = document.querySelector('.hamburger');
+      const navMenu = document.getElementById('navMenu');
+      
       hamburger.classList.toggle('active');
       navMenu.classList.toggle('active');
-    });
+      
+      console.log('Menu toggled!'); // Debug message
+    }
     
     // Close menu when clicking a link
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        hamburger.classList.remove('ac
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.querySelector('.hamburger').classList.remove('active');
+          document.getElementById('navMenu').classList.remove('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
