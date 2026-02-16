@@ -196,8 +196,8 @@ h1, h2, h3, .logo {
 .desktop-vid { display: block; }
 .mobile-vid { display: none; }
 
-/* --- Mobile Rules (Only apply if screen is 820px or less) --- */
-@media (max-width: 820px) {
+/* --- Mobile Rules (Only apply if screen is 768 or less) --- */
+@media (max-width: 768) {
    
 * {
     -webkit-tap-highlight-color: transparent;
