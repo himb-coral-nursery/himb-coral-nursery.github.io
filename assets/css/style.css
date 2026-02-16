@@ -214,13 +214,11 @@ h1, h2, h3, .logo {
 
   .video-container iframe { 
   position: absolute;
-  width: 100vw;              /* ← fill screen width */
-  height: 56.25vw;           /* ← maintain 16:9 (but will be overridden by min-height) */
-  min-height: 100vh;         /* ← ensure it fills height */
-  min-width: 177.78vh;       /* ← ensure it's wide enough on tall screens */
+  width: 100vw;              /* fills width */
+  height: 177.78vw;          /* 9:16 ratio - will be 1820px on iPad */
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  transform: none;
   pointer-events: none;
   }
   
