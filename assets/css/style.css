@@ -198,6 +198,11 @@ h1, h2, h3, .logo {
 
 /* --- Mobile Rules (Only apply if screen is 768px or less) --- */
 @media (max-width: 768px) {
+   
+* {
+    -webkit-tap-highlight-color: transparent;
+  }
+   
   /* Video switching */
   .desktop-vid { display: none !important; }
   .mobile-vid { display: block !important; }
