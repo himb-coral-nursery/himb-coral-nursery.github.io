@@ -142,14 +142,24 @@ h1, h2, h3, .logo {
 
 /* --- Mobile Rules (Only apply if screen is 768px or less) --- */
 @media (max-width: 768px) {
-  .desktop-vid { display: none !important; }
-  .mobile-vid { display: block !important; }
-  
-  .hero { height: 90vh; }
-  .video-container iframe { width: 100vw; height: 177.77vw; }
-  
-  .fade-in-text { font-size: 2.5rem; }
-  .fade-in-subtext { font-size: 1.1rem; padding: 0 20px; }
-  
-  .section { flex-direction: column !important; text-align: center; }
+  .menu-toggle {
+    display: flex; /* Shows the bars */
+  }
+
+  .nav-links {
+    display: none; /* Hides the text links */
+    flex-direction: column;
+    position: absolute;
+    top: 100%; /* Sits right under the header */
+    left: 0;
+    width: 100%;
+    background: white;
+    padding: 20px;
+    text-align: center;
+  }
+
+  /* This is the "magic" class that the JavaScript will toggle */
+  .nav-links.active {
+    display: flex;
+  }
 }
