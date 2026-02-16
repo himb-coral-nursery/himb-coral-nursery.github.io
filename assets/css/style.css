@@ -59,11 +59,12 @@ h1, h2, h3, .logo {
 }
 
 .video-container iframe {
-  width: 150%; height: 150%; 
+  width: 115vw; height: 100vh; 
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
+  object-fit: cover;
 }
 
 /* Hero Text Overlay */
@@ -76,10 +77,7 @@ h1, h2, h3, .logo {
   padding-top: 15vh;
   align-items: center;
   z-index: 9999 !important;
-  
-  /* CHANGE: Set this to 0 to remove ALL grey tinting */
   background: rgba(0, 0, 0, 0) !important; 
-  
   text-align: center;
   color: #ffffff !important;
   pointer-events: none;
