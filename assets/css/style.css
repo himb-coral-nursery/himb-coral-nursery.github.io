@@ -83,7 +83,7 @@ h1, h2, h3, .logo {
 
 .fade-in-text {
   font-family: 'Nursery-Heading', sans-serif;
-  font-size: 4.5rem;
+  font-size: 10rem;
   color: #ffffff;
   opacity: 0;
   animation: fadeInStay 1.5s ease-out forwards; 
