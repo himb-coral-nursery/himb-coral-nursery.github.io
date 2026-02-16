@@ -35,10 +35,64 @@ h1, h2, h3, .logo {
   padding: 0 40px;
 }
 
-.logo { font-weight: bold; text-decoration: none; color: #333; letter-spacing: 1px; font-size: 1.2rem; margin-right: auto; }
-.nav-links { display: flex; list-style: none; gap: 30px; }
-.nav-links a { text-decoration: none; color: #333; font-weight: 500; transition: 0.3s; }
-.nav-links a:hover { color: #2da6b0; }
+.logo { 
+  font-weight: bold; 
+  text-decoration: none; 
+  color: #333; 
+  letter-spacing: 1px; 
+  font-size: 1.2rem; 
+  z-index: 10001;
+}
+
+.nav-links { 
+  display: flex; 
+  list-style: none; 
+  gap: 30px; 
+}
+
+.nav-links a { 
+  text-decoration: none; 
+  color: #333; 
+  font-weight: 500; 
+  transition: 0.3s; 
+}
+
+.nav-links a:hover { 
+  color: #2da6b0; 
+}
+
+/* Hamburger Menu - Hidden on Desktop */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10001;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: #333;
+  margin: 3px 0;
+  transition: 0.3s;
+  border-radius: 3px;
+}
+
+/* Hamburger animation when active */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(7px, 7px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
 
 /* ==========================================================================
    3. HERO & VIDEO BACKGROUND
@@ -103,6 +157,7 @@ h1, h2, h3, .logo {
   margin-top: -10px;
   text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
 }
+
 /* ==========================================================================
    4. CONTENT SECTIONS (Research/About)
    ========================================================================== */
@@ -142,14 +197,55 @@ h1, h2, h3, .logo {
 
 /* --- Mobile Rules (Only apply if screen is 768px or less) --- */
 @media (max-width: 768px) {
+  /* Video switching */
   .desktop-vid { display: none !important; }
   .mobile-vid { display: block !important; }
   
   .hero { height: 90vh; }
   .video-container iframe { width: 100vw; height: 177.77vw; }
   
-  .fade-in-text { font-size: 2.5rem; }
-  .fade-in-subtext { font-size: 1.1rem; padding: 0 20px; }
+  /* Hide hero text on mobile */
+  .fade-in-text { display: none; }
+  .fade-in-subtext { display: none; }
   
-  .section { flex-direction: column !important; text-align: center; }
+  /* Show hamburger, hide desktop nav */
+  .hamburger {
+    display: flex;
+  }
+  
+  .nav-menu {
+    position: fixed;
+    left: -100%;
+    top: 70px;
+    flex-direction: column;
+    background-color: white;
+    width: 100%;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 10px 27px rgba(0,0,0,0.05);
+  }
+  
+  .nav-menu.active {
+    left: 0;
+  }
+  
+  .nav-links {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+  
+  .nav-links li {
+    padding: 20px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .nav-links li:last-child {
+    border-bottom: none;
+  }
+  
+  .section { 
+    flex-direction: column !important; 
+    text-align: center; 
+  }
 }
