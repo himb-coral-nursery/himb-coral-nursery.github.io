@@ -214,11 +214,13 @@ h1, h2, h3, .logo {
 
   .video-container iframe { 
   position: absolute;
-  width: 100vw;              /* fills width */
-  height: 177.78vw;          /* 9:16 ratio - will be 1820px on iPad */
+  height: 100vh;             /* ← fill the height */
+  height: 100dvh;            /* ← dynamic viewport height */
+  width: 177.78vh;           /* ← maintain 16:9 ratio */
+  width: 177.78dvh;          /* ← dynamic version */
   top: 0;
-  left: 0;
-  transform: none;
+  left: 50%;
+  transform: translateX(-50%);
   pointer-events: none;
   }
   
