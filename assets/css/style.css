@@ -208,7 +208,14 @@ h1, h2, h3, .logo {
   .mobile-vid { display: block !important; }
   
   .hero { height: 90vh; }
-  .video-container iframe { width: 100vw; height: 177.77vw; }
+   
+  .video-container iframe { 
+  width: 100vw; 
+  height: 177.77vw;
+  top: 0;              
+  left: 50%;           
+  transform: translateX(-50%);  
+  }
   
   /* Hide hero text on mobile */
   .fade-in-text { display: none; }
