@@ -196,6 +196,10 @@ h1, h2, h3, .logo {
     line-height: .75;          /* control line spacing when wrapped */
   }
   
+  .hero-overlay {
+    padding-top: 8vh !important;   /* push down when text wraps */
+  }
+  
   .no-break {
     white-space: nowrap;       /* keeps "Coral Nursery" together */
   }
