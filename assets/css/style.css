@@ -193,15 +193,26 @@ h1, h2, h3, .logo {
    ========================================================================== */
 @media (max-width: 1208px) and (min-width: 768px) {
   .fade-in-text {
-    line-height: .75;          /* control line spacing when wrapped */
+    line-height: .75;
   }
   
   .hero-overlay {
-    padding-top: 8vh !important;   /* push down when text wraps */
+    padding-top: 8vh !important;
   }
   
   .no-break {
-    white-space: nowrap;       /* keeps "Coral Nursery" together */
+    white-space: nowrap;
+  }
+  
+  /* iPad video sizing - fill height like mobile */
+  .video-container iframe {
+    height: 100vh;
+    height: 100dvh;
+    width: 177.78vh;
+    width: 177.78dvh;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
