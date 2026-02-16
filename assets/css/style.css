@@ -207,15 +207,19 @@ h1, h2, h3, .logo {
   .desktop-vid { display: none !important; }
   .mobile-vid { display: block !important; }
   
-  .hero { height: 100vh; }
-   
+  .hero { 
+  height: 100vh;
+  height: 100dvh;  /* ← ADD THIS - "dynamic viewport height" */
+  }
+
   .video-container iframe { 
-  position: absolute;
-  height: 100vh;             /* ← fill the height */
-  width: 177.78vh;           /* ← maintain 16:9 ratio (16/9 = 1.7778) */
+  height: 100vh;
+  height: 100dvh;  /* ← ADD THIS TOO */
+  width: 177.78vh;
+  width: 177.78dvh;  /* ← AND THIS */
   top: 0;
   left: 50%;
-  transform: translateX(-50%);  /* ← center horizontally */
+  transform: translateX(-50%);
   pointer-events: none;
   }
   
