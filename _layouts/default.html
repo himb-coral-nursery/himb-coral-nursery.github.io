@@ -12,7 +12,6 @@
     src: url('{{ "/fonts/heading-font.otf" | relative_url }}') format('opentype');
     font-weight: bold;
   }
-
   /* For your Body Text (TTF) */
   @font-face {
     font-family: 'Nursery-Body';
@@ -22,22 +21,36 @@
 </style>
 </head>
 <body>
-
   <header class="main-header">
     <div class="nav-container">
       <a href="/" class="logo">HIMB CORAL NURSERY</a>
-      <nav>
+      
+      <!-- Hamburger Icon (hidden on desktop) -->
+      <button class="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <nav class="nav-menu">
         <ul class="nav-links">
           <li><a href="/facilities">Facilities</a></li>
-          <li><a href="/facilities">Research</a></li>
+          <li><a href="/research">Research</a></li>
           <li><a href="/about">About</a></li>
           <li><a href="/contact">Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
-
+  
   {{ content }}
-
-</body>
-</html>
+  
+  <script>
+    // Hamburger menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navMenu.classList.toggle('active');
+    });
