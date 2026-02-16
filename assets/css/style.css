@@ -209,25 +209,13 @@ h1, h2, h3, .logo {
   
   .hero { height: 90vh; }
    
-  .video-container {
-  position: absolute;
-  top: 0; 
-  left: 0; 
-  width: 100%; 
-  height: 100%;
-  background: #ffffff;
-  overflow: hidden;  /* ← ADD THIS to hide overflow */
-  }
-
   .video-container iframe { 
   position: absolute;
-  width: 100vw; 
-  height: 56.25vw;         /* 16:9 ratio based on width */
-  min-height: 100vh;       /* ensures full height on tall screens */
-  min-width: 177.78vh;     /* ensures full width on short screens */
-  top: 50%;
+  height: 100vh;             /* ← fill the height */
+  width: 177.78vh;           /* ← maintain 16:9 ratio (16/9 = 1.7778) */
+  top: 0;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);  /* ← center horizontally */
   pointer-events: none;
   }
   
