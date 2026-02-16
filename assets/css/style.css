@@ -58,7 +58,7 @@ h1, h2, h3, .logo {
 }
 
 .video-container iframe {
-  width: 250%; height: 100%; 
+  width: 250vw; height: 100vh; 
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
