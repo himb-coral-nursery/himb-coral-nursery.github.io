@@ -240,7 +240,7 @@ h1, h2, h3, .logo {
   .hero-overlay {
   justify-content: flex-start !important;
   align-items: flex-start !important;
-  padding-top: 100px !important;
+  padding-top: 70px !important;
   }
   
   /* Mobile header - transparent with no logo */
