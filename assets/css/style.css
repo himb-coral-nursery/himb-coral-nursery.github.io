@@ -189,10 +189,23 @@ h1, h2, h3, .logo {
 }
 
 /* ==========================================================================
-   6. RESPONSIVE / MOBILE OVERRIDES
+   6. NARROW DESKTOP (1025px - 1208px)
+   ========================================================================== */
+@media (max-width: 1208px) and (min-width: 768px) {
+  .fade-in-text {
+    line-height: .75;          /* control line spacing when wrapped */
+  }
+  
+  .no-break {
+    white-space: nowrap;       /* keeps "Coral Nursery" together */
+  }
+}
+
+/* ==========================================================================
+   7. RESPONSIVE / MOBILE OVERRIDES
    ========================================================================== */
 
-/* --- Mobile Rules (Only apply if screen is 768 or less) --- */
+/* --- Mobile Rules (Only apply if screen is 768px or less) --- */
 @media (max-width: 768px) {
    
 * {
