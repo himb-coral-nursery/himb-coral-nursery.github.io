@@ -207,7 +207,7 @@ h1, h2, h3, .logo {
   .desktop-vid { display: none !important; }
   .mobile-vid { display: block !important; }
   
-  .hero { height: 90vh; }
+  .hero { height: 100vh; }
    
   .video-container iframe { 
   position: absolute;
