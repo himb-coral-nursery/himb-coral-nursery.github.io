@@ -211,10 +211,12 @@ h1, h2, h3, .logo {
    
   .video-container iframe { 
   width: 100vw; 
-  height: 177.77vw;
-  top: 0;              
-  left: 50%;           
-  transform: translateX(-50%);  
+  height: 100vh;           
+  min-height: 100vh;       
+  top: 0;
+  left: 0;                 
+  transform: none;         
+  object-fit: cover;
   }
   
   /* Hide hero text on mobile */
