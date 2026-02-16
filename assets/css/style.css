@@ -200,6 +200,10 @@ h1, h2, h3, .logo {
     padding-top: 8vh !important;
   }
   
+  .fade-in-subtext {
+    margin-top: 20px;    /* push subtitle down when title wraps */
+  }
+  
   .no-break {
     white-space: nowrap;
   }
