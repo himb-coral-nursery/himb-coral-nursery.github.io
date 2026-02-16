@@ -192,10 +192,6 @@ h1, h2, h3, .logo {
    6. RESPONSIVE / MOBILE OVERRIDES
    ========================================================================== */
 
-/* --- Desktop Defaults (Force these first) --- */
-.desktop-vid { display: block; }
-.mobile-vid { display: none; }
-
 /* --- Mobile Rules (Only apply if screen is 768 or less) --- */
 @media (max-width: 768) {
    
@@ -203,10 +199,6 @@ h1, h2, h3, .logo {
     -webkit-tap-highlight-color: transparent;
   }
    
-  /* Video switching */
-  .desktop-vid { display: none !important; }
-  .mobile-vid { display: block !important; }
-  
   .hero { 
   height: 100vh;
   height: 100dvh;  /* ← ADD THIS - "dynamic viewport height" */
