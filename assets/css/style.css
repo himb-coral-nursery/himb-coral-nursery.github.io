@@ -283,6 +283,12 @@ h1, h2, h3, .logo {
   padding-right: 40px;
 }
 
+.full-width-section {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 40px;
+}
+
 /* Section 3: Equipment - Sandbar (light, needs dark text) */
 .section-equipment {
   background: #C2E5DF; /* Sandbar */
