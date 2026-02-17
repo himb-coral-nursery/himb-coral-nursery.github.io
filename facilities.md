@@ -154,6 +154,22 @@ permalink: /facilities/
   </div>
 </div>
 
+<div class="live-data-widget" style="margin-top: 20px; width: 100%;">
+  <h3 style="font-family: 'Nursery-Heading', sans-serif; font-size: 1.1rem; color: #2da6b0; margin-bottom: 10px;">
+    Live Nursery Temperature (Spotter 1042)
+  </h3>
+  <iframe 
+    src="https://dashboard.sofarocean.com/widgets/public/spotter/SPOT-1042?variable=surfaceSeaTemperature" 
+    width="100%" 
+    height="300" 
+    frameborder="0" 
+    style="border-radius: 12px; border: 1px solid #eee; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+  </iframe>
+  <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">
+    Real-time data provided by HIMB / SoFar Ocean.
+  </p>
+</div>
+
 </div>
 
 <!-- SECTION 4: PRICING -->
