@@ -159,12 +159,12 @@ permalink: /facilities/
     Live Nursery Temperature (Spotter 1042)
   </h3>
   <iframe 
-    src="https://dashboard.sofarocean.com/widgets/public/spotter/SPOT-1042?variable=surfaceSeaTemperature" 
-    width="100%" 
-    height="300" 
-    frameborder="0" 
-    style="border-radius: 12px; border: 1px solid #eee; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-  </iframe>
+  src="https://weather.sofarocean.com/spotter/SPOT-1042" 
+  width="100%" 
+  height="500" 
+  frameborder="0" 
+  style="border-radius: 12px; border: 1px solid #eee;">
+</iframe>
   <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">
     Real-time data provided by HIMB / SoFar Ocean.
   </p>
