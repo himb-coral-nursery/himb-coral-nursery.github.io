@@ -168,7 +168,7 @@ h1, h2, h3, .logo {
 
 .page-header {
   background: #10616A;
-  padding: 80px 20px 20px;
+  padding: 60px 20px 0px;
   text-align: center;
   border-top: 8px solid;
   border-image: linear-gradient(90deg, #00446f 0%, #45BBE6 50%, #10616A 100%) 1;
