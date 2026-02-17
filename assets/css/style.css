@@ -243,8 +243,9 @@ h1, h2, h3, .logo {
 
 .feature-text h2 {
   margin-top: 0;
-  font-size: 3rem;
+  font-size: 4.5rem;
   margin-bottom: 30px;
+  text-align: center;
 }
 
 .feature-image img {
