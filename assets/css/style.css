@@ -162,12 +162,11 @@ h1, h2, h3, .logo {
    4. PAGE CONTENT (Interior Pages)
    ========================================================================== */
 .page-content {
-  padding-top: 100px; /* Space for fixed header */
   min-height: 100vh;
 }
 
 .page-header {
-  background: linear-gradient(135deg, #2da6b0 0%, #1a8a92 100%);
+  background: linear-gradient(135deg, #00446f 0%, #10616A 100%);
   color: white;
   padding: 80px 20px 60px;
   text-align: center;
