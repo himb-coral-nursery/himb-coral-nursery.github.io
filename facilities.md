@@ -154,22 +154,32 @@ permalink: /facilities/
   </div>
 </div>
 
-<div class="live-data-widget" style="margin-top: 20px; width: 100%;">
-  <h3 style="font-family: 'Nursery-Heading', sans-serif; font-size: 1.1rem; color: #2da6b0; margin-bottom: 10px;">
-    Live Nursery Temperature (Spotter 1025)
+<div class="live-data-container" style="margin: 2rem 0; padding: 20px; background: #fff; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+  <h3 style="font-family: 'Nursery-Heading', sans-serif; color: #2da6b0; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+    <span style="height: 10px; width: 10px; background-color: #ff4b4b; border-radius: 50%; display: inline-block; animation: pulse 2s infinite;"></span>
+    Live Nursery Conditions (Buoy 1025)
   </h3>
+  
   <iframe 
-  src="https://weather.sofarocean.com/spotter/SPOT-1025" 
-  width="100%" 
-  height="500" 
-  frameborder="0" 
-  style="border-radius: 12px; border: 1px solid #eee;">
-</iframe>
-  <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">
-    Real-time data provided by HIMB / SoFar Ocean.
+    src="https://www.pacioos.hawaii.edu/data-draw/tide_viz.php?station=himb&type=temp" 
+    width="100%" 
+    height="450" 
+    frameborder="0" 
+    style="border: none;">
+  </iframe>
+
+  <p style="font-size: 0.8rem; color: #888; margin-top: 10px;">
+    Real-time temperature data provided by PacIOOS / HIMB Spotter 1025.
   </p>
 </div>
 
+<style>
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  70% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}
+</style>
 </div>
 
 <!-- SECTION 4: PRICING -->
