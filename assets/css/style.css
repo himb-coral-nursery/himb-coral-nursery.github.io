@@ -5,14 +5,15 @@
 
 body { 
   font-family: 'Nursery-Body', sans-serif; 
-  background: #fff; 
+  background: #10616A; /* Patch Reef */
   overflow-x: hidden; 
   line-height: 1.6;
+  color: #fff; /* White text */
 }
 
 h1, h2, h3, .logo { 
   font-family: 'Nursery-Heading', sans-serif; 
-  color: #222;
+  color: #fff; /* White */
 }
 
 /* ==========================================================================
@@ -38,7 +39,7 @@ h1, h2, h3, .logo {
 .logo { 
   font-weight: bold; 
   text-decoration: none; 
-  color: #333; 
+  color: #10616A; /* Patch Reef */
   letter-spacing: 1px; 
   font-size: 1.2rem; 
   z-index: 10001;
@@ -52,13 +53,13 @@ h1, h2, h3, .logo {
 
 .nav-links a { 
   text-decoration: none; 
-  color: #333; 
+  color: #10616A; /* Patch Reef */
   font-weight: 500; 
   transition: 0.3s; 
 }
 
 .nav-links a:hover { 
-  color: #45BBE6; 
+  color: #45BBE6; /* Hawai'i Sky */
 }
 
 /* Hamburger Menu - Hidden on Desktop */
@@ -76,7 +77,7 @@ h1, h2, h3, .logo {
 .hamburger span {
   width: 25px;
   height: 3px;
-  background: #333;
+  background: #10616A; /* Patch Reef */
   margin: 3px 0;
   transition: 0.3s;
   border-radius: 3px;
@@ -166,7 +167,7 @@ h1, h2, h3, .logo {
 }
 
 .page-header {
-  background: white;
+  background: #00446F; /* Deep Ocean */
   padding: 120px 20px 60px;
   text-align: center;
   border-top: 8px solid;
@@ -176,17 +177,18 @@ h1, h2, h3, .logo {
 .page-title {
   font-family: 'Nursery-Heading', sans-serif;
   font-size: 5.0rem;
-  color: #333;
+  color: #fff; /* White */
   margin: 0;
 }
 
 .page-subtitle {
   font-family: 'Nursery-Body', sans-serif;
   font-size: 2.3rem;
-  color: #666;
+  color: #fff; /* White */
   margin: 0px 0 0 0;
   font-weight: 300;
 }
+
 .page-body {
   max-width: 900px;
   margin: 0 auto;
@@ -196,7 +198,7 @@ h1, h2, h3, .logo {
 .page-body h2 {
   font-family: 'Nursery-Heading', sans-serif;
   font-size: 2.2rem;
-  color: #45BBE6;
+  color: #fff; /* White */
   margin-top: 10px;
   margin-bottom: 20px;
   padding-bottom: 10px;
@@ -266,7 +268,7 @@ h1, h2, h3, .logo {
 .page-body h3 {
   font-family: 'Nursery-Heading', sans-serif;
   font-size: 1.6rem;
-  color: #333;
+  color: #fff; /* White */
   margin-top: 30px;
   margin-bottom: 15px;
 }
@@ -275,7 +277,7 @@ h1, h2, h3, .logo {
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 20px;
-  color: #444;
+  color: #fff; /* White */
 }
 
 .page-body ul, .page-body ol {
@@ -287,23 +289,23 @@ h1, h2, h3, .logo {
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 10px;
-  color: #444;
+  color: #fff; /* White */
 }
 
 .page-body a {
-  color: #45BBE6;
+  color: #45BBE6; /* Hawai'i Sky */
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s;
 }
 
 .page-body a:hover {
-  color: #1a8a92;
+  color: #C2E5DF; /* Sandbar - lighter on hover */
   text-decoration: underline;
 }
 
 .page-body strong {
-  color: #222;
+  color: #fff; /* White */
   font-weight: 600;
 }
 
@@ -475,7 +477,7 @@ h1, h2, h3, .logo {
   
   .nav-links a {
     font-size: 2rem;
-    color: #333;
+    color: #10616A;
   }
   
   .section { 
@@ -497,4 +499,3 @@ h1, h2, h3, .logo {
   font-size: 2rem !important;
 }
 }
-
