@@ -1,44 +1,55 @@
 ---
 layout: page
-title: the nursery
+title: The Nursery
+subtitle: An in-situ research space on a live reef
 permalink: /facilities/
 ---
 
-## docks
-<a id="docks"></a>
-![][image2]
+<div class="feature-section">
+  <div class="feature-text">
+    <h2>docks</h2>
+    <p>Our seven 20' x 20' square docks comprise the backbone of the HIMB Coral Nursery. They help support our coral rack system and their 5' width provides ample deck space for you to conduct your research and collect data.</p>
+  </div>
+  <div class="feature-image">
+    <img src="/images/docks.jpg" alt="Coral nursery docks aerial view">
+  </div>
+</div>
 
----
+<div class="feature-section reverse">
+  <div class="feature-text">
+    <h2>frp racks</h2>
+    <p>Fiberglass-reinforced plastic (FRP) racks are 4' x 12' platforms used for experiment deployments that require a stable, rigid platform to hold your equipment. These support heavy loads to meet nearly any needs, just ask!</p>
+  </div>
+  <div class="feature-image">
+    <img src="/images/frp-racks.jpg" alt="FRP racks with coral">
+  </div>
+</div>
 
-Our seven 20' x 20' square docks comprise the backbone of the HIMB Coral Nursery. They help support our coral rack system and their 5' width provides ample deck space for you to conduct your research and collect data.
+<div class="feature-section">
+  <div class="feature-text">
+    <h2>flex racks</h2>
+    <p>Geotextile racks can be built to nearly any size or shape and work well when FRP is too large or replicate racks spread across the nursery space are desired. This design is useful in experiments involving caging, shading, or higher levels of control.</p>
+  </div>
+  <div class="feature-image">
+    <img src="/images/flex-racks.jpg" alt="Flexible geotextile racks">
+  </div>
+</div>
 
-## frp racks
-<a id="frp-racks"></a>
-![][image3]
-
----
-
-Fiberglass-reinforced plastic (FRP) racks are 4' x 12' platforms used for experiment deployments that require a stable, rigid platform to hold your equipment. These support heavy loads to meet nearly any needs, just ask!
-
-## flex racks
-<a id="flex-racks"></a>
-![][image4]
-
----
-
-Geotextile racks can be built to nearly any size or shape and work well when FRP is too large or replicate racks spread across the nursery space are desired. This design is useful in experiments involving caging, shading, or higher levels of control.
-
-## tanks
-<a id="tanks"></a>
-![][image5]
-
----
-
-Our 28 land-based, flow-through seawater tanks are available to compliment your in-situ work. They are ideal for:
-* Field quarantine & pest control
-* Temperature/bleaching manipulation
-* Feeding trials
-* Shade/light manipulation
+<div class="feature-section reverse">
+  <div class="feature-text">
+    <h2>tanks</h2>
+    <p>Our 28 land-based, flow-through seawater tanks are available to compliment your in-situ work. They are ideal for:</p>
+    <ul>
+      <li>Field quarantine & pest control</li>
+      <li>Temperature/bleaching manipulation</li>
+      <li>Feeding trials</li>
+      <li>Shade/light manipulation</li>
+    </ul>
+  </div>
+  <div class="feature-image">
+    <img src="/images/tanks.jpg" alt="Flow-through seawater tanks">
+  </div>
+</div>
 
 ---
 
@@ -46,10 +57,10 @@ Our 28 land-based, flow-through seawater tanks are available to compliment your 
 <a id="the-corals"></a>
 
 ### Nursery-reared or Wild?
-**Colonies available for use without a permit** ![][image6]  
+**Colonies available for use without a permit**  
 The coral nursery houses hundreds of colonies from corals of opportunity, natural recruitment, and past permitted collections. These colonies are available for use in your research and can be referenced in our photogrammetry time-series going back as far as 2019 for some colonies.
 
-**Kāne'ohe Bay field collections** ![][image7]  
+**Kāne'ohe Bay field collections**  
 If you are interested in sampling wild coral colonies from the surrounding reefs of Kāne'ohe Bay, we are happy to help you navigate everything from permitting with the state, HIMB boat usage, down to the physical collections in the field. Leverage our familiarity with our home reef to your advantage.
 
 ### Species Availability
@@ -71,13 +82,13 @@ If you are interested in sampling wild coral colonies from the surrounding reefs
 <a id="data-collection"></a>
 *Use our in-house equipment and SOPs*
 
-**SfM (Structure from Motion)** ![][image8]  
+**SfM (Structure from Motion)**  
 3D models built with Structure from Motion photogrammetry allow you to measure surface area, benthic cover, volume and more with sub-millimeter accuracy. We offer equipment for use or a full SfM service with data delivered.
 
-**PAM Fluorometry** ![][image9]  
+**PAM Fluorometry**  
 Our Waltz mini-PAM fluorometer can assess photosynthetic activity, a common proxy for coral and symbiont health. We are happy to share our equipment, help you use it, and also process the data you receive.
 
-**Environmental Monitoring (PAR/Temp)** ![][image10]  
+**Environmental Monitoring (PAR/Temp)**  
 We are equipped with multiple methods of measuring light, temperature, and flow in the nursery:
 * LiCor 3 channel PAR meter
 * Apogee handheld PAR meter
@@ -85,7 +96,7 @@ We are equipped with multiple methods of measuring light, temperature, and flow 
 * HOBO irradiance/temperature loggers
 * SoFar SmartBuoy (captures live temperature data at 1 and 3 meters)
 
-**Field Lab** ![][image11]  
+**Field Lab**  
 With 110V electricity, water tables, and workbench space right at the coral nursery we can accommodate whatever equipment you might want to bring.
 
 ### Additional Resources
@@ -119,8 +130,8 @@ We are here to offer our experience and hands to help meet your research needs. 
 <a id="collaborations"></a>
 *Some examples of our past collaborations*
 
-**UZELA** ![][image12]  
+**UZELA**  
 The **Underwater Zooplankton Enhancement Light Array**, designed by Dr. Andrea Grottoli at Ohio State University aims to improve coral and reef health through enhanced heterotrophic feeding. UZELA can improve feeding rates in Hawaiian corals by up to 50x.
 
-**SLIPS** ![][image13]  
+**SLIPS**  
 Dr. Daniel Wangpraseurt of UCSD has experimented with **Slippery Liquid-Infused Porous Surfaces** as a substrate for growing coral fragments in the coral nursery. SLIPS can reduce algal competition helping coral fragments grow quickly.
