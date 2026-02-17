@@ -82,6 +82,7 @@ permalink: /facilities/
 <div class="full-width-section">
 
 ### Species Availability
+
 *After sampling, we are able to retain leftover fragments for growout and potential future research use.*
 
 | Coral species | Nursery abundance | Field abundance |
