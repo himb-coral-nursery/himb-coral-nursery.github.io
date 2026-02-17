@@ -167,7 +167,7 @@ h1, h2, h3, .logo {
 }
 
 .page-header {
-  background: #00446F; /* Deep Ocean */
+  background: #10616A;
   padding: 120px 20px 60px;
   text-align: center;
   border-top: 8px solid;
@@ -207,27 +207,6 @@ h1, h2, h3, .logo {
 
 .page-body h2:first-child {
   margin-top: 0;
-}
-
-/* Individual heading colors for facilities page */
-.feature-section:nth-of-type(1) h2 {
-  color: #00446F; /* Deep Ocean - docks */
-  border-bottom: 3px solid #00446F;
-}
-
-.feature-section:nth-of-type(2) h2 {
-  color: #45BBE6; /* Hawai'i Sky - frp racks */
-  border-bottom: 3px solid #45BBE6;
-}
-
-.feature-section:nth-of-type(3) h2 {
-  color: #10616A; /* Patch Reef - flex racks */
-  border-bottom: 3px solid #10616A;
-}
-
-.feature-section:nth-of-type(4) h2 {
-  color: #4B682F; /* Heritage Trees - tanks */
-  border-bottom: 3px solid #4B682F;
 }
 
 /* Two-column feature sections */
