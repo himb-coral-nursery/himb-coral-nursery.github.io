@@ -24,7 +24,7 @@ permalink: /facilities/
     <p>Fiberglass-reinforced plastic (FRP) racks are 4' x 12' platforms used for experiment deployments that require a stable, rigid platform to hold your equipment. These support heavy loads to meet nearly any needs, just ask!</p>
   </div>
   <div class="feature-image">
-    <img src="/assets/images/frp-rack.jpg" alt="FRP racks with coral">
+    <img src="/assets/images/frp-rack.JPG" alt="FRP racks with coral">
   </div>
 </div>
 
@@ -34,7 +34,7 @@ permalink: /facilities/
     <p>Geotextile racks can be built to nearly any size or shape and work well when FRP is too large or replicate racks spread across the nursery space are desired. This design is useful in experiments involving caging, shading, or higher levels of control.</p>
   </div>
   <div class="feature-image">
-    <img src="/images/flex-rack.jpg" alt="Flexible geotextile racks">
+    <img src="/images/flex-rack.png" alt="Flexible geotextile racks">
   </div>
 </div>
 
