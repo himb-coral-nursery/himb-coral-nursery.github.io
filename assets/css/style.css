@@ -244,6 +244,132 @@ h1, h2, h3, .logo {
   order: -1;
 }
 
+/* ==========================================================================
+   COLORED SECTIONS
+   ========================================================================== */
+
+/* Section 1: The Nursery - Patch Reef (default, no extra styling needed) */
+.section-nursery {
+  padding: 0; /* Feature sections handle their own spacing */
+}
+
+/* Section 2: The Corals - Deep Ocean */
+.section-corals {
+  background: #00446F; /* Deep Ocean */
+  padding: 80px 0;
+  margin: 80px 0 0 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.section-corals h2 {
+  color: #45BBE6 !important; /* Hawai'i Sky */
+  border-bottom-color: #45BBE6 !important;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 40px;
+}
+
+.section-corals > * {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+/* Section 3: Equipment - Sandbar (light, needs dark text) */
+.section-equipment {
+  background: #C2E5DF; /* Sandbar */
+  padding: 80px 0;
+  margin: 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.section-equipment h2,
+.section-equipment h3,
+.section-equipment p,
+.section-equipment li,
+.section-equipment strong,
+.section-equipment em {
+  color: #333 !important;
+}
+
+.section-equipment h2 {
+  border-bottom-color: #10616A !important; /* Patch Reef underline */
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 40px;
+}
+
+.section-equipment > * {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.section-equipment a {
+  color: #10616A !important;
+}
+
+.section-equipment a:hover {
+  color: #00446F !important;
+}
+
+/* Section 4: Pricing - Heritage Trees */
+.section-pricing {
+  background: #4B682F; /* Heritage Trees */
+  padding: 80px 0;
+  margin: 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.section-pricing h2 {
+  color: #C2E5DF !important; /* Sandbar */
+  border-bottom-color: #C2E5DF !important;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 40px;
+}
+
+.section-pricing > * {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+/* Tables in pricing section */
+.section-pricing table {
+  color: #fff;
+  border-color: #C2E5DF;
+}
+
+.section-pricing th,
+.section-pricing td {
+  border-color: rgba(194, 229, 223, 0.3);
+}
+
 .page-body h3 {
   font-family: 'Nursery-Heading', sans-serif;
   font-size: 1.6rem;
