@@ -156,10 +156,10 @@ permalink: /facilities/
 
 <div class="live-data-widget" style="margin-top: 20px; width: 100%;">
   <h3 style="font-family: 'Nursery-Heading', sans-serif; font-size: 1.1rem; color: #2da6b0; margin-bottom: 10px;">
-    Live Nursery Temperature (Spotter 1042)
+    Live Nursery Temperature (Spotter 1025)
   </h3>
   <iframe 
-  src="https://weather.sofarocean.com/spotter/SPOT-1042" 
+  src="https://weather.sofarocean.com/spotter/SPOT-1025" 
   width="100%" 
   height="500" 
   frameborder="0" 
