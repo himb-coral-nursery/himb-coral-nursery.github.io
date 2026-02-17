@@ -175,16 +175,16 @@ h1, h2, h3, .logo {
 
 .page-title {
   font-family: 'Nursery-Heading', sans-serif;
-  font-size: 3.5rem;
+  font-size: 5.0rem;
   color: #333;
   margin: 0;
 }
 
 .page-subtitle {
   font-family: 'Nursery-Body', sans-serif;
-  font-size: 1.3rem;
+  font-size: 2.3rem;
   color: #666;
-  margin: 15px 0 0 0;
+  margin: 5px 0 0 0;
   font-weight: 300;
 }
 .page-body {
