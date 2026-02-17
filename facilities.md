@@ -14,7 +14,7 @@ permalink: /facilities/
     <p>Our seven 20' x 20' square docks comprise the backbone of the HIMB Coral Nursery. They help support our coral rack system and their 5' width provides ample deck space for you to conduct your research and collect data.</p>
   </div>
   <div class="feature-image">
-    <img src="/images/docks.jpg" alt="Coral nursery docks aerial view">
+    <img src="/assets/images/docks.jpg" alt="Coral nursery docks aerial view">
   </div>
 </div>
 
@@ -24,7 +24,7 @@ permalink: /facilities/
     <p>Fiberglass-reinforced plastic (FRP) racks are 4' x 12' platforms used for experiment deployments that require a stable, rigid platform to hold your equipment. These support heavy loads to meet nearly any needs, just ask!</p>
   </div>
   <div class="feature-image">
-    <img src="/images/frp-racks.jpg" alt="FRP racks with coral">
+    <img src="/assets/images/frp-racks.jpg" alt="FRP racks with coral">
   </div>
 </div>
 
@@ -50,7 +50,7 @@ permalink: /facilities/
     </ul>
   </div>
   <div class="feature-image">
-    <img src="/images/tanks.jpg" alt="Flow-through seawater tanks">
+    <img src="/assets/assets/images/tanks.jpg" alt="Flow-through seawater tanks">
   </div>
 </div>
 
@@ -65,7 +65,7 @@ permalink: /facilities/
     <p>The coral nursery houses hundreds of colonies from corals of opportunity, natural recruitment, and past permitted collections. These colonies are available for use in your research and can be referenced in our photogrammetry time-series going back as far as 2019 for some colonies.</p>
   </div>
   <div class="feature-image">
-    <img src="/images/nursery-colonies.jpg" alt="Nursery coral colonies">
+    <img src="/assets/images/nursery-colonies.jpg" alt="Nursery coral colonies">
   </div>
 </div>
 
@@ -107,7 +107,7 @@ permalink: /facilities/
     <p>3D models built with Structure from Motion photogrammetry allow you to measure surface area, benthic cover, volume and more with sub-millimeter accuracy. We offer equipment for use or a full SfM service with data delivered.</p>
   </div>
   <div class="feature-image">
-    <img src="/images/sfm.jpg" alt="Structure from Motion photogrammetry">
+    <img src="/assets/images/sfm.jpg" alt="Structure from Motion photogrammetry">
   </div>
 </div>
 
@@ -117,7 +117,7 @@ permalink: /facilities/
     <p>Our Waltz mini-PAM fluorometer can assess photosynthetic activity, a common proxy for coral and symbiont health. We are happy to share our equipment, help you use it, and also process the data you receive.</p>
   </div>
   <div class="feature-image">
-    <img src="/images/pam.jpg" alt="PAM fluorometry equipment">
+    <img src="/assets/images/pam.jpg" alt="PAM fluorometry equipment">
   </div>
 </div>
 
@@ -134,7 +134,7 @@ permalink: /facilities/
     </ul>
   </div>
   <div class="feature-image">
-    <img src="/images/environmental-monitoring.jpg" alt="Environmental monitoring equipment">
+    <img src="/assets/images/environmental-monitoring.jpg" alt="Environmental monitoring equipment">
   </div>
 </div>
 
@@ -150,7 +150,7 @@ permalink: /facilities/
     </ul>
   </div>
   <div class="feature-image">
-    <img src="/images/field-lab.jpg" alt="Field lab at coral nursery">
+    <img src="/assets/images/field-lab.jpg" alt="Field lab at coral nursery">
   </div>
 </div>
 
