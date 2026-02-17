@@ -1,13 +1,13 @@
 ---
 layout: page
 title: The Nursery
-subtitle: An in-situ research space on a live reef
+subtitle: facilities and services
 permalink: /facilities/
 ---
 
 <div class="feature-section">
   <div class="feature-text">
-    <h2>docks</h2>
+    <h2>the docks</h2>
     <p>Our seven 20' x 20' square docks comprise the backbone of the HIMB Coral Nursery. They help support our coral rack system and their 5' width provides ample deck space for you to conduct your research and collect data.</p>
   </div>
   <div class="feature-image">
@@ -37,7 +37,7 @@ permalink: /facilities/
 
 <div class="feature-section reverse">
   <div class="feature-text">
-    <h2>tanks</h2>
+    <h2>tank system</h2>
     <p>Our 28 land-based, flow-through seawater tanks are available to compliment your in-situ work. They are ideal for:</p>
     <ul>
       <li>Field quarantine & pest control</li>
