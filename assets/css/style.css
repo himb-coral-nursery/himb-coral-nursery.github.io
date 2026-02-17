@@ -210,22 +210,22 @@ h1, h2, h3, .logo {
 }
 
 /* Individual heading colors for facilities page */
-.page-body h2:nth-of-type(1) {
+.feature-section:nth-of-type(1) h2 {
   color: #00446F; /* Deep Ocean - docks */
   border-bottom: 3px solid #00446F;
 }
 
-.page-body h2:nth-of-type(2) {
+.feature-section:nth-of-type(2) h2 {
   color: #45BBE6; /* Hawai'i Sky - frp racks */
   border-bottom: 3px solid #45BBE6;
 }
 
-.page-body h2:nth-of-type(3) {
+.feature-section:nth-of-type(3) h2 {
   color: #10616A; /* Patch Reef - flex racks */
   border-bottom: 3px solid #10616A;
 }
 
-.page-body h2:nth-of-type(4) {
+.feature-section:nth-of-type(4) h2 {
   color: #4B682F; /* Heritage Trees - tanks */
   border-bottom: 3px solid #4B682F;
 }
