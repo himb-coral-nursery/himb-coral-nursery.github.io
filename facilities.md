@@ -34,7 +34,7 @@ permalink: /facilities/
     <p>Geotextile racks can be built to nearly any size or shape and work well when FRP is too large or replicate racks spread across the nursery space are desired. This design is useful in experiments involving caging, shading, or higher levels of control.</p>
   </div>
   <div class="feature-image">
-    <img src="/images/flex-rack.png" alt="Flexible geotextile racks">
+    <img src="/assets/images/flex-rack.png" alt="Flexible geotextile racks">
   </div>
 </div>
 
@@ -50,7 +50,7 @@ permalink: /facilities/
     </ul>
   </div>
   <div class="feature-image">
-    <img src="/assets/assets/images/tanks.jpg" alt="Flow-through seawater tanks">
+    <img src="/assets/images/tanks.jpg" alt="Flow-through seawater tanks">
   </div>
 </div>
 
