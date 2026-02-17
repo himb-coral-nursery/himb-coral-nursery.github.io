@@ -5,8 +5,8 @@ subtitle: An in-situ research space on a live reef
 permalink: /facilities/
 ---
 
-<!-- SECTION 1: THE NURSERY (Patch Reef - default background) -->
-<div class="section-nursery">
+<!-- SECTION 1: THE NURSERY -->
+<div class="section-nursery" markdown="1">
 
 <div class="feature-section">
   <div class="feature-text">
@@ -56,17 +56,30 @@ permalink: /facilities/
 
 </div>
 
-<!-- SECTION 2: THE CORALS (Deep Ocean background) -->
-<div class="section-corals">
+<!-- SECTION 2: THE CORALS -->
+<div class="section-corals" markdown="1">
 
-## The Corals
+<div class="feature-section">
+  <div class="feature-text">
+    <h2>nursery colonies</h2>
+    <p>The coral nursery houses hundreds of colonies from corals of opportunity, natural recruitment, and past permitted collections. These colonies are available for use in your research and can be referenced in our photogrammetry time-series going back as far as 2019 for some colonies.</p>
+  </div>
+  <div class="feature-image">
+    <img src="/images/nursery-colonies.jpg" alt="Nursery coral colonies">
+  </div>
+</div>
 
-### Nursery-reared or Wild?
-**Colonies available for use without a permit**  
-The coral nursery houses hundreds of colonies from corals of opportunity, natural recruitment, and past permitted collections. These colonies are available for use in your research and can be referenced in our photogrammetry time-series going back as far as 2019 for some colonies.
+<div class="feature-section reverse">
+  <div class="feature-text">
+    <h2>field collections</h2>
+    <p>If you are interested in sampling wild coral colonies from the surrounding reefs of Kāne'ohe Bay, we are happy to help you navigate everything from permitting with the state, HIMB boat usage, down to the physical collections in the field. Leverage our familiarity with our home reef to your advantage.</p>
+  </div>
+  <div class="feature-image">
+    <img src="/images/field-collections.jpg" alt="Kāne'ohe Bay field collections">
+  </div>
+</div>
 
-**Kāne'ohe Bay field collections**  
-If you are interested in sampling wild coral colonies from the surrounding reefs of Kāne'ohe Bay, we are happy to help you navigate everything from permitting with the state, HIMB boat usage, down to the physical collections in the field. Leverage our familiarity with our home reef to your advantage.
+<div class="full-width-section">
 
 ### Species Availability
 *After sampling, we are able to retain leftover fragments for growout and potential future research use.*
@@ -83,39 +96,68 @@ If you are interested in sampling wild coral colonies from the surrounding reefs
 
 </div>
 
-<!-- SECTION 3: EQUIPMENT (Sandbar background with dark text) -->
-<div class="section-equipment">
+</div>
 
-## Equipment
+<!-- SECTION 3: EQUIPMENT -->
+<div class="section-equipment" markdown="1">
 
-*Use our in-house equipment and SOPs*
+<div class="feature-section">
+  <div class="feature-text">
+    <h2>SfM photogrammetry</h2>
+    <p>3D models built with Structure from Motion photogrammetry allow you to measure surface area, benthic cover, volume and more with sub-millimeter accuracy. We offer equipment for use or a full SfM service with data delivered.</p>
+  </div>
+  <div class="feature-image">
+    <img src="/images/sfm.jpg" alt="Structure from Motion photogrammetry">
+  </div>
+</div>
 
-**SfM (Structure from Motion)**  
-3D models built with Structure from Motion photogrammetry allow you to measure surface area, benthic cover, volume and more with sub-millimeter accuracy. We offer equipment for use or a full SfM service with data delivered.
+<div class="feature-section reverse">
+  <div class="feature-text">
+    <h2>PAM fluorometry</h2>
+    <p>Our Waltz mini-PAM fluorometer can assess photosynthetic activity, a common proxy for coral and symbiont health. We are happy to share our equipment, help you use it, and also process the data you receive.</p>
+  </div>
+  <div class="feature-image">
+    <img src="/images/pam.jpg" alt="PAM fluorometry equipment">
+  </div>
+</div>
 
-**PAM Fluorometry**  
-Our Waltz mini-PAM fluorometer can assess photosynthetic activity, a common proxy for coral and symbiont health. We are happy to share our equipment, help you use it, and also process the data you receive.
+<div class="feature-section">
+  <div class="feature-text">
+    <h2>environmental monitoring</h2>
+    <p>We are equipped with multiple methods of measuring light, temperature, and flow in the nursery:</p>
+    <ul>
+      <li>LiCor 3 channel PAR meter</li>
+      <li>Apogee handheld PAR meter</li>
+      <li>Odyssey PAR sensors w/ automated wiper</li>
+      <li>HOBO irradiance/temperature loggers</li>
+      <li>SoFar SmartBuoy (captures live temperature data at 1 and 3 meters)</li>
+    </ul>
+  </div>
+  <div class="feature-image">
+    <img src="/images/environmental-monitoring.jpg" alt="Environmental monitoring equipment">
+  </div>
+</div>
 
-**Environmental Monitoring (PAR/Temp)**  
-We are equipped with multiple methods of measuring light, temperature, and flow in the nursery:
-* LiCor 3 channel PAR meter
-* Apogee handheld PAR meter
-* Odyssey PAR sensors w/ automated wiper
-* HOBO irradiance/temperature loggers
-* SoFar SmartBuoy (captures live temperature data at 1 and 3 meters)
-
-**Field Lab**  
-With 110V electricity, water tables, and workbench space right at the coral nursery we can accommodate whatever equipment you might want to bring.
-
-### Additional Resources
-* **HIMB Resources:** [Boats, Housing, LN2, etc.](http://www.himb.hawaii.edu/)
-* **ToBo Lab:** [Core Lab, wet lab resources](http://tobolab.org/)
-* **UH Manoa:** [University resources for use/rent](https://manoa.hawaii.edu/)
+<div class="feature-section reverse">
+  <div class="feature-text">
+    <h2>field lab</h2>
+    <p>With 110V electricity, water tables, and workbench space right at the coral nursery we can accommodate whatever equipment you might want to bring.</p>
+    <h3>Additional Resources</h3>
+    <ul>
+      <li><strong>HIMB Resources:</strong> <a href="http://www.himb.hawaii.edu/">Boats, Housing, LN2, etc.</a></li>
+      <li><strong>ToBo Lab:</strong> <a href="http://tobolab.org/">Core Lab, wet lab resources</a></li>
+      <li><strong>UH Manoa:</strong> <a href="https://manoa.hawaii.edu/">University resources for use/rent</a></li>
+    </ul>
+  </div>
+  <div class="feature-image">
+    <img src="/images/field-lab.jpg" alt="Field lab at coral nursery">
+  </div>
+</div>
 
 </div>
 
-<!-- SECTION 4: PRICING (Heritage Trees background) -->
-<div class="section-pricing">
+<!-- SECTION 4: PRICING -->
+<div class="section-pricing" markdown="1">
 
 ## Packages & Pricing
 
