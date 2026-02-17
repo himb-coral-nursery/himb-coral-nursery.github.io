@@ -1,27 +1,39 @@
 ---
 layout: page
-title: Facilities & Services
+title: the nursery
 permalink: /facilities/
 ---
 
-# HIMB Coral Nursery
-## An in-situ research space on a live reef
+## docks
+<a id="docks"></a>
+![][image2]
 
-![A pattern of white alarm clocks on a orange background.][image1]
+---
 
-## The Nursery
-<a id="the-nursery"></a>
+Our seven 20' x 20' square docks comprise the backbone of the HIMB Coral Nursery. They help support our coral rack system and their 5' width provides ample deck space for you to conduct your research and collect data.
 
-**Docks** ![][image2]  
-Our seven 20’ x 20’ square docks comprise the backbone of the HIMB Coral Nursery. They help support our coral rack system and their 5’ width provides ample deck space for you to conduct your research and collect data.
+## frp racks
+<a id="frp-racks"></a>
+![][image3]
 
-**FRP Racks** ![][image3]  
-Fiberglass-reinforced plastic (FRP) racks are 4’ x 12’ platforms used for experiment deployments that require a stable, rigid platform to hold your equipment. These support heavy loads to meet nearly any needs, just ask!
+---
 
-**Flex Racks** ![][image4]  
+Fiberglass-reinforced plastic (FRP) racks are 4' x 12' platforms used for experiment deployments that require a stable, rigid platform to hold your equipment. These support heavy loads to meet nearly any needs, just ask!
+
+## flex racks
+<a id="flex-racks"></a>
+![][image4]
+
+---
+
 Geotextile racks can be built to nearly any size or shape and work well when FRP is too large or replicate racks spread across the nursery space are desired. This design is useful in experiments involving caging, shading, or higher levels of control.
 
-**Tanks** ![][image5]  
+## tanks
+<a id="tanks"></a>
+![][image5]
+
+---
+
 Our 28 land-based, flow-through seawater tanks are available to compliment your in-situ work. They are ideal for:
 * Field quarantine & pest control
 * Temperature/bleaching manipulation
@@ -37,8 +49,8 @@ Our 28 land-based, flow-through seawater tanks are available to compliment your 
 **Colonies available for use without a permit** ![][image6]  
 The coral nursery houses hundreds of colonies from corals of opportunity, natural recruitment, and past permitted collections. These colonies are available for use in your research and can be referenced in our photogrammetry time-series going back as far as 2019 for some colonies.
 
-**Kāne’ohe Bay field collections** ![][image7]  
-If you are interested in sampling wild coral colonies from the surrounding reefs of Kāne’ohe Bay, we are happy to help you navigate everything from permitting with the state, HIMB boat usage, down to the physical collections in the field. Leverage our familiarity with our home reef to your advantage.
+**Kāne'ohe Bay field collections** ![][image7]  
+If you are interested in sampling wild coral colonies from the surrounding reefs of Kāne'ohe Bay, we are happy to help you navigate everything from permitting with the state, HIMB boat usage, down to the physical collections in the field. Leverage our familiarity with our home reef to your advantage.
 
 ### Species Availability
 *After sampling, we are able to retain leftover fragments for growout and potential future research use.*
