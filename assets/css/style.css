@@ -348,8 +348,15 @@ h1, h2, h3, .logo {
     box-shadow: none !important;
   }
   
+  /* Show white logo by default on mobile */
   .logo {
-    display: none !important;
+  color: #ffffff !important;
+  display: block !important;
+  }
+
+  /* Hide white logo on homepage only */
+  .homepage .logo {
+  display: none !important;
   }
   
   .nav-container {
