@@ -1,9 +1,12 @@
 ---
 layout: page
-title: The Nursery
-subtitle: facilities and services
+title: Facilities & Services
+subtitle: An in-situ research space on a live reef
 permalink: /facilities/
 ---
+
+<!-- SECTION 1: THE NURSERY (Patch Reef - default background) -->
+<div class="section-nursery">
 
 <div class="feature-section">
   <div class="feature-text">
@@ -51,10 +54,12 @@ permalink: /facilities/
   </div>
 </div>
 
----
+</div>
+
+<!-- SECTION 2: THE CORALS (Deep Ocean background) -->
+<div class="section-corals">
 
 ## The Corals
-<a id="the-corals"></a>
 
 ### Nursery-reared or Wild?
 **Colonies available for use without a permit**  
@@ -76,10 +81,13 @@ If you are interested in sampling wild coral colonies from the surrounding reefs
 | *Pavona varians* | Medium, low | Medium |
 | *Pocillopora meandrina* | None | Low |
 
----
+</div>
 
-## Data Collection
-<a id="data-collection"></a>
+<!-- SECTION 3: EQUIPMENT (Sandbar background with dark text) -->
+<div class="section-equipment">
+
+## Equipment
+
 *Use our in-house equipment and SOPs*
 
 **SfM (Structure from Motion)**  
@@ -100,15 +108,16 @@ We are equipped with multiple methods of measuring light, temperature, and flow 
 With 110V electricity, water tables, and workbench space right at the coral nursery we can accommodate whatever equipment you might want to bring.
 
 ### Additional Resources
-<a id="resources"></a>
 * **HIMB Resources:** [Boats, Housing, LN2, etc.](http://www.himb.hawaii.edu/)
 * **ToBo Lab:** [Core Lab, wet lab resources](http://tobolab.org/)
 * **UH Manoa:** [University resources for use/rent](https://manoa.hawaii.edu/)
 
----
+</div>
+
+<!-- SECTION 4: PRICING (Heritage Trees background) -->
+<div class="section-pricing">
 
 ## Packages & Pricing
-<a id="packages"></a>
 
 | Package | Your availability | Services Included | Pricing |
 | :--- | :--- | :--- | :--- |
@@ -116,22 +125,4 @@ With 110V electricity, water tables, and workbench space right at the coral nurs
 | **Small help** | Part time | Space + experiment cleaning/maintenance, checkins, collection/set up assistance when here. | Contact us |
 | **Big help** | Part time | Small help + collecting, processing, and analyzing data while away. Full collaboration. | Contact us |
 
----
-
-## Our Team
-<a id="team"></a>
-We are here to offer our experience and hands to help meet your research needs. We have 3 full time nursery staff and 2 lab staff available to assist.
-
-[Meet the ToBo Lab People](http://tobolab.org/people)
-
----
-
-## Collaborations
-<a id="collaborations"></a>
-*Some examples of our past collaborations*
-
-**UZELA**  
-The **Underwater Zooplankton Enhancement Light Array**, designed by Dr. Andrea Grottoli at Ohio State University aims to improve coral and reef health through enhanced heterotrophic feeding. UZELA can improve feeding rates in Hawaiian corals by up to 50x.
-
-**SLIPS**  
-Dr. Daniel Wangpraseurt of UCSD has experimented with **Slippery Liquid-Infused Porous Surfaces** as a substrate for growing coral fragments in the coral nursery. SLIPS can reduce algal competition helping coral fragments grow quickly.
+</div>
