@@ -225,8 +225,8 @@ h1, h2, h3, .logo {
    7. RESPONSIVE / MOBILE OVERRIDES
    ========================================================================== */
 
-/* --- Mobile Rules (Only apply if screen is 768px or less) --- */
-@media (max-width: 768px) {
+/* --- Mobile Rules (Only apply if screen is 767px or less) --- */
+@media (max-width: 767px) {
    
 * {
     -webkit-tap-highlight-color: transparent;
