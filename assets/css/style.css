@@ -176,15 +176,15 @@ h1, h2, h3, .logo {
 
 .page-title {
   font-family: 'Nursery-Heading', sans-serif;
-  font-size: 5.0rem;
-  color: #fff; /* White */
+  font-size: 4.5rem; /* Changed from 5.0rem */
+  color: #fff;
   margin: 0;
 }
 
 .page-subtitle {
   font-family: 'Nursery-Body', sans-serif;
-  font-size: 2.3rem;
-  color: #fff; /* White */
+  font-size: 1.8rem; /* Changed from 2.3rem */
+  color: #fff;
   margin: 0px 0 0 0;
   font-weight: 300;
 }
@@ -224,7 +224,7 @@ h1, h2, h3, .logo {
 
 .feature-text h2 {
   margin-top: 0;
-  font-size: 4.5rem;
+  font-size: 3.5rem; /* Changed from 4.5rem */
   margin-bottom: 30px;
   text-align: center;
 }
