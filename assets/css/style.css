@@ -283,12 +283,16 @@ h1, h2, h3, .logo {
   padding-right: 40px;
 }
 
-.full-width-section {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 0 40px;
+/* Tables in pricing section */
+.section-corals table {
+  color: #fff;
+  border-color: #C2E5DF;
 }
 
+.section-corals th,
+.section-corals td {
+  border-color: rgba(194, 229, 223, 0.3);
+}
 /* Section 3: Equipment - Sandbar (light, needs dark text) */
 .section-equipment {
   background: #C2E5DF; /* Sandbar */
