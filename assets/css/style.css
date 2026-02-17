@@ -230,6 +230,40 @@ h1, h2, h3, .logo {
   border-bottom: 3px solid #4B682F;
 }
 
+/* Two-column feature sections */
+.feature-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  margin: 80px 0;
+}
+
+.feature-section:first-of-type {
+  margin-top: 40px;
+}
+
+.feature-text h2 {
+  margin-top: 0;
+  font-size: 3rem;
+  margin-bottom: 30px;
+}
+
+.feature-image img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Alternate layout - image on left */
+.feature-section.reverse {
+  grid-template-columns: 1fr 1fr;
+}
+
+.feature-section.reverse .feature-image {
+  order: -1;
+}
+
 .page-body h3 {
   font-family: 'Nursery-Heading', sans-serif;
   font-size: 1.6rem;
