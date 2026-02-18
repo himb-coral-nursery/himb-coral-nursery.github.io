@@ -7,6 +7,7 @@ permalink: /facilities/
 
 <!-- SECTION 1: THE NURSERY -->
 <div class="section-nursery" markdown="1">
+<a id="the-nursery"></a>
 
 <div class="feature-section">
   <div class="feature-text">
@@ -58,6 +59,7 @@ permalink: /facilities/
 
 <!-- SECTION 2: THE CORALS -->
 <div class="section-corals" markdown="1">
+<a id="the-corals"></a>
 
 <div class="feature-section">
   <div class="feature-text">
@@ -99,7 +101,8 @@ permalink: /facilities/
 
 <!-- SECTION 3: EQUIPMENT -->
 <div class="section-equipment" markdown="1">
-
+<a id="equipment"></a>
+  
 <div class="feature-section">
   <div class="feature-text">
     <h2>SfM photogrammetry</h2>
@@ -177,6 +180,7 @@ permalink: /facilities/
 
 <!-- SECTION 4: PRICING -->
 <div class="section-pricing" markdown="1">
+<a id="services"></a>
 
 ## Packages & Pricing
 
