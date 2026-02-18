@@ -45,7 +45,7 @@ h1, h2, h3, .logo {
   z-index: 10001;
 }
 
-.nav-links { 
+.nav-menu > .nav-links { 
   display: flex; 
   list-style: none; 
   gap: 30px; 
@@ -102,7 +102,7 @@ h1, h2, h3, .logo {
 }
 
 .dropdown-menu {
-  display: none;
+  display: none !important;
   position: absolute;
   top: 100%;
   left: 0;
@@ -114,10 +114,12 @@ h1, h2, h3, .logo {
   margin-top: 5px;
   border-radius: 4px;
   z-index: 10001;
+  flex-direction: column;
+  gap: 0;
 }
 
 .dropdown:hover .dropdown-menu {
-  display: block;
+  display: block !important;
 }
 
 .dropdown-menu li {
@@ -217,14 +219,14 @@ h1, h2, h3, .logo {
 
 .page-title {
   font-family: 'Nursery-Heading', sans-serif;
-  font-size: 4.5rem; /* Changed from 5.0rem */
+  font-size: 4.5rem;
   color: #fff;
   margin: 0;
 }
 
 .page-subtitle {
   font-family: 'Nursery-Body', sans-serif;
-  font-size: 1.8rem; /* Changed from 2.3rem */
+  font-size: 1.8rem;
   color: #fff;
   margin: 0px 0 0 0;
   font-weight: 300;
@@ -239,7 +241,7 @@ h1, h2, h3, .logo {
 .page-body h2 {
   font-family: 'Nursery-Heading', sans-serif;
   font-size: 2.2rem;
-  color: #fff; /* White */
+  color: #fff;
   margin-top: 10px;
   margin-bottom: 20px;
   padding-bottom: 10px;
@@ -265,7 +267,7 @@ h1, h2, h3, .logo {
 
 .feature-text h2 {
   margin-top: 0;
-  font-size: 3.5rem; /* Changed from 4.5rem */
+  font-size: 3.5rem;
   margin-bottom: 30px;
   text-align: center;
 }
@@ -291,12 +293,12 @@ h1, h2, h3, .logo {
 
 /* Section 1: The Nursery - Patch Reef (default, no extra styling needed) */
 .section-nursery {
-  padding: 0; /* Feature sections handle their own spacing */
+  padding: 0;
 }
 
 /* Section 2: The Corals - Deep Ocean */
 .section-corals {
-  background: #00446F; /* Deep Ocean */
+  background: #00446F;
   padding: 80px 0;
   margin: 80px 0 0 0;
   width: 100vw;
@@ -308,7 +310,7 @@ h1, h2, h3, .logo {
 }
 
 .section-corals h2 {
-  color: ##EBD5AF !important; /* Sand color */
+  color: #EBD5AF !important;
   border-bottom-color: #45BBE6 !important;
   max-width: 900px;
   margin-left: auto;
@@ -332,7 +334,7 @@ h1, h2, h3, .logo {
 
 /* Section 3: Equipment - Sandbar (light, needs dark text) */
 .section-equipment {
-  background: #C2E5DF; /* Sandbar */
+  background: #C2E5DF;
   padding: 80px 0;
   margin: 0;
   width: 100vw;
@@ -353,7 +355,7 @@ h1, h2, h3, .logo {
 }
 
 .section-equipment h2 {
-  border-bottom-color: #10616A !important; /* Patch Reef underline */
+  border-bottom-color: #10616A !important;
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
@@ -378,7 +380,7 @@ h1, h2, h3, .logo {
 
 /* Section 4: Pricing - Heritage Trees */
 .section-pricing {
-  background: #4B682F; /* Heritage Trees */
+  background: #4B682F;
   padding: 80px 0;
   margin: 0;
   width: 100vw;
@@ -390,7 +392,7 @@ h1, h2, h3, .logo {
 }
 
 .section-pricing h2 {
-  color: #C2E5DF !important; /* Sandbar */
+  color: #C2E5DF !important;
   border-bottom-color: #C2E5DF !important;
   max-width: 900px;
   margin-left: auto;
@@ -420,7 +422,7 @@ h1, h2, h3, .logo {
 .page-body h3 {
   font-family: 'Nursery-Heading', sans-serif;
   font-size: 1.6rem;
-  color: #fff; /* White */
+  color: #fff;
   margin-top: 30px;
   margin-bottom: 15px;
 }
@@ -429,7 +431,7 @@ h1, h2, h3, .logo {
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 20px;
-  color: #fff; /* White */
+  color: #fff;
 }
 
 .page-body ul, .page-body ol {
@@ -441,23 +443,23 @@ h1, h2, h3, .logo {
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 10px;
-  color: #fff; /* White */
+  color: #fff;
 }
 
 .page-body a {
-  color: #45BBE6; /* Hawai'i Sky */
+  color: #45BBE6;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s;
 }
 
 .page-body a:hover {
-  color: #C2E5DF; /* Sandbar - lighter on hover */
+  color: #C2E5DF;
   text-decoration: underline;
 }
 
 .page-body strong {
-  color: #fff; /* White */
+  color: #fff;
   font-weight: 600;
 }
 
@@ -465,7 +467,7 @@ h1, h2, h3, .logo {
 .page-body a[id] {
   display: block;
   position: relative;
-  top: -100px; /* Offset for fixed header */
+  top: -100px;
   visibility: hidden;
 }
 
@@ -482,7 +484,7 @@ h1, h2, h3, .logo {
    ========================================================================== */
 @media (max-width: 1208px) and (min-width: 768px) {
   .fade-in-text {
-    font-size: 7.5rem;         /* smaller than default 9rem */
+    font-size: 7.5rem;
     line-height: .75;
   }
   
@@ -523,15 +525,15 @@ h1, h2, h3, .logo {
    
   .hero { 
   height: 100vh;
-  height: 100dvh;  /* ← ADD THIS - "dynamic viewport height" */
+  height: 100dvh;
   }
 
   .video-container iframe { 
   position: absolute;
-  height: 100vh;             /* ← fill the height */
-  height: 100dvh;            /* ← dynamic viewport height */
-  width: 177.78vh;           /* ← maintain 16:9 ratio */
-  width: 177.78dvh;          /* ← dynamic version */
+  height: 100vh;
+  height: 100dvh;
+  width: 177.78vh;
+  width: 177.78dvh;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
@@ -546,7 +548,7 @@ h1, h2, h3, .logo {
   width: 100%;
   padding-left: 18px;
   line-height: 0.75;
-  word-spacing: 100vw; /* Forces each word to its own line */
+  word-spacing: 100vw;
   }
 
   .fade-in-subtext { 
