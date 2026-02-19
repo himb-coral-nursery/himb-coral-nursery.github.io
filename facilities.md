@@ -58,13 +58,6 @@ permalink: /facilities/
 
 </div>
 
-<!-- WAVE DIVIDER: Nursery (teal) → Corals (deep blue) -->
-<div class="section-divider">
-  <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,30 C300,60 900,0 1200,30 L1200,60 L0,60 Z" fill="#00446F"/>
-  </svg>
-</div>
-
 <!-- SECTION 2: THE CORALS -->
 <div class="section-corals" markdown="1">
 <a id="the-corals"></a>
@@ -106,13 +99,6 @@ permalink: /facilities/
 
 </div>
 
-</div>
-
-<!-- WAVE DIVIDER: Corals (deep blue) → Equipment (light sandbar) -->
-<div class="section-divider">
-  <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,30 C300,60 900,0 1200,30 L1200,60 L0,60 Z" fill="#C2E5DF"/>
-  </svg>
 </div>
 
 <!-- SECTION 3: EQUIPMENT -->
@@ -196,12 +182,6 @@ permalink: /facilities/
 
 </div>
 
-<!-- WAVE DIVIDER: Equipment (light sandbar) → Pricing (green) -->
-<div class="section-divider">
-  <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,30 C300,60 900,0 1200,30 L1200,60 L0,60 Z" fill="#4B682F"/>
-  </svg>
-</div>
 
 <!-- SECTION 4: PRICING -->
 <div class="section-pricing" markdown="1">
