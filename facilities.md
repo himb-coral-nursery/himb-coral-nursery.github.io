@@ -1,13 +1,14 @@
 ---
 layout: page
-title: Facilities & Services
-subtitle: An in-situ research space on a live reef
+title: 
+subtitle: 
 permalink: /facilities/
 ---
 
 <!-- SECTION 1: THE NURSERY -->
 <div class="section-nursery" markdown="1">
 <a id="the-nursery"></a>
+<h1 class="page-title">The Nursery</h1>
 
 <div class="feature-section">
   <div class="feature-text">
@@ -60,6 +61,7 @@ permalink: /facilities/
 <!-- SECTION 2: THE CORALS -->
 <div class="section-corals" markdown="1">
 <a id="the-corals"></a>
+<h1 class="page-title">The Corals</h1>
 
 <div class="feature-section">
   <div class="feature-text">
@@ -102,6 +104,7 @@ permalink: /facilities/
 <!-- SECTION 3: EQUIPMENT -->
 <div class="section-equipment" markdown="1">
 <a id="equipment"></a>
+<h1 class="page-title" style="color: #10616A;">Equipment</h1>
   
 <div class="feature-section">
   <div class="feature-text">
@@ -181,6 +184,7 @@ permalink: /facilities/
 <!-- SECTION 4: PRICING -->
 <div class="section-pricing" markdown="1">
 <a id="services"></a>
+<h1 class="page-title">Packages & Pricing</h1>
 
 ## Packages & Pricing
 
