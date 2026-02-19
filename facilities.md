@@ -69,7 +69,7 @@ permalink: /facilities/
     <p>The coral nursery houses hundreds of colonies from corals of opportunity, natural recruitment, and past permitted collections. These colonies are available for use in your research and can be referenced in our photogrammetry time-series going back as far as 2019 for some colonies.</p>
   </div>
   <div class="feature-image">
-    <img src="/assets/images/nursery-colonies.jpg" alt="Nursery coral colonies">
+    <img src="/assets/images/nursery-colonies.png" alt="Nursery coral colonies">
   </div>
 </div>
 
@@ -79,7 +79,7 @@ permalink: /facilities/
     <p>If you are interested in sampling wild coral colonies from the surrounding reefs of Kāne'ohe Bay, we are happy to help you navigate everything from permitting with the state, HIMB boat usage, down to the physical collections in the field. Leverage our familiarity with our home reef to your advantage.</p>
   </div>
   <div class="feature-image">
-    <img src="/images/field-collections.jpg" alt="Kāne'ohe Bay field collections">
+    <img src="/images/field-collections.JPG" alt="Kāne'ohe Bay field collections">
   </div>
 </div>
 
@@ -112,7 +112,7 @@ permalink: /facilities/
     <p>3D models built with Structure from Motion photogrammetry allow you to measure surface area, benthic cover, volume and more with sub-millimeter accuracy. We offer equipment for use or a full SfM service with data delivered.</p>
   </div>
   <div class="feature-image">
-    <img src="/assets/images/sfm.jpg" alt="Structure from Motion photogrammetry">
+    <img src="/assets/images/cgm-model.png" alt="Structure from Motion photogrammetry">
   </div>
 </div>
 
