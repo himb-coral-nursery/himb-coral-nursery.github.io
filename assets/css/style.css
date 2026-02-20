@@ -278,6 +278,10 @@ h1, h2, h3, .logo {
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
+.no-shadow img {
+  box-shadow: none;
+}
+
 /* Alternate layout - image on left */
 .feature-section.reverse {
   grid-template-columns: 1fr 1fr;
