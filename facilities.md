@@ -160,7 +160,7 @@ permalink: /facilities/
 </div>
 
 <!-- LIVE BUOY DATA -->
-<div class="nursery-live-data" style="margin: 2rem 0; padding: 25px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; text-align: center;">
+<div class="nursery-live-data" style="margin: 2rem auto; padding: 25px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; text-align: center; max-width: 500px;">
   <h3 style="color: #2da6b0; font-family: 'Nursery-Heading', sans-serif; margin-bottom: 5px;">
     <span class="live-pulse"></span> Live Nursery Temperature
   </h3>
