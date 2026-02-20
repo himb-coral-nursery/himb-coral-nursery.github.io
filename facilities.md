@@ -111,7 +111,7 @@ permalink: /facilities/
     <h2>SfM photogrammetry</h2>
     <p>3D models built with Structure from Motion photogrammetry allow you to measure surface area, benthic cover, volume and more with sub-millimeter accuracy. We offer equipment for use or a full SfM service with data delivered.</p>
   </div>
-  <div class="feature-image">
+  <div class="feature-image no-shadow">
     <img src="/assets/images/cgm-model.png" alt="Structure from Motion photogrammetry">
   </div>
 </div>
