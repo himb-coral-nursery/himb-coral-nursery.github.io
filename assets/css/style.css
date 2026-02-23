@@ -475,6 +475,12 @@ h1, h2, h3, .logo {
   visibility: hidden;
 }
 
+/* Curved Section Tops */
+.section-rounded {
+  border-radius: 40px 40px 0 0;
+  margin-top: -40px;
+}
+
 /* ==========================================================================
    5. ANIMATIONS & EFFECTS
    ========================================================================== */
