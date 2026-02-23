@@ -59,7 +59,7 @@ permalink: /facilities/
 </div>
 
 <!-- SECTION 2: THE CORALS -->
-<div class="section-corals" markdown="1">
+<div class="section-corals section-rounded" markdown="1">
 <a id="the-corals"></a>
 <h1 class="page-title">The Corals</h1>
 
@@ -102,7 +102,7 @@ permalink: /facilities/
 </div>
 
 <!-- SECTION 3: EQUIPMENT -->
-<div class="section-equipment" markdown="1">
+<div class="section-equipment section-rounded" markdown="1">
 <a id="equipment"></a>
 <h1 class="page-title" style="color: #10616A;">Equipment</h1>
   
@@ -170,7 +170,7 @@ permalink: /facilities/
 </div>
 
 <!-- SECTION 4: PRICING -->
-<div class="section-pricing" markdown="1">
+<div class="section-pricing section-rounded" markdown="1">
 <a id="services"></a>
 <h1 class="page-title">Packages & Pricing</h1>
 
