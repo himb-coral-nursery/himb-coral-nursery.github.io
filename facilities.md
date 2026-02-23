@@ -159,29 +159,15 @@ permalink: /facilities/
   </div>
 </div>
 
-<!-- LIVE BUOY DATA -->
+<!-- SPOTTER BUOY LINK -->
 <div class="nursery-live-data" style="margin: 2rem auto; padding: 25px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; text-align: center; max-width: 500px;">
-  <h3 style="color: #2da6b0; font-family: 'Nursery-Heading', sans-serif; margin-bottom: 5px;">
-    <span class="live-pulse"></span> Live Nursery Temperature
-  </h3>
-  <div id="sofar-temp" style="font-size: 3.5rem; font-weight: bold; color: #333; margin: 10px 0;">--°C</div>
-  <p id="sofar-time" style="font-size: 0.8rem; color: #999; text-transform: uppercase;">Connecting to SPOT-1025...</p>
+  <img src="/assets/images/spotterbuoy.jpeg" alt="Sofar Ocean Spotter Buoy" style="width: 200px; border-radius: 8px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;">
+  <h3 style="color: #10616A; font-family: 'Nursery-Heading', sans-serif; margin-bottom: 10px;">Nursery Temperature Data</h3>
+  <a href="https://spotters.sofarocean.com/historical/SPOT-1025?spotter-filter=SPOT-1025" target="_blank" style="display: inline-block; background: #10616A; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-family: 'Nursery-Body', sans-serif; font-size: 1rem;">
+    🌊 View Live Buoy Data →
+  </a>
+  <p style="margin-top: 10px; font-size: 0.8rem; color: #999;">Powered by Sofar Ocean · SPOT-1025</p>
 </div>
-
-<style>
-.live-pulse {
-  height: 10px; width: 10px; background: #ff4b4b; border-radius: 50%; display: inline-block; margin-right: 8px;
-  animation: pulse-red 2s infinite;
-}
-@keyframes pulse-red {
-  0% { transform: scale(0.95); opacity: 0.7; }
-  50% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.7; }
-}
-</style>
-
-</div>
-
 
 <!-- SECTION 4: PRICING -->
 <div class="section-pricing" markdown="1">
