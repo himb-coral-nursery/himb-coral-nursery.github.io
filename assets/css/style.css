@@ -378,6 +378,10 @@ h1, h2, h3, .logo {
   color: #10616A !important;
 }
 
+.section-equipment a.btn {
+  color: #fff !important;
+}
+
 .section-equipment a:hover {
   color: #00446F !important;
 }
