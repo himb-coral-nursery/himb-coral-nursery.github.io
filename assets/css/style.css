@@ -391,8 +391,8 @@ h1, h2, h3, .logo {
   position: relative;
   left: 50%;
   right: 50%;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
 
 .section-pricing h2 {
@@ -416,6 +416,9 @@ h1, h2, h3, .logo {
 .section-pricing table {
   color: #fff;
   border-color: #C2E5DF;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
 .section-pricing th,
@@ -571,24 +574,30 @@ h1, h2, h3, .logo {
   padding-top: 60px !important;
   }
   
-  /* Mobile header - transparent with no logo */
-  .main-header {
-    background: transparent !important;
-    box-shadow: none !important;
-  }
-  
-  /* Show white logo by default on mobile */
-  .logo {
+  /* Mobile header - teal on all pages */
+.main-header {
+  background: #10616A !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+}
+
+/* Homepage overrides back to transparent */
+.homepage .main-header {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* White logo on all mobile pages */
+.logo {
   color: #ffffff !important;
   display: block !important;
   margin-right: auto !important;
   margin-left: 0 !important;
-  }
+}
 
-  /* Hide white logo on homepage only */
-  .homepage .logo {
+/* Hide logo on homepage only */
+.homepage .logo {
   display: none !important;
-  }
+}
   
   .nav-container {
     justify-content: flex-end;
