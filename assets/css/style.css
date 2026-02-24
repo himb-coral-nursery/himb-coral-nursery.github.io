@@ -327,13 +327,12 @@ h1, h2, h3, .logo {
 }
 
 .about-body a {
-  color: #C2E5DF;
-  font-weight: bold;
-  text-decoration: none;
+  color: #9AA731;
+  text-decoration: underline;
 }
 
 .about-body a:hover {
-  color: #45BBE6;
+  color: #EBD5AF;
   text-decoration: underline;
 }
 
