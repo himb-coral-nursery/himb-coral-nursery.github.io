@@ -291,6 +291,58 @@ h1, h2, h3, .logo {
   order: -1;
 }
 
+/* About Section (Homepage) */
+.about-section {
+  background: #10616A;
+  width: 100%;
+  padding: 80px 0;
+}
+
+.about-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.about-body h2 {
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 2.2rem;
+  color: #fff;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #fff;
+}
+
+.about-body p, .about-body li {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.about-body ol, .about-body ul {
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
+
+.about-body a {
+  color: #C2E5DF;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.about-body a:hover {
+  color: #45BBE6;
+  text-decoration: underline;
+}
+
+.about-body strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+
 /* ==========================================================================
    COLORED SECTIONS
    ========================================================================== */
