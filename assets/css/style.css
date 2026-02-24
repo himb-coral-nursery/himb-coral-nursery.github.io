@@ -138,6 +138,31 @@ h1, h2, h3, .logo {
   color: #45BBE6 !important;
 }
 
+/* Scroll Indicator */
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: all;
+  animation: bounce 2s infinite;
+}
+
+.scroll-indicator a {
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+.scroll-indicator a:hover {
+  opacity: 1;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+
 /* ==========================================================================
    3. HERO & VIDEO BACKGROUND
    ========================================================================== */
