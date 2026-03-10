@@ -121,8 +121,8 @@ permalink: /facilities/
     <h2>PAM fluorometry</h2>
     <p>Our Waltz mini-PAM fluorometer can assess photosynthetic activity, a common proxy for coral and symbiont health. We are happy to share our equipment, help you use it, and also process the data you receive.</p>
   </div>
-  <div class="feature-image">
-    <img src="/assets/images/pam.jpg" alt="PAM fluorometry equipment">
+  <div class="feature-image no-shadow">
+    <img src="/assets/images/minipam.png" alt="Walz Mini-Pam fluorometer">
   </div>
 </div>
 
