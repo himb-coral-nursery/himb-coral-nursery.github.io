@@ -174,8 +174,6 @@ permalink: /facilities/
 <a id="services"></a>
 <h1 class="page-title">Services</h1>
 
-<div class="full-width-section" markdown="1">
-
 <p>We offer a range of research support services at the HIMB Coral Nursery. 
   We can supply nursery rack space or tanks for you to conduct your own research. 
   If you require more assistance or won't be in Hawai'i for the duration of your experiment we have staff members to help you meet your goals. <a href="/contact/" style="color: #C2E5DF;">Reach out</a> to discuss collaborations in further detail.</p>
