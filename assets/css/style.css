@@ -16,6 +16,46 @@ h1, h2, h3, .logo {
   color: #fff; /* White */
 }
 
+/* Table styling - site-wide */
+table {
+  width: 100%;
+  max-width: 700px;
+  margin: 30px auto;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+th {
+  background: rgba(255, 255, 255, 0.1);
+  color: #45BBE6;
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 1.1rem;
+  padding: 15px 20px;
+  text-align: left;
+  border-bottom: 2px solid #45BBE6;
+}
+
+td {
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Center align columns that are numeric/categorical */
+th:not(:first-child),
+td:not(:first-child) {
+  text-align: center;
+}
+
+/* Style italic text (like species names) */
+table em {
+  color: #45BBE6;
+  font-style: italic;
+}
 /* ==========================================================================
    2. NAVIGATION & HEADER
    ========================================================================== */
@@ -366,46 +406,6 @@ h1, h2, h3, .logo {
   font-weight: 600;
 }
 
-/* Table styling - site-wide */
-table {
-  width: 100%;
-  max-width: 700px;
-  margin: 30px auto;
-  border-collapse: collapse;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-th {
-  background: rgba(255, 255, 255, 0.1);
-  color: #45BBE6;
-  font-family: 'Nursery-Heading', sans-serif;
-  font-size: 1.1rem;
-  padding: 15px 20px;
-  text-align: left;
-  border-bottom: 2px solid #45BBE6;
-}
-
-td {
-  padding: 12px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
-tr:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-/* Center align columns that are numeric/categorical */
-th:not(:first-child),
-td:not(:first-child) {
-  text-align: center;
-}
-
-/* Style italic text (like species names) */
-table em {
-  color: #45BBE6;
-  font-style: italic;
-}
 /* ==========================================================================
    COLORED SECTIONS
    ========================================================================== */
