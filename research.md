@@ -1,4 +1,4 @@
-<img width="521" height="84" alt="image" src="https://github.com/user-attachments/assets/3ef6aeae-f344-4252-bc5e-00a98c512928" />---
+---
 layout: page
 title: Research & Experiments
 permalink: /research/
