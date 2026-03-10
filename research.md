@@ -6,7 +6,7 @@ permalink: /research/
 
 The HIMB Coral Nursery is an active in-situ laboratory. Below are some of our past collaborations.
 
-### Coral Growth Modules (CGMs)
+## Coral Growth Modules (CGMs)
 <a id="cgms"></a>
 As a part of the Rapid Resilient Reefs for Coastal Defense project (R3D) we grew coral fragments from 4 different coral morphologies on 4 differently shaped concrete base modules designed to change the angle at which coral fragments are outplanted. This allowed us to investigate how the angle of incident light impacts the larger colony morphology as fragments fuse and grow. The results of this experiment influenced the design and inclusion of a full-size, shelf-shaped CGM on the final large-scale wave nature-based breakwater.
 
