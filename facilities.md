@@ -83,7 +83,7 @@ permalink: /facilities/
   </div>
 </div>
 
-<div class="full-width-section">
+<div class="full-width-section" markdown="1">
 
 ### Species Availability
 
@@ -160,7 +160,7 @@ permalink: /facilities/
 </div>
 
 <!-- SPOTTER BUOY LINK -->
-<div class="nursery-live-data" style="margin: 2rem auto; padding: 25px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; text-align: center; max-width: 500px;">
+<div class="nursery-live-data" style="margin: -20px auto 2rem auto; padding: 25px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; text-align: center; max-width: 500px;">
   <img src="/assets/images/spotterbuoy.jpeg" alt="Sofar Ocean Spotter Buoy" style="width: 200px; border-radius: 8px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;">
   <h3 style="color: #10616A; font-family: 'Nursery-Heading', sans-serif; margin-bottom: 10px;">Nursery Temperature Data</h3>
   <a href="https://spotters.sofarocean.com/historical/SPOT-1025?spotter-filter=SPOT-1025" target="_blank" class="btn" style="display: inline-block; background: #10616A; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-family: 'Nursery-Body', sans-serif; font-size: 1rem;">
