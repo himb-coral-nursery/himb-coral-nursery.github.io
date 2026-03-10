@@ -76,7 +76,7 @@ permalink: /facilities/
 <div class="feature-section reverse">
   <div class="feature-text">
     <h2>Field Collections</h2>
-    <p>If you are interested in sampling wild coral colonies from the surrounding reefs of Kāne'ohe Bay, we are happy to help you navigate everything from permitting with the state, HIMB boat usage, down to the physical collections in the field. Leverage our familiarity with our home reef to your advantage.</p>
+    <p>If you are interested in sampling wild coral colonies from the surrounding reefs of Kāne'ohe Bay, we are happy to help you navigate everything from permitting with the state, HIMB boat usage, down to the physical collections in the field. Use our familiarity with our home reef to your advantage.</p>
   </div>
   <div class="feature-image">
     <img src="/assets/images/field-collections.JPG" alt="Kāne'ohe Bay field collections">
@@ -85,16 +85,16 @@ permalink: /facilities/
 
 <div class="full-width-section" markdown="1">
 
-### Species Availability
+<h3 style="text-align: center;">Species Abundance by Location</h3>
 
-| Coral species | Nursery abundance | Field abundance |
+| Coral Species | HIMB Coral Nursery | Kāne'ohe Bay |
 | :--- | :---: | :---: |
 | *Montipora capitata* | High | High |
-| *Porites compressa* | Medium, low | High |
+| *Porites compressa* | Low - Medium | High |
 | *Pocillopora acuta* | High | Medium |
 | *Porites evermanni* | Low | Medium |
 | *Porites lobata* | Low | Medium |
-| *Pavona varians* | Medium, low | Medium |
+| *Pavona varians* | Low-Medium | Medium |
 | *Pocillopora meandrina* | None | Low |
 
 </div>
@@ -174,6 +174,10 @@ permalink: /facilities/
 <a id="services"></a>
 <h1 class="page-title">Services</h1>
 
-<p>We offer a range of research support services at the HIMB Coral Nursery. We can supply nursery or tank space for you to conduct your own research. If you require more assistance or won't be in Hawai'i for the duration of your experiment we have staff members to help you meet your goals. <a href="/contact/" style="color: #C2E5DF;">Reach out</a> to discuss collaborations in further detail.</p>
+<div class="full-width-section" markdown="1">
+
+<p>We offer a range of research support services at the HIMB Coral Nursery. 
+  We can supply nursery rack space or tanks for you to conduct your own research. 
+  If you require more assistance or won't be in Hawai'i for the duration of your experiment we have staff members to help you meet your goals. <a href="/contact/" style="color: #C2E5DF;">Reach out</a> to discuss collaborations in further detail.</p>
 
 </div>
