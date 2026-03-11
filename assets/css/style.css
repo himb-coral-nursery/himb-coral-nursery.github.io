@@ -788,11 +788,13 @@ table em {
   position: relative;
   width: 100%;
   overflow: hidden;
+  user-select: none;
 }
 
 .slider-image-bottom,
 .slider-image-top {
   width: 100%;
+  height: auto;
   display: block;
 }
 
@@ -803,17 +805,72 @@ table em {
   width: 100%;
   height: 100%;
   clip-path: inset(0 50% 0 0);
-  transition: clip-path 0.1s;
+  pointer-events: none;
 }
 
-.slider-handle {
+.slider-button-container {
   position: absolute;
-  bottom: 20px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.slider-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.slider-button {
+  position: absolute;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 80%;
-  cursor: pointer;
-  z-index: 10;
+  width: 50px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.slider-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 100%;
+  background: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.slider-line::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.slider-line::after {
+  content: '◀  ▶';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #333;
+  font-size: 12px;
+  letter-spacing: 2px;
 }
 
 .slider-caption {
@@ -821,9 +878,8 @@ table em {
   margin-top: 15px;
   font-size: 0.9rem;
   font-style: italic;
-  color: #EBD5AF; /* Tan color for Deep Ocean section */
+  color: #EBD5AF;
 }
-
 
 /* Curved Section Tops */
 .section-rounded {
