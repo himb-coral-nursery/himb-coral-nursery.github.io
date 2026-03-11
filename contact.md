@@ -6,15 +6,7 @@ permalink: /contact/
 
 ## Get in Touch
 <a id="get-in-touch"></a>
-Interested in collaborating, scheduling a tour, or requesting coral stock? Please fill out the form below or reach out to us directly.
-
-**Email:** [sucho@hawaii.edu](mailto:sucho@hawaii.edu)  
-**Location:** Hawaiʻi Institute of Marine Biology, Moku o Loʻe (Coconut Island)
-
----
-
-## Contact Form
-<a id="contact-form"></a>
+Interested in collaborating, scheduling a tour, or requesting coral stock? Please fill out the form below.
 
 <form action="https://formspree.io/f/YOUR_FORMSPREE_ID_HERE" method="POST">
   <label>
