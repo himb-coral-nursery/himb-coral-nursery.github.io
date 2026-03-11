@@ -61,7 +61,7 @@ table em {
    ========================================================================== */
 .main-header {
   position: fixed;
-  top: 0; width: 100%;
+  top: 0; width: 100vw;
   padding: 20px 0;
   background: white; 
   z-index: 10000;
