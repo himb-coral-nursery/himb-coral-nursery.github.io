@@ -12,9 +12,7 @@ permalink: /research/
 
 <div class="full-width-section" markdown="1">
 
-### Current Projects
-
-* **[UZELA](https://www.researchgate.net/publication/388756450_Underwater_Zooplankton_Enhancement_Light_Array_UZELA_A_technology_solution_to_enhance_zooplankton_abundance_and_coral_feeding_in_bleached_and_non-bleached_corals):** The Underwater Zooplankton Enhancement Light Array - lead by [Dr. Andrea Grottoli (The Ohio State University)](https://earthsciences.osu.edu/people/grottoli.1)
+* **[UZELA: The Underwater Zooplankton Enhancement Light Array](https://www.researchgate.net/publication/388756450_Underwater_Zooplankton_Enhancement_Light_Array_UZELA_A_technology_solution_to_enhance_zooplankton_abundance_and_coral_feeding_in_bleached_and_non-bleached_corals)** - lead by [Dr. Andrea Grottoli (The Ohio State University)](https://earthsciences.osu.edu/people/grottoli.1)
 
 * **[Rapid Resilient Reefs for Coastal Defense (R3D)](https://arl.hawaii.edu/core-competencies/ocean-science/rapid-resilient-reefs-for-coastal-defense-r3d/)** - Applied Research Lab, Madin Lab, Coral Resilience Lab, Huang Lab (UH Manoa), Wangpraseurt Lab & Thode Lab (UCSD), Voss Lab (FAU)
 
@@ -50,7 +48,7 @@ permalink: /research/
 
 <div class="full-width-section" markdown="1">
 
-[Add your monitoring content here]
+The nursery is photographed bimonthly to generate current 3D models and orthomosaics of each rack. This allows us to track corals throughout the nursery, measure growth rates, and identify bleaching or disease events. When combined with environmental data, researchers can design experiments using corals with known stress response histories. 
 
 </div>
 
