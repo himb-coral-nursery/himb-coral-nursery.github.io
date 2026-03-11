@@ -6,7 +6,7 @@ permalink: /contact/
 
 ## Get in Touch
 <a id="get-in-touch"></a>
-Interested in collaborating, scheduling a tour, or requesting coral stock? Please fill out the form below.
+Interested in conducting your research at the HIMB Coral Nursery, scheduling a tour, or requesting coral for restoration? Please fill out the form below and we will be in contact.
 
 <form action="https://formspree.io/f/YOUR_FORMSPREE_ID_HERE" method="POST">
   <label>
@@ -25,7 +25,7 @@ Interested in collaborating, scheduling a tour, or requesting coral stock? Pleas
       <option value="General Inquiry">General Inquiry</option>
       <option value="Research Collaboration">Research Collaboration</option>
       <option value="Tour Request">Tour Request</option>
-      <option value="Coral Stock Request">Coral Stock Request</option>
+      <option value="Coral Stock Request">Coral Request</option>
     </select>
   </label>
   
