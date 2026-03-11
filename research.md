@@ -30,7 +30,7 @@ permalink: /research/
 <div class="full-width-section" markdown="1">
 
 * Madeleine Hardt: [Project Title](#)
-* Hugo Ducret: [Project Title](#)
+* Hugo Ducret: [Shading Implications for *Montipora capitata*](https://www.researchgate.net/publication/385865085_Shading_does_not_lower_thermal_tolerance_in_the_coral_Montipora_capitata_implications_for_conservation_intervention)
 * Tristan Permentier: [Project Title](#)
 * Garrett Fundakowski: [Project Title](#)
 * Jasmine Awaya: [Project Title](#)
