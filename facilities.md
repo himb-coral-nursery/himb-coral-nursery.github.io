@@ -149,9 +149,9 @@ permalink: /facilities/
     <p>With 110V electricity, water tables, and workbench space right at the coral nursery we can accommodate whatever equipment you might want to bring.</p>
     <h3>Additional Resources</h3>
     <ul>
-      <li><strong>HIMB Resources:</strong> <a href="http://www.himb.hawaii.edu/">Boats, Housing, LN2, etc.</a></li>
-      <li><strong>ToBo Lab:</strong> <a href="http://tobolab.org/">Core Lab, wet lab resources</a></li>
-      <li><strong>UH Manoa:</strong> <a href="https://manoa.hawaii.edu/">University resources for use/rent</a></li>
+      <li><strong>HIMB:</strong> <a href="http://www.himb.hawaii.edu/">Boats, Housing, SCUBA, etc.</a></li>
+      <li><strong>ToBo Lab:</strong> <a href="http://tobolab.org/">Genetics Core Lab, Wet Lab Resources</a></li>
+      <li><strong>UH Manoa:</strong> <a href="https://manoa.hawaii.edu/">University Resources for Use/Rent</a></li>
     </ul>
   </div>
   <div class="feature-image">
