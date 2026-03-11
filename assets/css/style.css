@@ -1075,3 +1075,25 @@ table em {
   font-size: 2rem !important;
 }
 }
+@media (max-width: 767px) {
+  
+  /* ... existing mobile styles ... */
+  
+  /* Fix long page titles on mobile */
+  .page-title {
+    font-size: 3rem !important;
+    line-height: 1.1 !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  /* Give more width to content on mobile */
+  .full-width-section {
+    padding: 0 20px !important;
+  }
+  
+  .page-body {
+    padding: 40px 20px !important;
+  }
+}
