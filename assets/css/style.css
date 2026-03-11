@@ -677,6 +677,106 @@ table em {
   visibility: hidden;
 }
 
+/* ==========================================================================
+   RESEARCH PAGE SECTIONS
+   ========================================================================== */
+
+/* Section 1: Collaborations - Patch Reef */
+.section-collaborations {
+  background: #10616A; /* Patch Reef */
+  padding: 80px 0;
+  margin: 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.section-collaborations h2,
+.section-collaborations h3 {
+  color: #fff;
+}
+
+.section-collaborations > * {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+/* Section 2: Student Projects - Deep Ocean */
+.section-students {
+  background: #00446F; /* Deep Ocean */
+  padding: 80px 0;
+  margin: 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.section-students h2,
+.section-students h3 {
+  color: #EBD5AF; /* Shoreline/Tan */
+}
+
+.section-students > * {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.section-students a {
+  color: #EBD5AF !important;
+}
+
+.section-students a:hover {
+  color: #C2E5DF !important;
+}
+
+/* Section 3: Monitoring - Sandbar */
+.section-monitoring {
+  background: #C2E5DF; /* Sandbar */
+  padding: 80px 0 100vh 0; /* Extend to bottom */
+  margin: 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.section-monitoring h2,
+.section-monitoring h3,
+.section-monitoring p,
+.section-monitoring li {
+  color: #333 !important;
+}
+
+.section-monitoring > * {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.section-monitoring a {
+  color: #10616A !important;
+}
+
+.section-monitoring a:hover {
+  color: #00446F !important;
+}
+
 /* Curved Section Tops */
 .section-rounded {
   border-radius: 40px 40px 0 0;
