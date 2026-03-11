@@ -531,6 +531,10 @@ table em {
   padding-right: 40px;
 }
 
+.section-pricing p {
+  text-align: center;
+}
+
 /* Tables in pricing section */
 .section-pricing table {
   color: #fff;
