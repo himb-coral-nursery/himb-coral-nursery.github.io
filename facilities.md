@@ -59,7 +59,7 @@ permalink: /facilities/
 </div>
 
 <!-- SECTION 2: THE CORALS -->
-<div class="section-corals section-rounded" markdown="1">
+<div class="section-corals" markdown="1">
 <a id="the-corals"></a>
 <h1 class="page-title">The Corals</h1>
 
@@ -102,7 +102,7 @@ permalink: /facilities/
 </div>
 
 <!-- SECTION 3: EQUIPMENT -->
-<div class="section-equipment section-rounded" markdown="1">
+<div class="section-equipment" markdown="1">
 <a id="equipment"></a>
 <h1 class="page-title" style="color: #10616A;">Equipment</h1>
   
@@ -157,25 +157,31 @@ permalink: /facilities/
   <div class="feature-image">
     <img src="/assets/images/field-lab.jpg" alt="Field lab at coral nursery">
   </div>
-  <!-- SPOTTER BUOY LINK -->
-<div class="nursery-live-data" style="margin: -20px auto 2rem auto; padding: 25px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; text-align: center; max-width: 500px;">
-  <img src="/assets/images/spotterbuoy.jpeg" alt="Sofar Ocean Spotter Buoy" style="width: 200px; border-radius: 8px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;">
-  <h3 style="color: #10616A; font-family: 'Nursery-Heading', sans-serif; margin-bottom: 10px;">Nursery Temperature Data</h3>
-  <a href="https://spotters.sofarocean.com/historical/SPOT-1025?spotter-filter=SPOT-1025" target="_blank" class="btn" style="display: inline-block; background: #10616A; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-family: 'Nursery-Body', sans-serif; font-size: 1rem;">
-    View Live Buoy Data →
-  </a>
-  <p style="margin-top: 10px; font-size: 0.8rem; color: #999;">Powered by Sofar Ocean · SPOT-1025</p>
-</div>
 </div>
 
+<!-- SPOTTER BUOY LINK - CENTERED -->
+<div class="full-width-section">
+  <div class="nursery-live-data" style="margin: 40px auto; padding: 25px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; text-align: center; max-width: 500px;">
+    <img src="/assets/images/spotterbuoy.jpeg" alt="Sofar Ocean Spotter Buoy" style="width: 200px; border-radius: 8px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;">
+    <h3 style="color: #10616A; font-family: 'Nursery-Heading', sans-serif; margin-bottom: 10px;">Nursery Temperature Data</h3>
+    <a href="https://spotters.sofarocean.com/historical/SPOT-1025?spotter-filter=SPOT-1025" target="_blank" class="btn" style="display: inline-block; background: #10616A; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-family: 'Nursery-Body', sans-serif; font-size: 1rem;">
+      View Live Buoy Data →
+    </a>
+    <p style="margin-top: 10px; font-size: 0.8rem; color: #999;">Powered by Sofar Ocean · SPOT-1025</p>
+  </div>
+</div>
+
+</div>
 
 <!-- SECTION 4: SERVICES -->
-<div class="section-pricing section-rounded" markdown="1">
+<div class="section-pricing" markdown="1">
 <a id="services"></a>
 <h1 class="page-title">Services</h1>
 
-<p>We offer a range of research support services at the HIMB Coral Nursery. 
-  We can supply nursery rack space or tanks for you to conduct your own research. 
-  If you require more assistance or won't be in Hawai'i for the duration of your experiment we have staff members to help you meet your goals. <a href="/contact/" style="color: #C2E5DF;">Reach out</a> to discuss collaborations in further detail.</p>
+<div class="full-width-section" markdown="1">
+
+<p style="text-align: center;">We offer a range of research support services at the HIMB Coral Nursery. We can supply nursery rack space or tanks for you to conduct your own research. If you require more assistance or won't be in Hawai'i for the duration of your experiment we have staff members to help you meet your goals. <a href="/contact/" style="color: #C2E5DF;">Reach out</a> to discuss collaborations in further detail.</p>
+
+</div>
 
 </div>
