@@ -5,15 +5,15 @@
 
 body { 
   font-family: 'Nursery-Body', sans-serif; 
-  background: transparent;
+  background: #10616A; /* Patch Reef background */
   overflow-x: hidden; 
   line-height: 1.6;
-  color: #fff; /* White text */
+  color: #fff;
 }
 
 h1, h2, h3, .logo { 
   font-family: 'Nursery-Heading', sans-serif; 
-  color: #fff; /* White */
+  color: #fff;
 }
 
 /* Table styling - site-wide */
@@ -45,17 +45,16 @@ tr:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* Center align columns that are numeric/categorical */
 th:not(:first-child),
 td:not(:first-child) {
   text-align: center;
 }
 
-/* Style italic text (like species names) */
 table em {
   color: #45BBE6;
   font-style: italic;
 }
+
 /* ==========================================================================
    2. NAVIGATION & HEADER
    ========================================================================== */
@@ -79,7 +78,7 @@ table em {
 .logo { 
   font-weight: bold; 
   text-decoration: none; 
-  color: #10616A; /* Patch Reef */
+  color: #10616A;
   letter-spacing: 1px; 
   font-size: 1.2rem; 
   z-index: 10001;
@@ -93,16 +92,16 @@ table em {
 
 .nav-links a { 
   text-decoration: none; 
-  color: #10616A; /* Patch Reef */
+  color: #10616A;
   font-weight: 500; 
   transition: 0.3s; 
 }
 
 .nav-links a:hover { 
-  color: #45BBE6; /* Hawai'i Sky */
+  color: #45BBE6;
 }
 
-/* Hamburger Menu - Hidden on Desktop */
+/* Hamburger Menu */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -117,13 +116,12 @@ table em {
 .hamburger span {
   width: 25px;
   height: 3px;
-  background: #10616A; /* Patch Reef */
+  background: #10616A;
   margin: 3px 0;
   transition: 0.3s;
   border-radius: 3px;
 }
 
-/* Hamburger animation when active */
 .hamburger.active span:nth-child(1) {
   transform: rotate(45deg) translate(7px, 7px);
 }
@@ -150,7 +148,7 @@ table em {
   min-width: 200px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   list-style: none;
-  padding: 15px 0 10px 0;  /* ← top padding creates visual gap without dead zone */
+  padding: 15px 0 10px 0;
   border-radius: 4px;
   z-index: 10001;
   flex-direction: column;
@@ -179,7 +177,6 @@ table em {
 }
 
 /* Scroll Indicator */
-
 .scroll-indicator {
   position: absolute;
   bottom: 40px;
@@ -229,7 +226,6 @@ table em {
   object-fit: cover;
 }
 
-/* Hero Text Overlay */
 .hero-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -266,11 +262,13 @@ table em {
   margin-top: -10px;
   text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
 }
+
 /* ==========================================================================
    4. PAGE CONTENT (Interior Pages)
    ========================================================================== */
 .page-content {
   min-height: 100vh;
+  background: none;
 }
 
 .page-header {
@@ -301,6 +299,7 @@ table em {
   max-width: 900px;
   margin: 0 auto;
   padding: 60px 40px;
+  background: none;
 }
 
 .page-body h2 {
@@ -347,7 +346,6 @@ table em {
   box-shadow: none;
 }
 
-/* Alternate layout - image on left */
 .feature-section.reverse {
   grid-template-columns: 1fr 1fr;
 }
@@ -391,9 +389,11 @@ table em {
   margin-bottom: 20px;
 }
 
+/* ABOUT SECTION LINK COLORS - Sandbar with Shoreline hover */
 .about-body a {
-  color: #9AA731;
-  text-decoration: underline;
+  color: #C2E5DF;
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .about-body a:hover {
@@ -407,19 +407,35 @@ table em {
 }
 
 /* ==========================================================================
-   COLORED SECTIONS
+   FACILITIES PAGE - COLORED SECTIONS
    ========================================================================== */
 
-/* Section 1: The Nursery - Patch Reef (default, no extra styling needed) */
+/* Section 1: The Nursery - Patch Reef */
 .section-nursery {
-  padding: 0;
+  background: #10616A;
+  padding: 80px 0;
+  margin: 0 !important;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.section-nursery > * {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 /* Section 2: The Corals - Deep Ocean */
 .section-corals {
   background: #00446F;
   padding: 80px 0;
-  margin: 80px 0 0 0;
+  margin: 0 !important;
   width: 100vw;
   position: relative;
   left: 50%;
@@ -445,17 +461,21 @@ table em {
   padding-right: 40px;
 }
 
-.full-width-section {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 0 40px;
+/* DEEP OCEAN LINK COLORS - Sandbar with Hawaii Sky hover */
+.section-corals a {
+  color: #C2E5DF !important;
 }
 
-/* Section 3: Equipment - Sandbar (light, needs dark text) */
+.section-corals a:hover {
+  color: #45BBE6 !important;
+  text-decoration: underline;
+}
+
+/* Section 3: Equipment - Sandbar */
 .section-equipment {
   background: #C2E5DF;
-  padding: 80px 0 100px 0;
-  margin: 0;
+  padding: 80px 0;
+  margin: 0 !important;
   width: 100vw;
   position: relative;
   left: 50%;
@@ -489,35 +509,32 @@ table em {
   padding-right: 40px;
 }
 
+/* SANDBAR LINK COLORS - Kalo with Deep Ocean hover */
 .section-equipment a {
-  color: #10616A !important;
+  color: #9AA731 !important;
+}
+
+.section-equipment a:hover {
+  color: #00446F !important;
+  text-decoration: underline;
 }
 
 .section-equipment a.btn {
   color: #fff !important;
 }
 
-.section-equipment a:hover {
-  color: #00446F !important;
-}
-
-/* Give buoy box more space */
-.nursery-live-data {
-  margin: 40px auto 60px auto !important;
-}
-
-/* Section 4: Pricing - Heritage Trees */
+/* Section 4: Services/Pricing - Heritage Trees */
 .section-pricing {
   background: #4B682F;
-  padding: 80px 0 0 0;
-  margin: 0;
+  padding: 80px 0;
+  margin: 0 !important;
   width: 100vw;
   position: relative;
   left: 50%;
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  padding-bottom: 100vh;
+  min-height: 100vh;
 }
 
 .section-pricing h2 {
@@ -537,14 +554,16 @@ table em {
   padding-right: 40px;
 }
 
-.section-pricing p {
-  text-align: center;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px;
+/* HERITAGE TREES LINK COLORS - Hawaii Sky with white hover */
+.section-pricing a {
+  color: #45BBE6 !important;
 }
 
-/* Tables in pricing section */
+.section-pricing a:hover {
+  color: #ffffff !important;
+  text-decoration: underline;
+}
+
 .section-pricing table {
   color: #fff;
   border-color: #C2E5DF;
@@ -556,6 +575,160 @@ table em {
 .section-pricing th,
 .section-pricing td {
   border-color: rgba(194, 229, 223, 0.3);
+}
+
+/* ==========================================================================
+   RESEARCH PAGE - COLORED SECTIONS
+   ========================================================================== */
+
+/* Section 1: Collaborations - Patch Reef */
+.section-collaborations {
+  background: #10616A;
+  padding: 40px 0 80px 0;
+  margin: 0 !important;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.section-collaborations > * {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+/* Collabs: center text, remove bullets */
+.collab-list {
+  text-align: center;
+  list-style: none;
+}
+
+.collab-list ul {
+  list-style: none;
+  margin-left: 0;
+}
+
+.collab-list hr {
+  border: none;
+  border-top: 2px solid rgba(255, 255, 255, 0.3);
+  margin: 40px auto;
+  max-width: 200px;
+}
+
+/* PATCH REEF LINK COLORS - Sandbar with Shoreline hover */
+.section-collaborations a {
+  color: #C2E5DF !important;
+}
+
+.section-collaborations a:hover {
+  color: #EBD5AF !important;
+  text-decoration: underline;
+}
+
+/* Section 2: Student Projects - Deep Ocean */
+.section-students {
+  background: #00446F;
+  padding: 80px 0;
+  margin: 0 !important;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.section-students h2,
+.section-students h3 {
+  color: #EBD5AF;
+}
+
+.section-students > * {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.section-students .full-width-section {
+  text-align: center;
+}
+
+.section-students ul {
+  list-style-position: inside;
+}
+
+/* DEEP OCEAN LINK COLORS - Sandbar with Hawaii Sky hover */
+.section-students a {
+  color: #C2E5DF !important;
+}
+
+.section-students a:hover {
+  color: #45BBE6 !important;
+  text-decoration: underline;
+}
+
+/* Section 3: Monitoring - Sandbar */
+.section-monitoring {
+  background: #C2E5DF;
+  padding: 80px 0;
+  margin: 0 !important;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  min-height: 100vh;
+}
+
+.section-monitoring h2,
+.section-monitoring h3,
+.section-monitoring p,
+.section-monitoring li {
+  color: #333 !important;
+}
+
+.section-monitoring > * {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.section-monitoring .full-width-section {
+  text-align: center;
+}
+
+/* SANDBAR LINK COLORS - Kalo with Deep Ocean hover */
+.section-monitoring a {
+  color: #9AA731 !important;
+}
+
+.section-monitoring a:hover {
+  color: #00446F !important;
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   SHARED UTILITIES
+   ========================================================================== */
+
+.full-width-section {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 40px;
+}
+
+.full-width-section h3 {
+  text-align: center;
 }
 
 .page-body h3 {
@@ -585,29 +758,28 @@ table em {
   color: #fff;
 }
 
-.page-body a {
-  color: #45BBE6;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.page-body a:hover {
-  color: #C2E5DF;
-  text-decoration: underline;
-}
-
 .page-body strong {
   color: #fff;
   font-weight: 600;
 }
-/* Table styling in Deep Ocean section (The Corals) */
+
+.page-body a[id] {
+  display: block;
+  position: relative;
+  top: -100px;
+  visibility: hidden;
+}
+
+/* ==========================================================================
+   TABLE STYLING BY SECTION
+   ========================================================================== */
+
 .section-corals table {
-  background: rgba(235, 213, 175, 0.05); /* Tan tint */
+  background: rgba(235, 213, 175, 0.05);
 }
 
 .section-corals th {
-  color: #EBD5AF; /* Shoreline/Tan */
+  color: #EBD5AF;
   border-bottom-color: #EBD5AF;
   background: rgba(235, 213, 175, 0.1);
 }
@@ -617,20 +789,19 @@ table em {
 }
 
 .section-corals table em {
-  color: #EBD5AF; /* Tan for italic species names */
+  color: #EBD5AF;
 }
 
 .section-corals tr:hover {
   background: rgba(235, 213, 175, 0.08);
 }
 
-/* Table styling in Sandbar section (Equipment) */
 .section-equipment table {
-  background: rgba(16, 97, 106, 0.05); /* Patch Reef tint */
+  background: rgba(16, 97, 106, 0.05);
 }
 
 .section-equipment th {
-  color: #10616A !important; /* Patch Reef */
+  color: #10616A !important;
   border-bottom-color: #10616A;
   background: rgba(16, 97, 106, 0.1);
 }
@@ -640,20 +811,19 @@ table em {
 }
 
 .section-equipment table em {
-  color: #10616A !important; /* Patch Reef for italic */
+  color: #10616A !important;
 }
 
 .section-equipment tr:hover {
   background: rgba(16, 97, 106, 0.08);
 }
 
-/* Table styling in Heritage Trees section (Services/Pricing) */
 .section-pricing table {
-  background: rgba(194, 229, 223, 0.05); /* Sandbar tint */
+  background: rgba(194, 229, 223, 0.05);
 }
 
 .section-pricing th {
-  color: #C2E5DF !important; /* Sandbar */
+  color: #C2E5DF !important;
   border-bottom-color: #C2E5DF;
   background: rgba(194, 229, 223, 0.1);
 }
@@ -663,128 +833,15 @@ table em {
 }
 
 .section-pricing table em {
-  color: #C2E5DF !important; /* Sandbar for italic */
+  color: #C2E5DF !important;
 }
 
 .section-pricing tr:hover {
   background: rgba(194, 229, 223, 0.08);
 }
-/* Section Anchor Links */
-.page-body a[id] {
-  display: block;
-  position: relative;
-  top: -100px;
-  visibility: hidden;
-}
 
 /* ==========================================================================
-   RESEARCH PAGE SECTIONS
-   ========================================================================== */
-
-/* Section 1: Collaborations - Patch Reef */
-.section-collaborations {
-  background: #10616A; /* Patch Reef */
-  padding: 80px 0;
-  margin: 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-.section-collaborations h2,
-.section-collaborations h3 {
-  color: #fff;
-}
-
-.section-collaborations > * {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
-/* Section 2: Student Projects - Deep Ocean */
-.section-students {
-  background: #00446F; /* Deep Ocean */
-  padding: 80px 0;
-  margin: 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-.section-students h2,
-.section-students h3 {
-  color: #EBD5AF; /* Shoreline/Tan */
-}
-
-.section-students > * {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
-.section-students a {
-  color: #EBD5AF !important;
-}
-
-.section-students a:hover {
-  color: #C2E5DF !important;
-}
-
-/* Section 3: Monitoring - Sandbar */
-.section-monitoring {
-  background: #C2E5DF; /* Sandbar */
-  padding: 80px 0 100vh 0; /* Extend to bottom */
-  margin: 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-.section-monitoring h2,
-.section-monitoring h3,
-.section-monitoring p,
-.section-monitoring li {
-  color: #333 !important;
-}
-
-.section-monitoring > * {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
-.section-monitoring a {
-  color: #10616A !important;
-}
-
-.section-monitoring a:hover {
-  color: #00446F !important;
-}
-
-/* Curved Section Tops */
-.section-rounded {
-  border-radius: 40px 40px 0 0;
-  margin-top: -40px;
-}
-
-/* ==========================================================================
-   5. ANIMATIONS & EFFECTS
+   ANIMATIONS
    ========================================================================== */
 @keyframes fadeInStay {
   0% { opacity: 0; transform: translateY(30px); }
@@ -792,7 +849,7 @@ table em {
 }
 
 /* ==========================================================================
-   6. NARROW DESKTOP (1025px - 1208px)
+   NARROW DESKTOP (768px - 1208px)
    ========================================================================== */
 @media (max-width: 1208px) and (min-width: 768px) {
   .fade-in-text {
@@ -812,7 +869,6 @@ table em {
     white-space: nowrap;
   }
   
-  /* iPad video sizing - fill height like mobile */
   .video-container iframe {
     height: 100vh;
     height: 100dvh;
@@ -825,10 +881,8 @@ table em {
 }
 
 /* ==========================================================================
-   7. RESPONSIVE / MOBILE OVERRIDES
+   MOBILE (≤767px)
    ========================================================================== */
-
-/* --- Mobile Rules (Only apply if screen is 767px or less) --- */
 @media (max-width: 767px) {
    
 * {
@@ -852,7 +906,6 @@ table em {
   pointer-events: none;
   }
   
-  /* Mobile hero text - split into 3 lines and left-aligned */
   .fade-in-text { 
   display: block !important;
   font-size: 5rem;
@@ -873,19 +926,16 @@ table em {
   padding-top: 60px !important;
   }
   
-  /* Mobile header - teal on all pages */
-.main-header {
+  .main-header {
   background: #10616A !important;
   box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
 }
 
-/* Homepage overrides back to transparent */
 .homepage .main-header {
   background: transparent !important;
   box-shadow: none !important;
 }
 
-/* White logo on all mobile pages */
 .logo {
   color: #ffffff !important;
   display: block !important;
@@ -893,7 +943,6 @@ table em {
   margin-left: 0 !important;
 }
 
-/* Hide logo on homepage only */
 .homepage .logo {
   display: none !important;
 }
@@ -903,7 +952,6 @@ table em {
     padding: 0 20px;
   }
   
-  /* Show white hamburger on mobile */
   .hamburger {
     display: flex !important;
   }
@@ -916,7 +964,6 @@ table em {
     background: #333 !important;
   }
   
-  /* Mobile navigation menu - full screen overlay */
   .nav-menu {
     position: fixed;
     left: -100%;
@@ -956,7 +1003,7 @@ table em {
     flex-direction: column !important; 
     text-align: center; 
   }
-   /* Feature sections stack on mobile */
+
 .feature-section {
   grid-template-columns: 1fr !important;
   gap: 30px !important;
