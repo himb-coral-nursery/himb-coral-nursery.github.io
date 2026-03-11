@@ -21,8 +21,6 @@ permalink: /research/
 
 </div>
 
-</div>
-
 <!-- SECTION 2: MONITORING - Deep Ocean -->
 <div class="section-corals" markdown="1">
 <a id="monitoring"></a>
@@ -56,8 +54,6 @@ slider.addEventListener('input', (e) => {
 
 </div>
 
-</div>
-
 <!-- SECTION 3: COLLABORATIONS - Sandbar -->
 <div class="section-equipment" markdown="1">
 <a id="collaborations"></a>
@@ -74,7 +70,5 @@ slider.addEventListener('input', (e) => {
 ---
 
 **[Mitigating Algal Competition with Fouling-Prevention Coatings for Coral Restoration and Reef Engineering](https://pubs.acs.org/doi/10.1021/acssuschemeng.4c07508)** - lead by [Dr. Daniel Wangpraseurt (UCSD Scripps)](https://scholar.google.com/citations?user=p5AxRRMAAAAJ&hl=en)
-
-</div>
 
 </div>
