@@ -157,9 +157,7 @@ permalink: /facilities/
   <div class="feature-image">
     <img src="/assets/images/field-lab.jpg" alt="Field lab at coral nursery">
   </div>
-</div>
-
-<!-- SPOTTER BUOY LINK -->
+  <!-- SPOTTER BUOY LINK -->
 <div class="nursery-live-data" style="margin: -20px auto 2rem auto; padding: 25px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; text-align: center; max-width: 500px;">
   <img src="/assets/images/spotterbuoy.jpeg" alt="Sofar Ocean Spotter Buoy" style="width: 200px; border-radius: 8px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;">
   <h3 style="color: #10616A; font-family: 'Nursery-Heading', sans-serif; margin-bottom: 10px;">Nursery Temperature Data</h3>
@@ -168,6 +166,8 @@ permalink: /facilities/
   </a>
   <p style="margin-top: 10px; font-size: 0.8rem; color: #999;">Powered by Sofar Ocean · SPOT-1025</p>
 </div>
+</div>
+
 
 <!-- SECTION 4: SERVICES -->
 <div class="section-pricing section-rounded" markdown="1">
