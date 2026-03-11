@@ -32,23 +32,33 @@ The nursery is photographed bimonthly to generate 3D models and orthomosaics of 
 
 </div>
 
+<!-- SLIDER IMAGE -->
+
 <div class="image-slider-container">
   <div class="image-slider">
-    <img src="/assets/images/taglab-ortho.png" alt="An orthomosaic of a Coral Nursery platform" class="slider-image-bottom">
+    <img src="/assets/images/taglab-ortho.png" alt="An Orthmosaic with Corals" class="slider-image-bottom">
     <div class="slider-overlay">
-      <img src="/assets/images/taglab-outline.png" alt="An outlined orthomosaic of a Coral Nursery platform" class="slider-image-top">
+      <img src="/assets/images/taglab-outline.png" alt="An Orthmosaic with Outlined Corals" class="slider-image-top">
     </div>
-    <input type="range" min="0" max="100" value="50" class="slider-handle" id="imageSlider">
+    <div class="slider-button-container">
+      <input type="range" min="0" max="100" value="50" class="slider-input" id="imageSlider">
+      <div class="slider-button" id="sliderButton">
+        <div class="slider-line"></div>
+      </div>
+    </div>
   </div>
-  <p class="slider-caption">A Segmented Coral Nursery Rack with Corals Labeled by Species</p>
+  <p class="slider-caption">Slide to see a coral orthomosaic after automated segmentation.</p>
 </div>
 
 <script>
-const slider = document.getElementById('imageSlider');
+const sliderInput = document.getElementById('imageSlider');
+const sliderButton = document.getElementById('sliderButton');
 const overlay = document.querySelector('.slider-overlay');
 
-slider.addEventListener('input', (e) => {
-  overlay.style.clipPath = `inset(0 ${100 - e.target.value}% 0 0)`;
+sliderInput.addEventListener('input', (e) => {
+  const value = e.target.value;
+  overlay.style.clipPath = `inset(0 ${100 - value}% 0 0)`;
+  sliderButton.style.left = `${value}%`;
 });
 </script>
 
