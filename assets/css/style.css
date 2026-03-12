@@ -800,8 +800,8 @@ td:not(:first-child) {
 .section-corals,
 .section-equipment,
 .section-pricing {
-  border-radius: 40px 40px 0 0;
-  margin-top: -40px;
+  border-radius: 80px 80px 0 0;
+  margin-top: -80px;
 }
 
 /* ==========================================================================
