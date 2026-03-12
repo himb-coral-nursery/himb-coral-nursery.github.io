@@ -108,7 +108,7 @@ permalink: /facilities/
   
 <div class="feature-section">
   <div class="feature-text">
-    <h2>SfM photogrammetry</h2>
+    <h2>SfM Photogrammetry</h2>
     <p>3D models built with Structure from Motion photogrammetry allow you to measure surface area, benthic cover, volume and more with sub-millimeter accuracy. We offer equipment for use or a full SfM service with data delivered.</p>
   </div>
   <div class="feature-image no-shadow">
@@ -138,9 +138,17 @@ permalink: /facilities/
       <li>SoFar SmartBuoy (captures live temperature data at 1 and 3 meters)</li>
     </ul>
   </div>
-  <div class="feature-image">
-    <img src="/assets/images/environmental-monitoring.jpg" alt="Environmental monitoring equipment">
+  <!-- SPOTTER BUOY LINK - CENTERED -->
+<div class="full-width-section">
+  <div class="nursery-live-data" style="margin: 40px auto; padding: 25px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; text-align: center; max-width: 500px;">
+    <img src="/assets/images/spotterbuoy.jpeg" alt="Sofar Ocean Spotter Buoy" style="width: 200px; border-radius: 8px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;">
+    <h3 style="color: #10616A; font-family: 'Nursery-Heading', sans-serif; margin-bottom: 10px;">Nursery Temperature Data</h3>
+    <a href="https://aqualink.org/sites/1042" target="_blank" class="btn" style="display: inline-block; background: #10616A; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-family: 'Nursery-Body', sans-serif; font-size: 1rem;">
+      View Live Buoy Data →
+    </a>
+    <p style="margin-top: 10px; font-size: 0.8rem; color: #999;">Powered by Sofar Ocean · SPOT-1025</p>
   </div>
+</div>
 </div>
 
 <div class="feature-section reverse">
@@ -156,18 +164,6 @@ permalink: /facilities/
   </div>
   <div class="feature-image">
     <img src="/assets/images/field-lab.jpg" alt="Field lab at coral nursery">
-  </div>
-</div>
-
-<!-- SPOTTER BUOY LINK - CENTERED -->
-<div class="full-width-section">
-  <div class="nursery-live-data" style="margin: 40px auto; padding: 25px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; text-align: center; max-width: 500px;">
-    <img src="/assets/images/spotterbuoy.jpeg" alt="Sofar Ocean Spotter Buoy" style="width: 200px; border-radius: 8px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;">
-    <h3 style="color: #10616A; font-family: 'Nursery-Heading', sans-serif; margin-bottom: 10px;">Nursery Temperature Data</h3>
-    <a href="https://aqualink.org/sites/1042" target="_blank" class="btn" style="display: inline-block; background: #10616A; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-family: 'Nursery-Body', sans-serif; font-size: 1rem;">
-      View Live Buoy Data →
-    </a>
-    <p style="margin-top: 10px; font-size: 0.8rem; color: #999;">Powered by Sofar Ocean · SPOT-1025</p>
   </div>
 </div>
 
