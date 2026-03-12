@@ -16,45 +16,10 @@ h1, h2, h3, .logo {
   color: #fff; /* White */
 }
 
-/* Table styling - site-wide */
-table {
-  width: 100%;
-  max-width: 700px;
-  margin: 30px auto;
-  border-collapse: collapse;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-th {
-  background: rgba(255, 255, 255, 0.1);
-  color: #45BBE6;
-  font-family: 'Nursery-Heading', sans-serif;
-  font-size: 1.1rem;
-  padding: 15px 20px;
-  text-align: left;
-  border-bottom: 2px solid #45BBE6;
-}
-
-td {
-  padding: 12px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
-tr:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
 /* Center align columns that are numeric/categorical */
 th:not(:first-child),
 td:not(:first-child) {
   text-align: center;
-}
-
-/* Style italic text (like species names) */
-table em {
-  color: #45BBE6;
-  font-style: italic;
 }
 /* ==========================================================================
    2. NAVIGATION & HEADER
@@ -508,11 +473,6 @@ table em {
   color: #00446F !important;
 }
 
-/* Give buoy box more space */
-.nursery-live-data {
-  margin: 40px auto 60px auto !important;
-}
-
 /* Section 4: Pricing - Heritage Trees */
 .section-pricing {
   background: #4B682F;
@@ -524,7 +484,6 @@ table em {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  padding-bottom: 100vh;
 }
 
 .section-pricing h2 {
@@ -551,19 +510,6 @@ table em {
   padding: 40px;
 }
 
-/* Tables in pricing section */
-.section-pricing table {
-  color: #fff;
-  border-color: #C2E5DF;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-}
-
-.section-pricing th,
-.section-pricing td {
-  border-color: rgba(194, 229, 223, 0.3);
-}
 
 .page-body h3 {
   font-family: 'Nursery-Heading', sans-serif;
@@ -608,6 +554,7 @@ table em {
   color: #fff;
   font-weight: 600;
 }
+
 /* Table styling in Deep Ocean section (The Corals) */
 .section-corals table {
   background: rgba(235, 213, 175, 0.05); /* Tan tint */
@@ -631,51 +578,6 @@ table em {
   background: rgba(235, 213, 175, 0.08);
 }
 
-/* Table styling in Sandbar section (Equipment) */
-.section-equipment table {
-  background: rgba(16, 97, 106, 0.05); /* Patch Reef tint */
-}
-
-.section-equipment th {
-  color: #10616A !important; /* Patch Reef */
-  border-bottom-color: #10616A;
-  background: rgba(16, 97, 106, 0.1);
-}
-
-.section-equipment td {
-  color: #333 !important;
-}
-
-.section-equipment table em {
-  color: #10616A !important; /* Patch Reef for italic */
-}
-
-.section-equipment tr:hover {
-  background: rgba(16, 97, 106, 0.08);
-}
-
-/* Table styling in Heritage Trees section (Services/Pricing) */
-.section-pricing table {
-  background: rgba(194, 229, 223, 0.05); /* Sandbar tint */
-}
-
-.section-pricing th {
-  color: #C2E5DF !important; /* Sandbar */
-  border-bottom-color: #C2E5DF;
-  background: rgba(194, 229, 223, 0.1);
-}
-
-.section-pricing td {
-  color: #fff !important;
-}
-
-.section-pricing table em {
-  color: #C2E5DF !important; /* Sandbar for italic */
-}
-
-.section-pricing tr:hover {
-  background: rgba(194, 229, 223, 0.08);
-}
 /* Section Anchor Links */
 .page-body a[id] {
   display: block;
@@ -884,7 +786,7 @@ table em {
   margin-top: 15px;
   font-size: 0.9rem;
   font-style: italic;
-  color: #333 !important; /* Dark for sandbar section */
+  color: #fff !important; 
 }
 
 /* Rounded tops for all colored sections (except first sections) */
