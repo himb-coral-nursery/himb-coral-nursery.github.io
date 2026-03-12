@@ -269,7 +269,7 @@ td:not(:first-child) {
 
 .page-header {
   background: #10616A;
-  padding: 60px 20px 0px;
+  padding: 0px;
   text-align: center;
   border-top: 8px solid;
   border-image: linear-gradient(90deg, #00446f 0%, #45BBE6 50%, #10616A 100%) 1;
