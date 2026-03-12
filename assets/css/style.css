@@ -416,6 +416,14 @@ td:not(:first-child) {
   margin-right: -50vw;
 }
 
+.section-nursery > * {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
 /* Section 2: The Corals - Deep Ocean */
 .section-corals {
   background: #00446F;
@@ -1006,6 +1014,23 @@ td:not(:first-child) {
     flex-direction: column !important; 
     text-align: center; 
   }
+
+   /* Mobile dropdown styling */
+  .dropdown-menu {
+    position: static !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 10px 0 !important;
+    margin-top: 10px !important;
+  }
+  
+  .dropdown-menu a {
+    font-size: 1.5rem !important;
+    color: #45BBE6 !important;
+    padding: 8px 20px !important;
+  }
+}
+
    /* Feature sections stack on mobile */
 .feature-section {
   grid-template-columns: 1fr !important;
