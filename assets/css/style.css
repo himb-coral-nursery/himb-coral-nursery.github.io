@@ -5,7 +5,7 @@
 
 body { 
   font-family: 'Nursery-Body', sans-serif; 
-  background: transparent;
+  background: #10616A;
   overflow-x: hidden; 
   line-height: 1.6;
   color: #fff; /* White text */
@@ -423,6 +423,13 @@ td:not(:first-child) {
   padding: 0 40px;
 }
 
+.section-corals a {
+  color: #C2E5DF !important;
+}
+
+.section-corals a:hover {
+  color: #45BBE6 !important;
+}
 /* Section 3: Equipment - Sandbar (light, needs dark text) */
 .section-equipment {
   background: #C2E5DF;
