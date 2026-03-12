@@ -410,9 +410,16 @@ table em {
    COLORED SECTIONS
    ========================================================================== */
 
-/* Section 1: The Nursery - Patch Reef (default, no extra styling needed) */
+/* Section 1: The Nursery - Patch Reef */
 .section-nursery {
-  padding: 0;
+  background: #10616A;
+  padding: 80px 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
 
 /* Section 2: The Corals - Deep Ocean */
