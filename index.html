@@ -4,8 +4,7 @@ title: Home
 ---
 <section class="hero">
   <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/d2v4H5QTQuM?autoplay=1&mute=1&controls=0&loop=1&playlist=d2v4H5QTQuM&rel=0&showinfo=0&iv_load_policy=3&hd=1&playsinline=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-  </div>
+  <div id="hero-video"></div>  </div>
   <div class="hero-overlay">
     <h1 class="fade-in-text">HIMB <span class="no-break">Coral Nursery</span></h1>
     <p class="fade-in-subtext">An in-situ research space on a live reef</p>
@@ -18,6 +17,33 @@ title: Home
   </a>
 </div>
 </section>
+
+<script>
+  // Force HD on YouTube embed
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  function onYouTubeIframeAPIReady() {
+    new YT.Player('hero-video', {
+      videoId: 'd2v4H5QTQuM',
+      playerVars: {
+        autoplay: 1,
+        mute: 1,
+        controls: 0,
+        loop: 1,
+        playlist: 'd2v4H5QTQuM',
+        vq: 'hd1080'
+      },
+      events: {
+        'onReady': function(e) {
+          e.target.setPlaybackQuality('hd1080');
+        }
+      }
+    });
+  }
+</script>
 
 <section class="about-section" id="about">
   <div class="about-body">
