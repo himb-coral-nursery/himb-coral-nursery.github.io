@@ -22,32 +22,9 @@ title: Home
   </div>
 </section>
 
-<script>
-  // Force HD on YouTube embed
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-  function onYouTubeIframeAPIReady() {
-    new YT.Player('hero-video', {
-      videoId: 'd2v4H5QTQuM',
-      playerVars: {
-        autoplay: 1,
-        mute: 1,
-        controls: 0,
-        loop: 1,
-        playlist: 'd2v4H5QTQuM',
-        vq: 'hd1080'
-      },
-      events: {
-        'onReady': function(e) {
-          e.target.setPlaybackQuality('hd1080');
-        }
-      }
-    });
-  }
-</script>
+<video autoplay muted playsinline preload="auto" fetchpriority="high" poster="/assets/images/hero-poster.jpg" onended="this.style.opacity='0'">
+  <source src="/assets/videos/hero-zoom.mp4" type="video/mp4">
+</video>
 
 <section class="about-section" id="about">
   <div class="about-body">
