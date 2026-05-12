@@ -56,8 +56,6 @@ permalink: /facilities/
 
 </div>
 
-</div>
-
 <!-- SECTION 2: THE CORALS -->
 <div class="section-corals" markdown="1">
 <a id="the-corals"></a>
@@ -101,8 +99,6 @@ permalink: /facilities/
 
 </div>
 
-</div>
-
 <!-- SECTION 3: EQUIPMENT -->
 <div class="section-equipment" markdown="1">
 <a id="equipment"></a>
@@ -131,7 +127,14 @@ permalink: /facilities/
 <div class="feature-section">
   <div class="feature-text">
     <h2>Environmental Monitoring</h2>
-    ...
+    <p>We are equipped with multiple methods of measuring light, temperature, and flow in the nursery:</p>
+    <ul>
+      <li>LiCor 3 channel PAR meter</li>
+      <li>Apogee handheld PAR meter</li>
+      <li>Odyssey PAR sensors w/ automated wiper</li>
+      <li>HOBO irradiance/temperature loggers</li>
+      <li>SoFar SmartBuoy (captures live temperature data at 1 and 3 meters)</li>
+    </ul>
   </div>
   <div class="feature-image">
     <div class="nursery-live-data" style="margin: 0 auto; padding: 25px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; text-align: center; max-width: 500px;">
@@ -163,8 +166,6 @@ permalink: /facilities/
 
 </div>
 
-</div>
-
 <!-- SECTION 4: SERVICES -->
 <div class="section-pricing" markdown="1">
 <a id="services"></a>
@@ -173,8 +174,6 @@ permalink: /facilities/
 <div class="full-width-section" markdown="1">
 
 <p style="text-align: center;">We offer a range of research support services at the HIMB Coral Nursery. We can supply nursery rack space or tanks for you to conduct your own research. If you require more assistance or won't be in Hawai'i for the duration of your experiment we have staff members to help you meet your goals. <a href="/contact/" style="color: #C2E5DF;">Reach out</a> to discuss collaborations in further detail.</p>
-
-</div>
 
 </div>
 
