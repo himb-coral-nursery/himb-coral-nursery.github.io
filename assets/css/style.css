@@ -5,7 +5,7 @@
 
 body { 
   font-family: 'Nursery-Body', sans-serif; 
-  background: #10616A;
+  background: transparent;
   overflow-x: hidden; 
   line-height: 1.6;
   color: #fff; /* White text */
@@ -49,6 +49,12 @@ tr:hover {
 th:not(:first-child),
 td:not(:first-child) {
   text-align: center;
+}
+
+/* Style italic text (like species names) */
+table em {
+  color: #45BBE6;
+  font-style: italic;
 }
 /* ==========================================================================
    2. NAVIGATION & HEADER
@@ -214,16 +220,13 @@ td:not(:first-child) {
   background: #ffffff;
 }
 
-.video-container video {
-  width: 100%; 
-  height: 100%; 
+.video-container iframe {
+  width: 200vw; height: 120vh; 
   position: absolute;
-  top: 0; 
-  left: 0;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
   pointer-events: none;
   object-fit: cover;
-  z-index: 2;
-  transition: opacity 0.5s;
 }
 
 /* Hero Text Overlay */
@@ -263,7 +266,6 @@ td:not(:first-child) {
   margin-top: -10px;
   text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
 }
-
 /* ==========================================================================
    4. PAGE CONTENT (Interior Pages)
    ========================================================================== */
@@ -273,7 +275,7 @@ td:not(:first-child) {
 
 .page-header {
   background: #10616A;
-  padding: 0px;
+  padding: 60px 20px 0px;
   text-align: center;
   border-top: 8px solid;
   border-image: linear-gradient(90deg, #00446f 0%, #45BBE6 50%, #10616A 100%) 1;
@@ -322,10 +324,26 @@ td:not(:first-child) {
   gap: 60px;
   align-items: center;
   margin: 80px 0;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 40px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .feature-section:first-of-type {
   margin-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.feature-text {
+  min-width: 0;
+}
+
+.feature-image {
+  min-width: 0;
 }
 
 .feature-text h2 {
@@ -410,22 +428,7 @@ td:not(:first-child) {
 
 /* Section 1: The Nursery - Patch Reef (default, no extra styling needed) */
 .section-nursery {
-  background: #10616A;
-  padding: 80px 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-.section-nursery > * {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding: 0;
 }
 
 /* Section 2: The Corals - Deep Ocean */
@@ -464,13 +467,6 @@ td:not(:first-child) {
   padding: 0 40px;
 }
 
-.section-corals a {
-  color: #C2E5DF !important;
-}
-
-.section-corals a:hover {
-  color: #45BBE6 !important;
-}
 /* Section 3: Equipment - Sandbar (light, needs dark text) */
 .section-equipment {
   background: #C2E5DF;
@@ -521,6 +517,11 @@ td:not(:first-child) {
   color: #00446F !important;
 }
 
+/* Give buoy box more space */
+.nursery-live-data {
+  margin: 40px auto 60px auto !important;
+}
+
 /* Section 4: Pricing - Heritage Trees */
 .section-pricing {
   background: #4B682F;
@@ -532,6 +533,7 @@ td:not(:first-child) {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
+  padding-bottom: 100vh;
 }
 
 .section-pricing h2 {
@@ -558,6 +560,19 @@ td:not(:first-child) {
   padding: 40px;
 }
 
+/* Tables in pricing section */
+.section-pricing table {
+  color: #fff;
+  border-color: #C2E5DF;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.section-pricing th,
+.section-pricing td {
+  border-color: rgba(194, 229, 223, 0.3);
+}
 
 .page-body h3 {
   font-family: 'Nursery-Heading', sans-serif;
@@ -602,7 +617,6 @@ td:not(:first-child) {
   color: #fff;
   font-weight: 600;
 }
-
 /* Table styling in Deep Ocean section (The Corals) */
 .section-corals table {
   background: rgba(235, 213, 175, 0.05); /* Tan tint */
@@ -626,6 +640,51 @@ td:not(:first-child) {
   background: rgba(235, 213, 175, 0.08);
 }
 
+/* Table styling in Sandbar section (Equipment) */
+.section-equipment table {
+  background: rgba(16, 97, 106, 0.05); /* Patch Reef tint */
+}
+
+.section-equipment th {
+  color: #10616A !important; /* Patch Reef */
+  border-bottom-color: #10616A;
+  background: rgba(16, 97, 106, 0.1);
+}
+
+.section-equipment td {
+  color: #333 !important;
+}
+
+.section-equipment table em {
+  color: #10616A !important; /* Patch Reef for italic */
+}
+
+.section-equipment tr:hover {
+  background: rgba(16, 97, 106, 0.08);
+}
+
+/* Table styling in Heritage Trees section (Services/Pricing) */
+.section-pricing table {
+  background: rgba(194, 229, 223, 0.05); /* Sandbar tint */
+}
+
+.section-pricing th {
+  color: #C2E5DF !important; /* Sandbar */
+  border-bottom-color: #C2E5DF;
+  background: rgba(194, 229, 223, 0.1);
+}
+
+.section-pricing td {
+  color: #fff !important;
+}
+
+.section-pricing table em {
+  color: #C2E5DF !important; /* Sandbar for italic */
+}
+
+.section-pricing tr:hover {
+  background: rgba(194, 229, 223, 0.08);
+}
 /* Section Anchor Links */
 .page-body a[id] {
   display: block;
@@ -734,115 +793,10 @@ td:not(:first-child) {
   color: #00446F !important;
 }
 
-/* Image slider for monitoring section */
-.image-slider-container {
-  max-width: 800px;
-  margin: 40px auto;
-}
-
-.image-slider {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  user-select: none;
-}
-
-.slider-image-bottom,
-.slider-image-top {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.slider-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  clip-path: inset(0 50% 0 0);
-  pointer-events: none;
-}
-
-.slider-button-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.slider-input {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-  z-index: 3;
-}
-
-.slider-button {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50px;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.slider-line {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  transform: translateX(-50%);
-  width: 3px;
-  height: 100%;
-  background: white;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-
-.slider-line::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 40px;
-  height: 40px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
-
-.slider-line::after {
-  content: '◀  ▶';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #333;
-  font-size: 12px;
-  letter-spacing: 2px;
-}
-
-.slider-caption {
-  text-align: center;
-  margin-top: 15px;
-  font-size: 0.9rem;
-  font-style: italic;
-  color: #fff !important; 
-}
-
-/* Rounded tops for all colored sections (except first sections) */
-.section-corals,
-.section-equipment,
-.section-pricing {
-  border-radius: 80px 80px 0 0;
-  margin-top: -80px;
+/* Curved Section Tops */
+.section-rounded {
+  border-radius: 40px 40px 0 0;
+  margin-top: -40px;
 }
 
 /* ==========================================================================
@@ -1018,23 +972,6 @@ td:not(:first-child) {
     flex-direction: column !important; 
     text-align: center; 
   }
-
-   /* Mobile dropdown styling */
-  .dropdown-menu {
-    position: static !important;
-    box-shadow: none !important;
-    background: transparent !important;
-    padding: 10px 0 !important;
-    margin-top: 10px !important;
-  }
-  
-  .dropdown-menu a {
-    font-size: 1.5rem !important;
-    color: #45BBE6 !important;
-    padding: 8px 20px !important;
-  }
-}
-
    /* Feature sections stack on mobile */
 .feature-section {
   grid-template-columns: 1fr !important;
@@ -1049,22 +986,4 @@ td:not(:first-child) {
 .feature-text h2 {
   font-size: 2rem !important;
 }
-
-  /* Fix long page titles on mobile */
-  .page-title {
-    font-size: 3rem !important;
-    line-height: 1.1 !important;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-  }
-  
-  /* Give more width to content on mobile */
-  .full-width-section {
-    padding: 0 20px !important;
-  }
-  
-  .page-body {
-    padding: 40px 20px !important;
-  }
 }
