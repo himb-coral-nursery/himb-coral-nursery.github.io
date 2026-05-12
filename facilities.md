@@ -167,7 +167,7 @@ permalink: /facilities/
 </div>
 
 <!-- SECTION 4: SERVICES -->
-<div class="section-pricing" markdown="1">
+<div class="section-services" markdown="1">
 <a id="services"></a>
 <h1 class="page-title">Services</h1>
 
