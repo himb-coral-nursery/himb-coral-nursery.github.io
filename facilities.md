@@ -127,26 +127,18 @@ permalink: /facilities/
 <div class="feature-section">
   <div class="feature-text">
     <h2>Environmental Monitoring</h2>
-    <p>We are equipped with multiple methods of measuring light, temperature, and flow in the nursery:</p>
-    <ul>
-      <li>LiCor 3 channel PAR meter</li>
-      <li>Apogee handheld PAR meter</li>
-      <li>Odyssey PAR sensors w/ automated wiper</li>
-      <li>HOBO irradiance/temperature loggers</li>
-      <li>SoFar SmartBuoy (captures live temperature data at 1 and 3 meters)</li>
-    </ul>
+    ...
   </div>
-  <!-- SPOTTER BUOY LINK - CENTERED -->
-<div class="full-width-section">
-  <div class="nursery-live-data" style="margin: 40px auto; padding: 25px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; text-align: center; max-width: 500px;">
-    <img src="/assets/images/spotterbuoy.jpeg" alt="Sofar Ocean Spotter Buoy" style="width: 200px; border-radius: 8px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;">
-    <h3 style="color: #10616A; font-family: 'Nursery-Heading', sans-serif; margin-bottom: 10px;">Nursery Temperature Data</h3>
-    <a href="https://aqualink.org/sites/1042" target="_blank" class="btn" style="display: inline-block; background: #10616A; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-family: 'Nursery-Body', sans-serif; font-size: 1rem;">
-      View Live Buoy Data →
-    </a>
-    <p style="margin-top: 10px; font-size: 0.8rem; color: #999;">Powered by Sofar Ocean · SPOT-1025</p>
+  <div class="feature-image">
+    <div class="nursery-live-data" style="margin: 0 auto; padding: 25px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; text-align: center; max-width: 500px;">
+      <img src="/assets/images/spotterbuoy.jpeg" alt="Sofar Ocean Spotter Buoy" style="width: 200px; border-radius: 8px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;">
+      <h3 style="color: #10616A; font-family: 'Nursery-Heading', sans-serif; margin-bottom: 10px;">Nursery Temperature Data</h3>
+      <a href="https://aqualink.org/sites/1042" target="_blank" class="btn" style="display: inline-block; background: #10616A; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-family: 'Nursery-Body', sans-serif; font-size: 1rem;">
+        View Live Buoy Data →
+      </a>
+      <p style="margin-top: 10px; font-size: 0.8rem; color: #999;">Powered by Sofar Ocean · SPOT-1025</p>
+    </div>
   </div>
-</div>
 </div>
 
 <div class="feature-section reverse">
