@@ -56,6 +56,8 @@ permalink: /facilities/
 
 </div>
 
+</div>
+
 <!-- SECTION 2: THE CORALS -->
 <div class="section-corals" markdown="1">
 <a id="the-corals"></a>
@@ -94,6 +96,8 @@ permalink: /facilities/
 | *Porites lobata* | Low | Medium |
 | *Pavona varians* | Low-Medium | Medium |
 | *Pocillopora meandrina* | None | Low |
+
+</div>
 
 </div>
 
@@ -159,6 +163,8 @@ permalink: /facilities/
 
 </div>
 
+</div>
+
 <!-- SECTION 4: SERVICES -->
 <div class="section-pricing" markdown="1">
 <a id="services"></a>
@@ -167,6 +173,8 @@ permalink: /facilities/
 <div class="full-width-section" markdown="1">
 
 <p style="text-align: center;">We offer a range of research support services at the HIMB Coral Nursery. We can supply nursery rack space or tanks for you to conduct your own research. If you require more assistance or won't be in Hawai'i for the duration of your experiment we have staff members to help you meet your goals. <a href="/contact/" style="color: #C2E5DF;">Reach out</a> to discuss collaborations in further detail.</p>
+
+</div>
 
 </div>
 
