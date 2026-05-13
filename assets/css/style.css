@@ -415,6 +415,31 @@ h1, h2, h3, .logo {
   padding-right: 40px;
 }
 
+/* Horizontal rules in colored sections */
+.section-1 hr {
+  border: none;
+  border-top: 3px solid #fff;
+  margin: 30px 0;
+}
+
+.section-2 hr {
+  border: none;
+  border-top: 3px solid #45BBE6;
+  margin: 30px 0;
+}
+
+.section-3 hr {
+  border: none;
+  border-top: 3px solid #EBD5AF;
+  margin: 30px 0;
+}
+
+.section-4 hr {
+  border: none;
+  border-top: 3px solid #76C7C3;
+  margin: 30px 0;
+}
+
 /* ==========================================================================
    SECTION 1 - Patch Reef (#10616A)
    ========================================================================== */
