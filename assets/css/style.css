@@ -178,6 +178,22 @@ table em {
   color: #45BBE6 !important;
 }
 
+/* Remove white backgrounds from page wrappers */
+.page-content {
+  background: #10616A; /* Match body */
+  min-height: 100vh;
+}
+
+.page-body {
+  background: none;
+  padding: 0; /* Remove padding too */
+  max-width: none;
+}
+
+.page-header {
+  display: none; /* Hide empty header */
+}
+
 /* Scroll Indicator */
 
 .scroll-indicator {
