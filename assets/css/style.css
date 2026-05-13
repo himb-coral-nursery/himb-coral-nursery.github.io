@@ -11,6 +11,14 @@ body {
   color: #fff; /* White text */
 }
 
+body.facilities-page {
+  background: #4B682F;
+}
+
+body.research-page {
+  background: #C2E5DF;
+}
+
 h1, h2, h3, .logo { 
   font-family: 'Nursery-Heading', sans-serif; 
   color: #fff; /* White */
