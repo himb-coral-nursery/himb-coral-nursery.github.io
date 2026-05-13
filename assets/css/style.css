@@ -28,6 +28,16 @@ h1, h2, h3, .logo {
   color: #fff;
 }
 
+.about-section {
+  background: #10616A;
+  width: 100%;
+  padding: 80px 0;
+  border-radius: 80px 80px 0 0;
+  margin-top: -80px;
+  position: relative;
+  z-index: 100;
+}
+
 /* Table styling - site-wide */
 table {
   width: 100%;
