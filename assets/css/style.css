@@ -354,6 +354,7 @@ h1, h2, h3, .logo {
   font-size: 3.5rem;
   margin-bottom: 30px;
   text-align: center;
+  border-bottom: none !important;
 }
 
 .feature-image img {
@@ -423,15 +424,19 @@ h1, h2, h3, .logo {
 }
 
 .section-1 .page-title,
-.section-1 h1,
-.section-1 .feature-text h2 {
+.section-1 h1 {
   color: #fff !important;
 }
 
+.section-1 .feature-text h2,
 .section-1 h2,
 .section-1 h3 {
   color: #C2E5DF !important;
   border-bottom-color: #fff !important;
+}
+
+.section-1 .feature-text h2 {
+  border-bottom: none !important;
 }
 
 .section-1 p,
@@ -456,15 +461,19 @@ h1, h2, h3, .logo {
 }
 
 .section-2 .page-title,
-.section-2 h1,
-.section-2 .feature-text h2 {
+.section-2 h1 {
   color: #fff !important;
 }
 
+.section-2 .feature-text h2,
 .section-2 h2,
 .section-2 h3 {
   color: #EBD5AF !important;
   border-bottom-color: #45BBE6 !important;
+}
+
+.section-2 .feature-text h2 {
+  border-bottom: none !important;
 }
 
 .section-2 p,
@@ -489,15 +498,19 @@ h1, h2, h3, .logo {
 }
 
 .section-3 .page-title,
-.section-3 h1,
-.section-3 .feature-text h2 {
+.section-3 h1 {
   color: #000 !important;
 }
 
+.section-3 .feature-text h2,
 .section-3 h2,
 .section-3 h3 {
   color: #10616A !important;
   border-bottom-color: #EBD5AF !important;
+}
+
+.section-3 .feature-text h2 {
+  border-bottom: none !important;
 }
 
 .section-3 p,
@@ -527,15 +540,19 @@ h1, h2, h3, .logo {
 }
 
 .section-4 .page-title,
-.section-4 h1,
-.section-4 .feature-text h2 {
+.section-4 h1 {
   color: #fff !important;
 }
 
+.section-4 .feature-text h2,
 .section-4 h2,
 .section-4 h3 {
   color: #45BBE6 !important;
   border-bottom-color: #76C7C3 !important;
+}
+
+.section-4 .feature-text h2 {
+  border-bottom: none !important;
 }
 
 .section-4 p,
@@ -560,15 +577,10 @@ h1, h2, h3, .logo {
 .section-3 h2,
 .section-4 h2 {
   font-family: 'Nursery-Heading', sans-serif;
-  font-size: 2.2rem;
   margin-top: 10px;
   margin-bottom: 20px;
   padding-bottom: 10px;
   border-bottom: 3px solid;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 40px 10px 40px;
 }
 
 .section-1 h3,
@@ -753,7 +765,7 @@ td {
 }
 
 /* ==========================================================================
-   10. CONTACT FORM STYLING
+   10. CONTACT FORM
    ========================================================================== */
 .contact-form {
   max-width: 600px;
