@@ -15,6 +15,10 @@ body.facilities-page {
   background: #4B682F;
 }
 
+body.facilities-page .section-services {
+  padding-bottom: 50vh;
+}
+
 body.research-page {
   background: #C2E5DF;
 }
