@@ -30,19 +30,14 @@ body.research-page {
   background: #C2E5DF;
 }
 
+/* Add extra bottom padding to sections before rounded sections on research page */
+body.research-page .section-corals {
+  padding-bottom: 160px;
+}
+
 h1, h2, h3, .logo { 
   font-family: 'Nursery-Heading', sans-serif; 
   color: #fff;
-}
-
-.about-section {
-  background: #10616A;
-  width: 100%;
-  padding: 80px 0;
-  border-radius: 100px 100px 0 0;
-  margin-top: -40px;
-  position: relative;
-  z-index: 100;
 }
 
 /* Table styling - site-wide */
@@ -305,14 +300,70 @@ table em {
 }
 
 /* ==========================================================================
-   4. PAGE CONTENT (Interior Pages)
+   4. ABOUT SECTION (Homepage)
+   ========================================================================== */
+.about-section {
+  background: #10616A;
+  width: 100%;
+  padding: 80px 0;
+  border-radius: 100px 100px 0 0;
+  margin-top: -40px;
+  position: relative;
+  z-index: 100;
+}
+
+.about-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.about-body h2 {
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 2.2rem;
+  color: #fff;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #fff;
+}
+
+.about-body p, .about-body li {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.about-body ol, .about-body ul {
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
+
+.about-body a {
+  color: #9AA731;
+  text-decoration: underline;
+}
+
+.about-body a:hover {
+  color: #EBD5AF;
+  text-decoration: underline;
+}
+
+.about-body strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   5. PAGE CONTENT (Interior Pages)
    ========================================================================== */
 .page-content {
   min-height: 100vh;
 }
 
 .page-header {
-  display: none; /* Hide empty header */
+  display: none;
 }
 
 .page-title {
@@ -452,58 +503,14 @@ table em {
   order: -1;
 }
 
-/* About Section (Homepage) */
-.about-section {
-  background: #10616A;
-  width: 100%;
-  padding: 80px 0;
-}
-
-.about-body {
+.full-width-section {
   max-width: 900px;
-  margin: 0 auto;
+  margin: 40px auto;
   padding: 0 40px;
 }
 
-.about-body h2 {
-  font-family: 'Nursery-Heading', sans-serif;
-  font-size: 2.2rem;
-  color: #fff;
-  margin-top: 50px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 3px solid #fff;
-}
-
-.about-body p, .about-body li {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 15px;
-  color: #fff;
-}
-
-.about-body ol, .about-body ul {
-  margin-left: 30px;
-  margin-bottom: 20px;
-}
-
-.about-body a {
-  color: #9AA731;
-  text-decoration: underline;
-}
-
-.about-body a:hover {
-  color: #EBD5AF;
-  text-decoration: underline;
-}
-
-.about-body strong {
-  color: #fff;
-  font-weight: 600;
-}
-
 /* ==========================================================================
-   COLORED SECTIONS
+   6. COLORED SECTIONS - FACILITIES PAGE
    ========================================================================== */
 
 /* Section 1: The Nursery - Patch Reef */
@@ -553,12 +560,6 @@ table em {
 
 .section-corals a:hover {
   color: #45BBE6 !important;
-}
-
-.full-width-section {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 0 40px;
 }
 
 /* Section 3: Equipment - Sandbar */
@@ -652,7 +653,7 @@ table em {
 }
 
 /* ==========================================================================
-   RESEARCH PAGE SECTIONS
+   7. COLORED SECTIONS - RESEARCH PAGE
    ========================================================================== */
 
 /* Section 1: Collaborations - Patch Reef */
@@ -749,7 +750,7 @@ table em {
 }
 
 /* ==========================================================================
-   TABLE STYLING BY SECTION
+   8. TABLE STYLING BY SECTION
    ========================================================================== */
 
 .section-corals table {
@@ -825,7 +826,7 @@ table em {
 }
 
 /* ==========================================================================
-   IMAGE SLIDER (Research - Monitoring section)
+   9. IMAGE SLIDER (Research - Monitoring section)
    ========================================================================== */
 .image-slider-container {
   max-width: 800px;
@@ -933,7 +934,7 @@ table em {
 }
 
 /* ==========================================================================
-   ROUNDED SECTION TOPS
+   10. ROUNDED SECTION TOPS
    ========================================================================== */
 .section-corals,
 .section-equipment,
@@ -945,7 +946,7 @@ table em {
 }
 
 /* ==========================================================================
-   ANIMATIONS
+   11. ANIMATIONS
    ========================================================================== */
 @keyframes fadeInStay {
   0% { opacity: 0; transform: translateY(30px); }
@@ -953,7 +954,7 @@ table em {
 }
 
 /* ==========================================================================
-   NARROW DESKTOP (768px - 1208px)
+   12. NARROW DESKTOP (768px - 1208px)
    ========================================================================== */
 @media (max-width: 1208px) and (min-width: 768px) {
   .fade-in-text {
@@ -985,7 +986,7 @@ table em {
 }
 
 /* ==========================================================================
-   MOBILE (≤767px)
+   13. MOBILE (≤767px)
    ========================================================================== */
 @media (max-width: 767px) {
   
