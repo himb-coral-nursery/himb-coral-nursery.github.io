@@ -442,6 +442,47 @@ table em {
   font-weight: 600;
 }
 
+/* Slider fixes */
+.image-slider {
+  position: relative !important;
+  width: 100% !important;
+  overflow: hidden;
+  user-select: none;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.slider-image-bottom {
+  position: relative !important;
+  width: 100% !important;
+  display: block !important;
+}
+
+.slider-overlay {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  clip-path: inset(0 50% 0 0);
+  pointer-events: none;
+}
+
+.slider-image-top {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  object-fit: cover;
+}
+
+.slider-button-container {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 /* ==========================================================================
    COLORED SECTIONS
    ========================================================================== */
