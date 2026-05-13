@@ -3,8 +3,8 @@ layout: page
 permalink: /facilities/
 ---
 
-<!-- SECTION 1: THE NURSERY -->
-<div class="section-nursery" markdown="1">
+<!-- SECTION 1: THE NURSERY - Patch Reef -->
+<div class="section-1" markdown="1">
 <a id="the-nursery"></a>
 <h1 class="page-title">The Nursery</h1>
 
@@ -56,8 +56,8 @@ permalink: /facilities/
 
 </div>
 
-<!-- SECTION 2: THE CORALS -->
-<div class="section-corals" markdown="1">
+<!-- SECTION 2: THE CORALS - Deep Ocean -->
+<div class="section-2" markdown="1">
 <a id="the-corals"></a>
 <h1 class="page-title">The Corals</h1>
 
@@ -99,10 +99,10 @@ permalink: /facilities/
 
 </div>
 
-<!-- SECTION 3: EQUIPMENT -->
-<div class="section-equipment" markdown="1">
+<!-- SECTION 3: EQUIPMENT - Sandbar -->
+<div class="section-3" markdown="1">
 <a id="equipment"></a>
-<h1 class="page-title" style="color: #10616A;">Equipment</h1>
+<h1 class="page-title">Equipment</h1>
   
 <div class="feature-section">
   <div class="feature-text">
@@ -166,14 +166,14 @@ permalink: /facilities/
 
 </div>
 
-<!-- SECTION 4: SERVICES -->
-<div class="section-services" markdown="1">
+<!-- SECTION 4: SERVICES - Heritage Trees -->
+<div class="section-4" markdown="1">
 <a id="services"></a>
 <h1 class="page-title">Services</h1>
 
 <div class="full-width-section" markdown="1">
 
-<p style="text-align: center;">We offer a range of research support services at the HIMB Coral Nursery. We can supply nursery rack space or tanks for you to conduct your own research. If you require more assistance or won't be in Hawai'i for the duration of your experiment we have staff members to help you meet your goals. <a href="/contact/" style="color: #C2E5DF;">Reach out</a> to discuss collaborations in further detail.</p>
+<p style="text-align: center;">We offer a range of research support services at the HIMB Coral Nursery. We can supply nursery rack space or tanks for you to conduct your own research. If you require more assistance or won't be in Hawai'i for the duration of your experiment we have staff members to help you meet your goals. <a href="/contact/">Reach out</a> to discuss collaborations in further detail.</p>
 
 </div>
 
