@@ -1,27 +1,35 @@
 ---
 layout: page
-title: Contact
 permalink: /contact/
 ---
 
-## Get in Touch
+<!-- SECTION 1: GET IN TOUCH - Patch Reef -->
+<div class="section-1" markdown="1">
 <a id="get-in-touch"></a>
-Interested in conducting your research at the HIMB Coral Nursery, scheduling a tour, or requesting coral for restoration? Please fill out the form below and we will be in contact.
+<h1 class="page-title">Get in Touch</h1>
 
-<form action="https://formspree.io/f/YOUR_FORMSPREE_ID_HERE" method="POST">
+<div class="full-width-section" markdown="1">
+
+<p style="text-align: center;">Interested in conducting your research at the HIMB Coral Nursery, scheduling a tour, or requesting coral for restoration? Please fill out the form below and we will be in contact.</p>
+
+<form action="https://formspree.io/f/YOUR_FORMSPREE_ID_HERE" method="POST" class="contact-form">
+  
+  <!-- Honeypot field for spam protection -->
+  <input type="text" name="_gotcha" style="display:none">
+  
   <label>
     Your Name:
-    <input type="text" name="name" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+    <input type="text" name="name" required>
   </label>
   
   <label>
     Your Email:
-    <input type="email" name="_replyto" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+    <input type="email" name="_replyto" required>
   </label>
   
   <label>
     Subject:
-    <select name="subject" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+    <select name="subject">
       <option value="General Inquiry">General Inquiry</option>
       <option value="Research Collaboration">Research Collaboration</option>
       <option value="Tour Request">Tour Request</option>
@@ -31,8 +39,12 @@ Interested in conducting your research at the HIMB Coral Nursery, scheduling a t
   
   <label>
     Message:
-    <textarea name="message" style="width: 100%; height: 150px; padding: 8px; margin-bottom: 10px;"></textarea>
+    <textarea name="message" required></textarea>
   </label>
   
-  <button type="submit" style="background-color: #0077cc; color: white; padding: 10px 20px; border: none; cursor: pointer;">Send Message</button>
+  <button type="submit">Send Message</button>
 </form>
+
+</div>
+
+</div>
