@@ -5,10 +5,10 @@
 
 body { 
   font-family: 'Nursery-Body', sans-serif; 
-  background: transparent;
+  background: #10616A;
   overflow-x: hidden; 
   line-height: 1.6;
-  color: #fff; /* White text */
+  color: #fff;
 }
 
 body.facilities-page {
@@ -21,7 +21,7 @@ body.research-page {
 
 h1, h2, h3, .logo { 
   font-family: 'Nursery-Heading', sans-serif; 
-  color: #fff; /* White */
+  color: #fff;
 }
 
 /* Table styling - site-wide */
@@ -53,23 +53,23 @@ tr:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* Center align columns that are numeric/categorical */
 th:not(:first-child),
 td:not(:first-child) {
   text-align: center;
 }
 
-/* Style italic text (like species names) */
 table em {
   color: #45BBE6;
   font-style: italic;
 }
+
 /* ==========================================================================
    2. NAVIGATION & HEADER
    ========================================================================== */
 .main-header {
   position: fixed;
-  top: 0; width: 100%;
+  top: 0; 
+  width: 100%;
   padding: 20px 0;
   background: white; 
   z-index: 10000;
@@ -87,7 +87,7 @@ table em {
 .logo { 
   font-weight: bold; 
   text-decoration: none; 
-  color: #10616A; /* Patch Reef */
+  color: #10616A;
   letter-spacing: 1px; 
   font-size: 1.2rem; 
   z-index: 10001;
@@ -101,16 +101,16 @@ table em {
 
 .nav-links a { 
   text-decoration: none; 
-  color: #10616A; /* Patch Reef */
+  color: #10616A;
   font-weight: 500; 
   transition: 0.3s; 
 }
 
 .nav-links a:hover { 
-  color: #45BBE6; /* Hawai'i Sky */
+  color: #45BBE6;
 }
 
-/* Hamburger Menu - Hidden on Desktop */
+/* Hamburger Menu */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -125,13 +125,12 @@ table em {
 .hamburger span {
   width: 25px;
   height: 3px;
-  background: #10616A; /* Patch Reef */
+  background: #10616A;
   margin: 3px 0;
   transition: 0.3s;
   border-radius: 3px;
 }
 
-/* Hamburger animation when active */
 .hamburger.active span:nth-child(1) {
   transform: rotate(45deg) translate(7px, 7px);
 }
@@ -158,7 +157,7 @@ table em {
   min-width: 200px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   list-style: none;
-  padding: 15px 0 10px 0;  /* ← top padding creates visual gap without dead zone */
+  padding: 15px 0 10px 0;
   border-radius: 4px;
   z-index: 10001;
   flex-direction: column;
@@ -186,24 +185,7 @@ table em {
   color: #45BBE6 !important;
 }
 
-/* Remove white backgrounds from page wrappers */
-.page-content {
-  background: #10616A; /* Match body */
-  min-height: 100vh;
-}
-
-.page-body {
-  background: none;
-  padding: 0; /* Remove padding too */
-  max-width: none;
-}
-
-.page-header {
-  display: none; /* Hide empty header */
-}
-
 /* Scroll Indicator */
-
 .scroll-indicator {
   position: absolute;
   bottom: 40px;
@@ -240,7 +222,10 @@ table em {
 
 .video-container {
   position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
   background: #ffffff;
 }
 
@@ -257,10 +242,12 @@ table em {
   transition: opacity 0.5s;
 }
 
-/* Hero Text Overlay */
 .hero-overlay {
   position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start; 
@@ -294,6 +281,7 @@ table em {
   margin-top: -10px;
   text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
 }
+
 /* ==========================================================================
    4. PAGE CONTENT (Interior Pages)
    ========================================================================== */
@@ -302,11 +290,7 @@ table em {
 }
 
 .page-header {
-  background: #10616A;
-  padding: 60px 20px 0px;
-  text-align: center;
-  border-top: 8px solid;
-  border-image: linear-gradient(90deg, #00446f 0%, #45BBE6 50%, #10616A 100%) 1;
+  display: none; /* Hide empty header */
 }
 
 .page-title {
@@ -321,14 +305,14 @@ table em {
   font-family: 'Nursery-Body', sans-serif;
   font-size: 1.8rem;
   color: #fff;
-  margin: 0px 0 0 0;
+  margin: 0;
   font-weight: 300;
 }
 
 .page-body {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 60px 40px;
+  background: none;
+  padding: 0;
+  max-width: none;
 }
 
 .page-body h2 {
@@ -345,16 +329,65 @@ table em {
   margin-top: 0;
 }
 
+.page-body h3 {
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 1.6rem;
+  color: #fff;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.page-body p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.page-body ul, .page-body ol {
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
+
+.page-body li {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.page-body a {
+  color: #45BBE6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.page-body a:hover {
+  color: #C2E5DF;
+  text-decoration: underline;
+}
+
+.page-body strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+.page-body a[id] {
+  display: block;
+  position: relative;
+  top: -100px;
+  visibility: hidden;
+}
+
 /* Two-column feature sections */
 .feature-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
   align-items: center;
-  margin: 80px 0;
+  margin: 80px auto;
   max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
   padding: 0 40px;
   box-sizing: border-box;
   width: 100%;
@@ -362,8 +395,6 @@ table em {
 
 .feature-section:first-of-type {
   margin-top: 40px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .feature-text {
@@ -391,7 +422,6 @@ table em {
   box-shadow: none;
 }
 
-/* Alternate layout - image on left */
 .feature-section.reverse {
   grid-template-columns: 1fr 1fr;
 }
@@ -450,47 +480,6 @@ table em {
   font-weight: 600;
 }
 
-/* Slider fixes */
-.image-slider {
-  position: relative !important;
-  width: 100% !important;
-  overflow: hidden;
-  user-select: none;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.slider-image-bottom {
-  position: relative !important;
-  width: 100% !important;
-  display: block !important;
-}
-
-.slider-overlay {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  clip-path: inset(0 50% 0 0);
-  pointer-events: none;
-}
-
-.slider-image-top {
-  width: 100% !important;
-  height: 100% !important;
-  display: block !important;
-  object-fit: cover;
-}
-
-.slider-button-container {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-}
-
 /* ==========================================================================
    COLORED SECTIONS
    ========================================================================== */
@@ -511,7 +500,6 @@ table em {
 .section-corals {
   background: #00446F;
   padding: 80px 0;
-  margin: 80px 0 0 0;
   width: 100vw;
   position: relative;
   left: 50%;
@@ -537,17 +525,24 @@ table em {
   padding-right: 40px;
 }
 
+.section-corals a {
+  color: #C2E5DF !important;
+}
+
+.section-corals a:hover {
+  color: #45BBE6 !important;
+}
+
 .full-width-section {
   max-width: 900px;
   margin: 40px auto;
   padding: 0 40px;
 }
 
-/* Section 3: Equipment - Sandbar (light, needs dark text) */
+/* Section 3: Equipment - Sandbar */
 .section-equipment {
   background: #C2E5DF;
   padding: 80px 0 100px 0;
-  margin: 0;
   width: 100vw;
   position: relative;
   left: 50%;
@@ -593,16 +588,15 @@ table em {
   color: #00446F !important;
 }
 
-/* Give buoy box more space */
+/* Buoy box */
 .nursery-live-data {
   margin: 40px auto 60px auto !important;
 }
 
-/* Section 4: Pricing - Heritage Trees */
+/* Section 4: Services - Heritage Trees */
 .section-services {
   background: #4B682F;
   padding: 80px 0 100px 0;
-  margin: 0;
   width: 100vw;
   position: relative;
   left: 50%;
@@ -635,148 +629,14 @@ table em {
   padding: 40px;
 }
 
-/* Tables in pricing section */
-.section-services table {
-  color: #fff;
-  border-color: #C2E5DF;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-}
-
-.section-services th,
-.section-services td {
-  border-color: rgba(194, 229, 223, 0.3);
-}
-
-.page-body h3 {
-  font-family: 'Nursery-Heading', sans-serif;
-  font-size: 1.6rem;
-  color: #fff;
-  margin-top: 30px;
-  margin-bottom: 15px;
-}
-
-.page-body p {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 20px;
-  color: #fff;
-}
-
-.page-body ul, .page-body ol {
-  margin-left: 30px;
-  margin-bottom: 20px;
-}
-
-.page-body li {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 10px;
-  color: #fff;
-}
-
-.page-body a {
-  color: #45BBE6;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.page-body a:hover {
-  color: #C2E5DF;
-  text-decoration: underline;
-}
-
-.page-body strong {
-  color: #fff;
-  font-weight: 600;
-}
-/* Table styling in Deep Ocean section (The Corals) */
-.section-corals table {
-  background: rgba(235, 213, 175, 0.05); /* Tan tint */
-}
-
-.section-corals th {
-  color: #EBD5AF; /* Shoreline/Tan */
-  border-bottom-color: #EBD5AF;
-  background: rgba(235, 213, 175, 0.1);
-}
-
-.section-corals td {
-  color: #fff;
-}
-
-.section-corals table em {
-  color: #EBD5AF; /* Tan for italic species names */
-}
-
-.section-corals tr:hover {
-  background: rgba(235, 213, 175, 0.08);
-}
-
-/* Table styling in Sandbar section (Equipment) */
-.section-equipment table {
-  background: rgba(16, 97, 106, 0.05); /* Patch Reef tint */
-}
-
-.section-equipment th {
-  color: #10616A !important; /* Patch Reef */
-  border-bottom-color: #10616A;
-  background: rgba(16, 97, 106, 0.1);
-}
-
-.section-equipment td {
-  color: #333 !important;
-}
-
-.section-equipment table em {
-  color: #10616A !important; /* Patch Reef for italic */
-}
-
-.section-equipment tr:hover {
-  background: rgba(16, 97, 106, 0.08);
-}
-
-/* Table styling in Heritage Trees section (Services/Pricing) */
-.section-services table {
-  background: rgba(194, 229, 223, 0.05); /* Sandbar tint */
-}
-
-.section-services th {
-  color: #C2E5DF !important; /* Sandbar */
-  border-bottom-color: #C2E5DF;
-  background: rgba(194, 229, 223, 0.1);
-}
-
-.section-services td {
-  color: #fff !important;
-}
-
-.section-services table em {
-  color: #C2E5DF !important; /* Sandbar for italic */
-}
-
-.section-services tr:hover {
-  background: rgba(194, 229, 223, 0.08);
-}
-/* Section Anchor Links */
-.page-body a[id] {
-  display: block;
-  position: relative;
-  top: -100px;
-  visibility: hidden;
-}
-
 /* ==========================================================================
    RESEARCH PAGE SECTIONS
    ========================================================================== */
 
 /* Section 1: Collaborations - Patch Reef */
 .section-collaborations {
-  background: #10616A; /* Patch Reef */
+  background: #10616A;
   padding: 80px 0;
-  margin: 0;
   width: 100vw;
   position: relative;
   left: 50%;
@@ -800,9 +660,8 @@ table em {
 
 /* Section 2: Student Projects - Deep Ocean */
 .section-students {
-  background: #00446F; /* Deep Ocean */
+  background: #00446F;
   padding: 80px 0;
-  margin: 0;
   width: 100vw;
   position: relative;
   left: 50%;
@@ -813,7 +672,7 @@ table em {
 
 .section-students h2,
 .section-students h3 {
-  color: #EBD5AF; /* Shoreline/Tan */
+  color: #EBD5AF;
 }
 
 .section-students > * {
@@ -834,9 +693,8 @@ table em {
 
 /* Section 3: Monitoring - Sandbar */
 .section-monitoring {
-  background: #C2E5DF; /* Sandbar */
+  background: #C2E5DF;
   padding: 80px 0 100px 0;
-  margin: 0;
   width: 100vw;
   position: relative;
   left: 50%;
@@ -868,17 +726,204 @@ table em {
   color: #00446F !important;
 }
 
-/* Curved Section Tops */
+/* ==========================================================================
+   TABLE STYLING BY SECTION
+   ========================================================================== */
+
+.section-corals table {
+  background: rgba(235, 213, 175, 0.05);
+}
+
+.section-corals th {
+  color: #EBD5AF;
+  border-bottom-color: #EBD5AF;
+  background: rgba(235, 213, 175, 0.1);
+}
+
+.section-corals td {
+  color: #fff;
+}
+
+.section-corals table em {
+  color: #EBD5AF;
+}
+
+.section-corals tr:hover {
+  background: rgba(235, 213, 175, 0.08);
+}
+
+.section-equipment table {
+  background: rgba(16, 97, 106, 0.05);
+}
+
+.section-equipment th {
+  color: #10616A !important;
+  border-bottom-color: #10616A;
+  background: rgba(16, 97, 106, 0.1);
+}
+
+.section-equipment td {
+  color: #333 !important;
+}
+
+.section-equipment table em {
+  color: #10616A !important;
+}
+
+.section-equipment tr:hover {
+  background: rgba(16, 97, 106, 0.08);
+}
+
+.section-services table {
+  background: rgba(194, 229, 223, 0.05);
+  color: #fff;
+  border-color: #C2E5DF;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.section-services th {
+  color: #C2E5DF !important;
+  border-bottom-color: #C2E5DF;
+  background: rgba(194, 229, 223, 0.1);
+}
+
+.section-services td {
+  color: #fff !important;
+  border-color: rgba(194, 229, 223, 0.3);
+}
+
+.section-services table em {
+  color: #C2E5DF !important;
+}
+
+.section-services tr:hover {
+  background: rgba(194, 229, 223, 0.08);
+}
+
+/* ==========================================================================
+   IMAGE SLIDER (Research - Monitoring section)
+   ========================================================================== */
+.image-slider-container {
+  max-width: 800px;
+  margin: 40px auto;
+}
+
+.image-slider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  user-select: none;
+}
+
+.slider-image-bottom,
+.slider-image-top {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.slider-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: inset(0 50% 0 0);
+  pointer-events: none;
+}
+
+.slider-button-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.slider-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 3;
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.slider-button {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.slider-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 100%;
+  background: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.slider-line::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.slider-line::after {
+  content: '◀  ▶';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #333;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.slider-caption {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #333 !important;
+}
+
+/* ==========================================================================
+   ROUNDED SECTION TOPS
+   ========================================================================== */
 .section-corals,
 .section-equipment,
 .section-services,
 .section-monitoring {
   border-radius: 80px 80px 0 0;
   margin-top: -80px;
+  padding-top: 160px;
 }
 
 /* ==========================================================================
-   5. ANIMATIONS & EFFECTS
+   ANIMATIONS
    ========================================================================== */
 @keyframes fadeInStay {
   0% { opacity: 0; transform: translateY(30px); }
@@ -886,7 +931,7 @@ table em {
 }
 
 /* ==========================================================================
-   6. NARROW DESKTOP (1025px - 1208px)
+   NARROW DESKTOP (768px - 1208px)
    ========================================================================== */
 @media (max-width: 1208px) and (min-width: 768px) {
   .fade-in-text {
@@ -906,8 +951,7 @@ table em {
     white-space: nowrap;
   }
   
-  /* iPad video sizing - fill height like mobile */
-  .video-container iframe {
+  .video-container video {
     height: 100vh;
     height: 100dvh;
     width: 177.78vh;
@@ -919,85 +963,77 @@ table em {
 }
 
 /* ==========================================================================
-   7. RESPONSIVE / MOBILE OVERRIDES
+   MOBILE (≤767px)
    ========================================================================== */
-
-/* --- Mobile Rules (Only apply if screen is 767px or less) --- */
 @media (max-width: 767px) {
-   
-* {
+  
+  * {
     -webkit-tap-highlight-color: transparent;
   }
-   
+  
   .hero { 
-  height: 100vh;
-  height: 100dvh;
+    height: 100vh;
+    height: 100dvh;
   }
 
-  .video-container iframe { 
-  position: absolute;
-  height: 100vh;
-  height: 100dvh;
-  width: 177.78vh;
-  width: 177.78dvh;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
+  .video-container video { 
+    position: absolute;
+    height: 100vh;
+    height: 100dvh;
+    width: 177.78vh;
+    width: 177.78dvh;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
   }
   
-  /* Mobile hero text - split into 3 lines and left-aligned */
   .fade-in-text { 
-  display: block !important;
-  font-size: 5rem;
-  text-align: left;
-  width: 100%;
-  padding-left: 18px;
-  line-height: 0.75;
-  word-spacing: 100vw;
+    display: block !important;
+    font-size: 5rem;
+    text-align: left;
+    width: 100%;
+    padding-left: 18px;
+    line-height: 0.75;
+    word-spacing: 100vw;
   }
 
   .fade-in-subtext { 
-  display: none; 
+    display: none; 
   }
 
   .hero-overlay {
-  justify-content: flex-start !important;
-  align-items: flex-start !important;
-  padding-top: 60px !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    padding-top: 60px !important;
   }
   
-  /* Mobile header - teal on all pages */
-.main-header {
-  background: #10616A !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
-}
+  .main-header {
+    background: #10616A !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+  }
 
-/* Homepage overrides back to transparent */
-.homepage .main-header {
-  background: transparent !important;
-  box-shadow: none !important;
-}
+  .homepage .main-header {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
 
-/* White logo on all mobile pages */
-.logo {
-  color: #ffffff !important;
-  display: block !important;
-  margin-right: auto !important;
-  margin-left: 0 !important;
-}
+  .logo {
+    color: #ffffff !important;
+    display: block !important;
+    margin-right: auto !important;
+    margin-left: 0 !important;
+  }
 
-/* Hide logo on homepage only */
-.homepage .logo {
-  display: none !important;
-}
+  .homepage .logo {
+    display: none !important;
+  }
   
   .nav-container {
     justify-content: flex-end;
     padding: 0 20px;
   }
   
-  /* Show white hamburger on mobile */
   .hamburger {
     display: flex !important;
   }
@@ -1010,7 +1046,6 @@ table em {
     background: #333 !important;
   }
   
-  /* Mobile navigation menu - full screen overlay */
   .nav-menu {
     position: fixed;
     left: -100%;
@@ -1046,22 +1081,46 @@ table em {
     color: #10616A;
   }
   
-  .section { 
-    flex-direction: column !important; 
-    text-align: center; 
+  /* Mobile dropdown styling */
+  .dropdown-menu {
+    position: static !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 10px 0 !important;
+    margin-top: 10px !important;
   }
-   /* Feature sections stack on mobile */
-.feature-section {
-  grid-template-columns: 1fr !important;
-  gap: 30px !important;
-  margin: 50px 0 !important;
-}
+  
+  .dropdown-menu a {
+    font-size: 1.5rem !important;
+    color: #45BBE6 !important;
+    padding: 8px 20px !important;
+  }
+  
+  /* Feature sections stack on mobile */
+  .feature-section {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+    margin: 50px 0 !important;
+  }
 
-.feature-section.reverse .feature-image {
-  order: 0 !important;
-}
+  .feature-section.reverse .feature-image {
+    order: 0 !important;
+  }
 
-.feature-text h2 {
-  font-size: 2rem !important;
-}
+  .feature-text h2 {
+    font-size: 2rem !important;
+  }
+
+  /* Fix long page titles on mobile */
+  .page-title {
+    font-size: 3rem !important;
+    line-height: 1.1 !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  .full-width-section {
+    padding: 0 20px !important;
+  }
 }
