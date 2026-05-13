@@ -753,7 +753,73 @@ td {
 }
 
 /* ==========================================================================
-   10. IMAGE SLIDER (for monitoring sections)
+   10. CONTACT FORM STYLING
+   ========================================================================== */
+.contact-form {
+  max-width: 600px;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #fff;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  margin-top: 8px;
+  padding: 12px;
+  border: 2px solid #C2E5DF;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: 'Nursery-Body', sans-serif;
+  font-size: 1rem;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.contact-form textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+.contact-form button {
+  background: #EBD5AF;
+  color: #10616A;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: 0.3s;
+  align-self: center;
+  min-width: 200px;
+}
+
+.contact-form button:hover {
+  background: #fff;
+  color: #10616A;
+}
+
+.contact-form select option {
+  background: #10616A;
+  color: #fff;
+}
+
+/* ==========================================================================
+   11. IMAGE SLIDER (for monitoring sections)
    ========================================================================== */
 .image-slider-container {
   max-width: 800px;
@@ -860,7 +926,7 @@ td {
 }
 
 /* ==========================================================================
-   11. ANCHOR LINKS
+   12. ANCHOR LINKS
    ========================================================================== */
 .section-1 a[id],
 .section-2 a[id],
@@ -873,7 +939,7 @@ td {
 }
 
 /* ==========================================================================
-   12. ANIMATIONS
+   13. ANIMATIONS
    ========================================================================== */
 @keyframes fadeInStay {
   0% { opacity: 0; transform: translateY(30px); }
@@ -881,7 +947,7 @@ td {
 }
 
 /* ==========================================================================
-   13. NARROW DESKTOP (768px - 1208px)
+   14. NARROW DESKTOP (768px - 1208px)
    ========================================================================== */
 @media (max-width: 1208px) and (min-width: 768px) {
   .fade-in-text {
@@ -913,7 +979,7 @@ td {
 }
 
 /* ==========================================================================
-   14. MOBILE (≤767px)
+   15. MOBILE (≤767px)
    ========================================================================== */
 @media (max-width: 767px) {
   
