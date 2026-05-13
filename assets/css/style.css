@@ -11,72 +11,9 @@ body {
   color: #fff;
 }
 
-body.facilities-page {
-  background: #4B682F;
-}
-
-body.facilities-page .page-content {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-body.facilities-page .section-services {
-  flex-grow: 1;
-  padding-bottom: 100px;
-}
-
-body.research-page {
-  background: #C2E5DF;
-}
-
-/* Add extra bottom padding to sections before rounded sections on research page */
-body.research-page .section-corals {
-  padding-bottom: 160px;
-}
-
 h1, h2, h3, .logo { 
   font-family: 'Nursery-Heading', sans-serif; 
   color: #fff;
-}
-
-/* Table styling - site-wide */
-table {
-  width: 100%;
-  max-width: 700px;
-  margin: 30px auto;
-  border-collapse: collapse;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-th {
-  background: rgba(255, 255, 255, 0.1);
-  color: #45BBE6;
-  font-family: 'Nursery-Heading', sans-serif;
-  font-size: 1.1rem;
-  padding: 15px 20px;
-  text-align: left;
-  border-bottom: 2px solid #45BBE6;
-}
-
-td {
-  padding: 12px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
-tr:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-th:not(:first-child),
-td:not(:first-child) {
-  text-align: center;
-}
-
-table em {
-  color: #45BBE6;
-  font-style: italic;
 }
 
 /* ==========================================================================
@@ -369,7 +306,6 @@ table em {
 .page-title {
   font-family: 'Nursery-Heading', sans-serif;
   font-size: 4.5rem;
-  color: #fff;
   margin: 0;
   text-align: center;
 }
@@ -386,71 +322,6 @@ table em {
   background: none;
   padding: 0;
   max-width: none;
-}
-
-.page-body h2 {
-  font-family: 'Nursery-Heading', sans-serif;
-  font-size: 2.2rem;
-  color: #fff;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 3px solid #fff;
-}
-
-.page-body h2:first-child {
-  margin-top: 0;
-}
-
-.page-body h3 {
-  font-family: 'Nursery-Heading', sans-serif;
-  font-size: 1.6rem;
-  color: #fff;
-  margin-top: 30px;
-  margin-bottom: 15px;
-}
-
-.page-body p {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 20px;
-  color: #fff;
-}
-
-.page-body ul, .page-body ol {
-  margin-left: 30px;
-  margin-bottom: 20px;
-}
-
-.page-body li {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 10px;
-  color: #fff;
-}
-
-.page-body a {
-  color: #45BBE6;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.page-body a:hover {
-  color: #C2E5DF;
-  text-decoration: underline;
-}
-
-.page-body strong {
-  color: #fff;
-  font-weight: 600;
-}
-
-.page-body a[id] {
-  display: block;
-  position: relative;
-  top: -100px;
-  visibility: hidden;
 }
 
 /* Two-column feature sections */
@@ -510,12 +381,12 @@ table em {
 }
 
 /* ==========================================================================
-   6. COLORED SECTIONS - FACILITIES PAGE
+   6. UNIVERSAL SECTION CLASSES
+   Use these on ANY page in order: section-1, section-2, section-3, section-4
    ========================================================================== */
 
-/* Section 1: The Nursery - Patch Reef */
-.section-nursery {
-  background: #10616A;
+/* Shared properties for all sections */
+.section-1, .section-2, .section-3, .section-4 {
   padding: 80px 0;
   width: 100vw;
   position: relative;
@@ -525,308 +396,364 @@ table em {
   margin-right: -50vw;
 }
 
-/* Section 2: The Corals - Deep Ocean */
-.section-corals {
-  background: #00446F;
-  padding: 80px 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+/* Apply rounded tops to sections 2, 3, 4 (not the first section) */
+.section-2, .section-3, .section-4 {
+  border-radius: 80px 80px 0 0;
+  margin-top: -80px;
+  padding-top: 80px;
 }
 
-.section-corals h2 {
-  color: #EBD5AF !important;
-  border-bottom-color: #45BBE6 !important;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 40px;
-}
-
-.section-corals > * {
+/* Center content with max-width in all sections */
+.section-1 > *,
+.section-2 > *,
+.section-3 > *,
+.section-4 > * {
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 40px;
   padding-right: 40px;
-}
-
-.section-corals a {
-  color: #C2E5DF !important;
-}
-
-.section-corals a:hover {
-  color: #45BBE6 !important;
-}
-
-/* Section 3: Equipment - Sandbar */
-.section-equipment {
-  background: #C2E5DF;
-  padding: 80px 0 100px 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-.section-equipment h2,
-.section-equipment h3,
-.section-equipment p,
-.section-equipment li,
-.section-equipment strong,
-.section-equipment em {
-  color: #333 !important;
-}
-
-.section-equipment h2 {
-  border-bottom-color: #10616A !important;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 40px;
-}
-
-.section-equipment > * {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
-.section-equipment a {
-  color: #10616A !important;
-}
-
-.section-equipment a.btn {
-  color: #fff !important;
-}
-
-.section-equipment a:hover {
-  color: #00446F !important;
-}
-
-/* Buoy box */
-.nursery-live-data {
-  margin: 40px auto 60px auto !important;
-}
-
-/* Section 4: Services - Heritage Trees */
-.section-services {
-  background: #4B682F;
-  padding: 80px 0 100px 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-.section-services h2 {
-  color: #C2E5DF !important;
-  border-bottom-color: #C2E5DF !important;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 40px;
-}
-
-.section-services > * {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
-.section-services p {
-  text-align: center;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px;
 }
 
 /* ==========================================================================
-   7. COLORED SECTIONS - RESEARCH PAGE
+   SECTION 1 - Patch Reef (#10616A)
    ========================================================================== */
-
-/* Section 1: Collaborations - Patch Reef */
-.section-collaborations {
+.section-1 {
   background: #10616A;
-  padding: 80px 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
 }
 
-.section-collaborations h2,
-.section-collaborations h3 {
+.section-1 .page-title,
+.section-1 h1,
+.section-1 .feature-text h2 {
+  color: #fff !important;
+}
+
+.section-1 h2,
+.section-1 h3 {
+  color: #C2E5DF !important;
+  border-bottom-color: #fff !important;
+}
+
+.section-1 p,
+.section-1 li,
+.section-1 strong {
   color: #fff;
 }
 
-.section-collaborations > * {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
-/* Section 2: Student Projects - Deep Ocean */
-.section-students {
-  background: #00446F;
-  padding: 80px 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-.section-students h2,
-.section-students h3 {
-  color: #EBD5AF;
-}
-
-.section-students > * {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
-.section-students a {
+.section-1 a {
   color: #EBD5AF !important;
 }
 
-.section-students a:hover {
-  color: #C2E5DF !important;
+.section-1 a:hover {
+  color: #fff !important;
 }
 
-/* Section 3: Monitoring - Sandbar */
-.section-monitoring {
+/* ==========================================================================
+   SECTION 2 - Deep Ocean (#00446F)
+   ========================================================================== */
+.section-2 {
+  background: #00446F;
+}
+
+.section-2 .page-title,
+.section-2 h1,
+.section-2 .feature-text h2 {
+  color: #fff !important;
+}
+
+.section-2 h2,
+.section-2 h3 {
+  color: #EBD5AF !important;
+  border-bottom-color: #45BBE6 !important;
+}
+
+.section-2 p,
+.section-2 li,
+.section-2 strong {
+  color: #fff;
+}
+
+.section-2 a {
+  color: #9AA731 !important;
+}
+
+.section-2 a:hover {
+  color: #fff !important;
+}
+
+/* ==========================================================================
+   SECTION 3 - Sandbar (#C2E5DF) - DARK TEXT
+   ========================================================================== */
+.section-3 {
   background: #C2E5DF;
-  padding: 80px 0 100px 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
 }
 
-.section-monitoring h2,
-.section-monitoring h3,
-.section-monitoring p,
-.section-monitoring li {
+.section-3 .page-title,
+.section-3 h1,
+.section-3 .feature-text h2 {
+  color: #000 !important;
+}
+
+.section-3 h2,
+.section-3 h3 {
+  color: #10616A !important;
+  border-bottom-color: #EBD5AF !important;
+}
+
+.section-3 p,
+.section-3 li,
+.section-3 strong,
+.section-3 em {
   color: #333 !important;
 }
 
-.section-monitoring > * {
+.section-3 a {
+  color: #4B682F !important;
+}
+
+.section-3 a:hover {
+  color: #000 !important;
+}
+
+.section-3 a.btn {
+  color: #fff !important;
+}
+
+/* ==========================================================================
+   SECTION 4 - Heritage Trees (#4B682F)
+   ========================================================================== */
+.section-4 {
+  background: #4B682F;
+}
+
+.section-4 .page-title,
+.section-4 h1,
+.section-4 .feature-text h2 {
+  color: #fff !important;
+}
+
+.section-4 h2,
+.section-4 h3 {
+  color: #45BBE6 !important;
+  border-bottom-color: #76C7C3 !important;
+}
+
+.section-4 p,
+.section-4 li,
+.section-4 strong {
+  color: #fff;
+}
+
+.section-4 a {
+  color: #C2E5DF !important;
+}
+
+.section-4 a:hover {
+  color: #fff !important;
+}
+
+/* ==========================================================================
+   7. SHARED TYPOGRAPHY IN SECTIONS
+   ========================================================================== */
+.section-1 h2,
+.section-2 h2,
+.section-3 h2,
+.section-4 h2 {
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 2.2rem;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid;
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding: 0 40px 10px 40px;
 }
 
-.section-monitoring a {
-  color: #10616A !important;
+.section-1 h3,
+.section-2 h3,
+.section-3 h3,
+.section-4 h3 {
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 1.6rem;
+  margin-top: 30px;
+  margin-bottom: 15px;
 }
 
-.section-monitoring a:hover {
-  color: #00446F !important;
+.section-1 p,
+.section-2 p,
+.section-3 p,
+.section-4 p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.section-1 ul, .section-1 ol,
+.section-2 ul, .section-2 ol,
+.section-3 ul, .section-3 ol,
+.section-4 ul, .section-4 ol {
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
+
+.section-1 li,
+.section-2 li,
+.section-3 li,
+.section-4 li {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 10px;
+}
+
+.section-1 strong,
+.section-2 strong,
+.section-4 strong {
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.section-3 strong {
+  color: #333 !important;
+  font-weight: 600;
 }
 
 /* ==========================================================================
    8. TABLE STYLING BY SECTION
    ========================================================================== */
+table {
+  width: 100%;
+  max-width: 700px;
+  margin: 30px auto;
+  border-collapse: collapse;
+}
 
-.section-corals table {
+th, td {
+  padding: 15px 20px;
+  text-align: left;
+}
+
+th:not(:first-child),
+td:not(:first-child) {
+  text-align: center;
+}
+
+th {
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 1.1rem;
+  border-bottom: 2px solid;
+}
+
+td {
+  border-bottom: 1px solid;
+}
+
+/* Section 1 Tables */
+.section-1 table {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.section-1 th {
+  color: #EBD5AF !important;
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom-color: #EBD5AF !important;
+}
+
+.section-1 td {
+  color: #fff !important;
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.section-1 tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.section-1 table em {
+  color: #EBD5AF;
+}
+
+/* Section 2 Tables */
+.section-2 table {
   background: rgba(235, 213, 175, 0.05);
 }
 
-.section-corals th {
-  color: #EBD5AF;
-  border-bottom-color: #EBD5AF;
+.section-2 th {
+  color: #EBD5AF !important;
   background: rgba(235, 213, 175, 0.1);
+  border-bottom-color: #EBD5AF !important;
 }
 
-.section-corals td {
-  color: #fff;
+.section-2 td {
+  color: #fff !important;
+  border-bottom-color: rgba(235, 213, 175, 0.1) !important;
 }
 
-.section-corals table em {
-  color: #EBD5AF;
-}
-
-.section-corals tr:hover {
+.section-2 tr:hover {
   background: rgba(235, 213, 175, 0.08);
 }
 
-.section-equipment table {
+.section-2 table em {
+  color: #EBD5AF;
+}
+
+/* Section 3 Tables */
+.section-3 table {
   background: rgba(16, 97, 106, 0.05);
 }
 
-.section-equipment th {
+.section-3 th {
   color: #10616A !important;
-  border-bottom-color: #10616A;
   background: rgba(16, 97, 106, 0.1);
+  border-bottom-color: #10616A !important;
 }
 
-.section-equipment td {
+.section-3 td {
   color: #333 !important;
+  border-bottom-color: rgba(16, 97, 106, 0.1) !important;
 }
 
-.section-equipment table em {
+.section-3 tr:hover {
+  background: rgba(16, 97, 106, 0.05);
+}
+
+.section-3 table em {
   color: #10616A !important;
 }
 
-.section-equipment tr:hover {
-  background: rgba(16, 97, 106, 0.08);
-}
-
-.section-services table {
+/* Section 4 Tables */
+.section-4 table {
   background: rgba(194, 229, 223, 0.05);
-  color: #fff;
-  border-color: #C2E5DF;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
 }
 
-.section-services th {
-  color: #C2E5DF !important;
-  border-bottom-color: #C2E5DF;
+.section-4 th {
+  color: #45BBE6 !important;
   background: rgba(194, 229, 223, 0.1);
+  border-bottom-color: #76C7C3 !important;
 }
 
-.section-services td {
+.section-4 td {
   color: #fff !important;
-  border-color: rgba(194, 229, 223, 0.3);
+  border-bottom-color: rgba(194, 229, 223, 0.2) !important;
 }
 
-.section-services table em {
-  color: #C2E5DF !important;
-}
-
-.section-services tr:hover {
+.section-4 tr:hover {
   background: rgba(194, 229, 223, 0.08);
 }
 
+.section-4 table em {
+  color: #45BBE6 !important;
+}
+
 /* ==========================================================================
-   9. IMAGE SLIDER (Research - Monitoring section)
+   9. BUOY BOX (for facilities Equipment section)
+   ========================================================================== */
+.nursery-live-data {
+  margin: 40px auto 60px auto !important;
+}
+
+/* ==========================================================================
+   10. IMAGE SLIDER (for monitoring sections)
    ========================================================================== */
 .image-slider-container {
   max-width: 800px;
@@ -930,23 +857,23 @@ table em {
   margin-top: 15px;
   font-size: 0.9rem;
   font-style: italic;
-  color: #333 !important;
 }
 
 /* ==========================================================================
-   10. ROUNDED SECTION TOPS
+   11. ANCHOR LINKS
    ========================================================================== */
-.section-corals,
-.section-equipment,
-.section-services,
-.section-monitoring {
-  border-radius: 80px 80px 0 0;
-  margin-top: -80px;
-  padding-top: 80px;
+.section-1 a[id],
+.section-2 a[id],
+.section-3 a[id],
+.section-4 a[id] {
+  display: block;
+  position: relative;
+  top: -100px;
+  visibility: hidden;
 }
 
 /* ==========================================================================
-   11. ANIMATIONS
+   12. ANIMATIONS
    ========================================================================== */
 @keyframes fadeInStay {
   0% { opacity: 0; transform: translateY(30px); }
@@ -954,7 +881,7 @@ table em {
 }
 
 /* ==========================================================================
-   12. NARROW DESKTOP (768px - 1208px)
+   13. NARROW DESKTOP (768px - 1208px)
    ========================================================================== */
 @media (max-width: 1208px) and (min-width: 768px) {
   .fade-in-text {
@@ -986,7 +913,7 @@ table em {
 }
 
 /* ==========================================================================
-   13. MOBILE (≤767px)
+   14. MOBILE (≤767px)
    ========================================================================== */
 @media (max-width: 767px) {
   
@@ -1104,7 +1031,6 @@ table em {
     color: #10616A;
   }
   
-  /* Mobile dropdown styling */
   .dropdown-menu {
     position: static !important;
     box-shadow: none !important;
@@ -1119,7 +1045,6 @@ table em {
     padding: 8px 20px !important;
   }
   
-  /* Feature sections stack on mobile */
   .feature-section {
     grid-template-columns: 1fr !important;
     gap: 30px !important;
@@ -1134,7 +1059,6 @@ table em {
     font-size: 2rem !important;
   }
 
-  /* Fix long page titles on mobile */
   .page-title {
     font-size: 3rem !important;
     line-height: 1.1 !important;
