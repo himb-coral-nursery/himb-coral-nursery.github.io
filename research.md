@@ -4,7 +4,7 @@ permalink: /research/
 ---
 
 <!-- SECTION 1: STUDENT PROJECTS - Patch Reef -->
-<div class="section-nursery" markdown="1">
+<div class="section-1" markdown="1">
 <a id="students"></a>
 <h1 class="page-title">Student Projects</h1>
 
@@ -22,7 +22,7 @@ permalink: /research/
 </div>
 
 <!-- SECTION 2: MONITORING - Deep Ocean -->
-<div class="section-corals" markdown="1">
+<div class="section-2" markdown="1">
 <a id="monitoring"></a>
 <h1 class="page-title">Long-term Monitoring</h1>
 
@@ -33,7 +33,6 @@ The nursery is photographed bimonthly to generate 3D models and orthomosaics of 
 </div>
 
 <!-- SLIDER IMAGE -->
-
 <div class="image-slider-container">
   <div class="image-slider">
     <img src="/assets/images/taglab-ortho.png" alt="An Orthmosaic with Corals" class="slider-image-bottom">
@@ -64,10 +63,8 @@ sliderInput.addEventListener('input', (e) => {
 
 </div>
 
-</div>
-
 <!-- SECTION 3: COLLABORATIONS - Sandbar -->
-<div class="section-equipment" markdown="1">
+<div class="section-3" markdown="1">
 <a id="collaborations"></a>
 <h1 class="page-title">Collaborations</h1>
 
