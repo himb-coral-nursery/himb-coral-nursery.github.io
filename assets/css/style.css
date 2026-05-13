@@ -15,8 +15,15 @@ body.facilities-page {
   background: #4B682F;
 }
 
+body.facilities-page .page-content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 body.facilities-page .section-services {
-  padding-bottom: 50vh;
+  flex-grow: 1;
+  padding-bottom: 100px;
 }
 
 body.research-page {
