@@ -207,6 +207,7 @@ table em {
   transform: translateX(-50%);
   pointer-events: all;
   animation: bounce 2s infinite;
+  z-index: 9999;
 }
 
 .scroll-indicator a {
