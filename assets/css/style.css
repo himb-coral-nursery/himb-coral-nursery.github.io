@@ -242,7 +242,7 @@ h1, h2, h3, .logo {
 .about-section {
   background: #10616A;
   width: calc(100% + 50px); /* Wider than viewport */
-  margin-left: -100px;       /* Center it */
+  margin-left: -0px;       /* Center it */
   padding: 80px 0;
   border-radius: 100px 100px 0 0;
   margin-top: -40px;
