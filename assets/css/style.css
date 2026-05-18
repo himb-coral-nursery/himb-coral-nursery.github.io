@@ -5,63 +5,24 @@
 
 body { 
   font-family: 'Nursery-Body', sans-serif; 
-  background: transparent;
+  background: #10616A;
   overflow-x: hidden; 
   line-height: 1.6;
-  color: #fff; /* White text */
+  color: #fff;
 }
 
 h1, h2, h3, .logo { 
   font-family: 'Nursery-Heading', sans-serif; 
-  color: #fff; /* White */
-}
-
-/* Table styling - site-wide */
-table {
-  width: 100%;
-  max-width: 700px;
-  margin: 30px auto;
-  border-collapse: collapse;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-th {
-  background: rgba(255, 255, 255, 0.1);
-  color: #45BBE6;
-  font-family: 'Nursery-Heading', sans-serif;
-  font-size: 1.1rem;
-  padding: 15px 20px;
-  text-align: left;
-  border-bottom: 2px solid #45BBE6;
-}
-
-td {
-  padding: 12px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
 }
 
-tr:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-/* Center align columns that are numeric/categorical */
-th:not(:first-child),
-td:not(:first-child) {
-  text-align: center;
-}
-
-/* Style italic text (like species names) */
-table em {
-  color: #45BBE6;
-  font-style: italic;
-}
 /* ==========================================================================
    2. NAVIGATION & HEADER
    ========================================================================== */
 .main-header {
   position: fixed;
-  top: 0; width: 100%;
+  top: 0; 
+  width: 100%;
   padding: 20px 0;
   background: white; 
   z-index: 10000;
@@ -79,7 +40,7 @@ table em {
 .logo { 
   font-weight: bold; 
   text-decoration: none; 
-  color: #10616A; /* Patch Reef */
+  color: #10616A;
   letter-spacing: 1px; 
   font-size: 1.2rem; 
   z-index: 10001;
@@ -93,16 +54,16 @@ table em {
 
 .nav-links a { 
   text-decoration: none; 
-  color: #10616A; /* Patch Reef */
+  color: #10616A;
   font-weight: 500; 
   transition: 0.3s; 
 }
 
 .nav-links a:hover { 
-  color: #45BBE6; /* Hawai'i Sky */
+  color: #45BBE6;
 }
 
-/* Hamburger Menu - Hidden on Desktop */
+/* Hamburger Menu */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -117,13 +78,12 @@ table em {
 .hamburger span {
   width: 25px;
   height: 3px;
-  background: #10616A; /* Patch Reef */
+  background: #10616A;
   margin: 3px 0;
   transition: 0.3s;
   border-radius: 3px;
 }
 
-/* Hamburger animation when active */
 .hamburger.active span:nth-child(1) {
   transform: rotate(45deg) translate(7px, 7px);
 }
@@ -150,15 +110,14 @@ table em {
   min-width: 200px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   list-style: none;
-  padding: 15px 0 10px 0;  /* ← top padding creates visual gap without dead zone */
+  padding: 15px 0 10px 0;
   border-radius: 4px;
   z-index: 10001;
   flex-direction: column;
   gap: 0;
 }
 
-.dropdown:hover .dropdown-menu,
-.dropdown.open .dropdown-menu {
+.dropdown:hover .dropdown-menu {
   display: block !important;
 }
 
@@ -180,7 +139,6 @@ table em {
 }
 
 /* Scroll Indicator */
-
 .scroll-indicator {
   position: absolute;
   bottom: 40px;
@@ -188,6 +146,7 @@ table em {
   transform: translateX(-50%);
   pointer-events: all;
   animation: bounce 2s infinite;
+  z-index: 9999;
 }
 
 .scroll-indicator a {
@@ -217,23 +176,32 @@ table em {
 
 .video-container {
   position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
   background: #ffffff;
 }
 
-.video-container iframe {
-  width: 200vw; height: 120vh; 
+.video-container video {
+  width: 100%; 
+  height: 100%; 
   position: absolute;
-  top: 50%; left: 50%;
+  top: 50%; 
+  left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
   object-fit: cover;
+  z-index: 2;
+  transition: opacity 0.5s;
 }
 
-/* Hero Text Overlay */
 .hero-overlay {
   position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start; 
@@ -267,101 +235,20 @@ table em {
   margin-top: -10px;
   text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
 }
+
 /* ==========================================================================
-   4. PAGE CONTENT (Interior Pages)
+   4. ABOUT SECTION (Homepage)
    ========================================================================== */
-.page-content {
-  min-height: 100vh;
-}
-
-.page-header {
-  background: #10616A;
-  padding: 60px 20px 0px;
-  text-align: center;
-  border-top: 8px solid;
-  border-image: linear-gradient(90deg, #00446f 0%, #45BBE6 50%, #10616A 100%) 1;
-}
-
-.page-title {
-  font-family: 'Nursery-Heading', sans-serif;
-  font-size: 4.5rem;
-  color: #fff;
-  margin: 0;
-  text-align: center;
-}
-
-.page-subtitle {
-  font-family: 'Nursery-Body', sans-serif;
-  font-size: 1.8rem;
-  color: #fff;
-  margin: 0px 0 0 0;
-  font-weight: 300;
-}
-
-.page-body {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 60px 40px;
-}
-
-.page-body h2 {
-  font-family: 'Nursery-Heading', sans-serif;
-  font-size: 2.2rem;
-  color: #fff;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 3px solid #fff;
-}
-
-.page-body h2:first-child {
-  margin-top: 0;
-}
-
-/* Two-column feature sections */
-.feature-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: center;
-  margin: 80px 0;
-}
-
-.feature-section:first-of-type {
-  margin-top: 40px;
-}
-
-.feature-text h2 {
-  margin-top: 0;
-  font-size: 3.5rem;
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.feature-image img {
-  width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.no-shadow img {
-  box-shadow: none;
-}
-
-/* Alternate layout - image on left */
-.feature-section.reverse {
-  grid-template-columns: 1fr 1fr;
-}
-
-.feature-section.reverse .feature-image {
-  order: -1;
-}
-
-/* About Section (Homepage) */
 .about-section {
   background: #10616A;
-  width: 100%;
+  width: calc(100% + 50px); /* Wider than viewport */
+  margin-left: -20px;       /* Center it */
+  overflow-x: hidden;
   padding: 80px 0;
+  border-radius: 100px 100px 0 0;
+  margin-top: -40px;
+  position: relative;
+  z-index: 100;
 }
 
 .about-body {
@@ -408,42 +295,85 @@ table em {
 }
 
 /* ==========================================================================
-   COLORED SECTIONS
+   5. PAGE CONTENT (Interior Pages)
    ========================================================================== */
+.page-content {
+  min-height: 100vh;
+}
 
-/* Section 1: The Nursery - Patch Reef (default, no extra styling needed) */
-.section-nursery {
+.page-header {
+  display: none;
+}
+
+.page-title {
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 4.5rem;
+  margin: 0;
+  text-align: center;
+}
+
+.page-subtitle {
+  font-family: 'Nursery-Body', sans-serif;
+  font-size: 1.8rem;
+  color: #fff;
+  margin: 0;
+  font-weight: 300;
+}
+
+.page-body {
+  background: none;
   padding: 0;
+  max-width: none;
 }
 
-/* Section 2: The Corals - Deep Ocean */
-.section-corals {
-  background: #00446F;
-  padding: 80px 0;
-  margin: 80px 0 0 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-.section-corals h2 {
-  color: #EBD5AF !important;
-  border-bottom-color: #45BBE6 !important;
+/* Two-column feature sections */
+.feature-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  margin: 80px auto;
   max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
   padding: 0 40px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-.section-corals > * {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
+.feature-section:first-of-type {
+  margin-top: 40px;
+}
+
+.feature-text {
+  min-width: 0;
+}
+
+.feature-image {
+  min-width: 0;
+}
+
+.feature-text h2 {
+  margin-top: 0;
+  font-size: 3.5rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.feature-image img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.no-shadow img {
+  box-shadow: none;
+}
+
+.feature-section.reverse {
+  grid-template-columns: 1fr 1fr;
+}
+
+.feature-section.reverse .feature-image {
+  order: -1;
 }
 
 .full-width-section {
@@ -452,11 +382,14 @@ table em {
   padding: 0 40px;
 }
 
-/* Section 3: Equipment - Sandbar (light, needs dark text) */
-.section-equipment {
-  background: #C2E5DF;
-  padding: 80px 0 100px 0;
-  margin: 0;
+/* ==========================================================================
+   6. UNIVERSAL SECTION CLASSES
+   Use these on ANY page in order: section-1, section-2, section-3, section-4
+   ========================================================================== */
+
+/* Shared properties for all sections */
+.section-1, .section-2, .section-3, .section-4 {
+  padding: 80px 0;
   width: 100vw;
   position: relative;
   left: 50%;
@@ -465,24 +398,18 @@ table em {
   margin-right: -50vw;
 }
 
-.section-equipment h2,
-.section-equipment h3,
-.section-equipment p,
-.section-equipment li,
-.section-equipment strong,
-.section-equipment em {
-  color: #333 !important;
+/* Apply rounded tops to sections 2, 3, 4 (not the first section) */
+.section-2, .section-3, .section-4 {
+  border-radius: 80px 80px 0 0;
+  margin-top: -80px;
+  padding-top: 80px;
 }
 
-.section-equipment h2 {
-  border-bottom-color: #10616A !important;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 40px;
-}
-
-.section-equipment > * {
+/* Center content with max-width in all sections */
+.section-1 > *,
+.section-2 > *,
+.section-3 > *,
+.section-4 > * {
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
@@ -490,188 +417,543 @@ table em {
   padding-right: 40px;
 }
 
-.section-equipment a {
-  color: #10616A !important;
+/* Horizontal rules in colored sections */
+.section-1 hr {
+  border: none;
+  border-top: 3px solid #fff;
+  margin: 30px 0;
 }
 
-.section-equipment a.btn {
+.section-2 hr {
+  border: none;
+  border-top: 3px solid #45BBE6;
+  margin: 30px 0;
+}
+
+.section-3 hr {
+  border: none;
+  border-top: 3px solid #EBD5AF;
+  margin: 30px 0;
+}
+
+.section-4 hr {
+  border: none;
+  border-top: 3px solid #76C7C3;
+  margin: 30px 0;
+}
+
+/* ==========================================================================
+   SECTION 1 - Patch Reef (#10616A)
+   ========================================================================== */
+.section-1 {
+  background: #10616A;
+}
+
+.section-1 .page-title,
+.section-1 h1 {
   color: #fff !important;
 }
 
-.section-equipment a:hover {
-  color: #00446F !important;
-}
-
-/* Give buoy box more space */
-.nursery-live-data {
-  margin: 40px auto 60px auto !important;
-}
-
-/* Section 4: Pricing - Heritage Trees */
-.section-pricing {
-  background: #4B682F;
-  padding: 80px 0 0 0;
-  margin: 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  padding-bottom: 100vh;
-}
-
-.section-pricing h2 {
+.section-1 .feature-text h2,
+.section-1 h2,
+.section-1 h3 {
   color: #C2E5DF !important;
-  border-bottom-color: #C2E5DF !important;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 40px;
+  border-bottom-color: #fff !important;
 }
 
-.section-pricing > * {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
-.section-pricing p {
-  text-align: center;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px;
-}
-
-/* Tables in pricing section */
-.section-pricing table {
+.section-1 p,
+.section-1 li,
+.section-1 strong {
   color: #fff;
-  border-color: #C2E5DF;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
 }
 
-.section-pricing th,
-.section-pricing td {
-  border-color: rgba(194, 229, 223, 0.3);
+.section-1 a {
+  color: #EBD5AF !important;
 }
 
-.page-body h3 {
+.section-1 a:hover {
+  color: #fff !important;
+}
+
+/* ==========================================================================
+   SECTION 2 - Deep Ocean (#00446F)
+   ========================================================================== */
+.section-2 {
+  background: #00446F;
+}
+
+.section-2 .page-title,
+.section-2 h1 {
+  color: #fff !important;
+}
+
+.section-2 .feature-text h2,
+.section-2 h2,
+.section-2 h3 {
+  color: #EBD5AF !important;
+  border-bottom-color: #45BBE6 !important;
+}
+
+.section-2 p,
+.section-2 li,
+.section-2 strong {
+  color: #fff;
+}
+
+.section-2 a {
+  color: #9AA731 !important;
+}
+
+.section-2 a:hover {
+  color: #fff !important;
+}
+
+/* ==========================================================================
+   SECTION 3 - Sandbar (#C2E5DF) - DARK TEXT
+   ========================================================================== */
+.section-3 {
+  background: #C2E5DF;
+}
+
+.section-3 .page-title,
+.section-3 h1 {
+  color: #000 !important;
+}
+
+.section-3 .feature-text h2,
+.section-3 h2,
+.section-3 h3 {
+  color: #10616A !important;
+  border-bottom-color: #EBD5AF !important;
+}
+
+.section-3 p,
+.section-3 li,
+.section-3 strong,
+.section-3 em {
+  color: #333 !important;
+}
+
+.section-3 a {
+  color: #4B682F !important;
+}
+
+.section-3 a:hover {
+  color: #000 !important;
+}
+
+.section-3 a.btn {
+  color: #fff !important;
+}
+
+/* ==========================================================================
+   SECTION 4 - Heritage Trees (#4B682F)
+   ========================================================================== */
+.section-4 {
+  background: #4B682F;
+}
+
+.section-4 .page-title,
+.section-4 h1 {
+  color: #fff !important;
+}
+
+.section-4 .feature-text h2,
+.section-4 h2,
+.section-4 h3 {
+  color: #45BBE6 !important;
+  border-bottom-color: #76C7C3 !important;
+}
+
+.section-4 p,
+.section-4 li,
+.section-4 strong {
+  color: #fff;
+}
+
+.section-4 a {
+  color: #C2E5DF !important;
+}
+
+.section-4 a:hover {
+  color: #fff !important;
+}
+
+/* ==========================================================================
+   7. SHARED TYPOGRAPHY IN SECTIONS
+   ========================================================================== */
+.section-1 h2,
+.section-2 h2,
+.section-3 h2,
+.section-4 h2 {
+  font-family: 'Nursery-Heading', sans-serif;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid;
+}
+
+.section-1 h3,
+.section-2 h3,
+.section-3 h3,
+.section-4 h3 {
   font-family: 'Nursery-Heading', sans-serif;
   font-size: 1.6rem;
-  color: #fff;
   margin-top: 30px;
   margin-bottom: 15px;
 }
 
-.page-body p {
+.section-1 p,
+.section-2 p,
+.section-3 p,
+.section-4 p {
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 20px;
-  color: #fff;
 }
 
-.page-body ul, .page-body ol {
+.section-1 ul, .section-1 ol,
+.section-2 ul, .section-2 ol,
+.section-3 ul, .section-3 ol,
+.section-4 ul, .section-4 ol {
   margin-left: 30px;
   margin-bottom: 20px;
 }
 
-.page-body li {
+.section-1 li,
+.section-2 li,
+.section-3 li,
+.section-4 li {
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 10px;
-  color: #fff;
 }
 
-.page-body a {
-  color: #45BBE6;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.page-body a:hover {
-  color: #C2E5DF;
-  text-decoration: underline;
-}
-
-.page-body strong {
-  color: #fff;
+.section-1 strong,
+.section-2 strong,
+.section-4 strong {
+  color: #fff !important;
   font-weight: 600;
 }
-/* Table styling in Deep Ocean section (The Corals) */
-.section-corals table {
-  background: rgba(235, 213, 175, 0.05); /* Tan tint */
+
+.section-3 strong {
+  color: #333 !important;
+  font-weight: 600;
 }
 
-.section-corals th {
-  color: #EBD5AF; /* Shoreline/Tan */
-  border-bottom-color: #EBD5AF;
+/* ==========================================================================
+   8. TABLE STYLING BY SECTION
+   ========================================================================== */
+table {
+  width: 100%;
+  max-width: 700px;
+  margin: 30px auto;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 15px 20px;
+  text-align: left;
+}
+
+th:not(:first-child),
+td:not(:first-child) {
+  text-align: center;
+}
+
+th {
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 1.1rem;
+  border-bottom: 2px solid;
+}
+
+td {
+  border-bottom: 1px solid;
+}
+
+/* Section 1 Tables */
+.section-1 table {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.section-1 th {
+  color: #EBD5AF !important;
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom-color: #EBD5AF !important;
+}
+
+.section-1 td {
+  color: #fff !important;
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.section-1 tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.section-1 table em {
+  color: #EBD5AF;
+}
+
+/* Section 2 Tables */
+.section-2 table {
+  background: rgba(235, 213, 175, 0.05);
+}
+
+.section-2 th {
+  color: #EBD5AF !important;
   background: rgba(235, 213, 175, 0.1);
+  border-bottom-color: #EBD5AF !important;
 }
 
-.section-corals td {
-  color: #fff;
+.section-2 td {
+  color: #fff !important;
+  border-bottom-color: rgba(235, 213, 175, 0.1) !important;
 }
 
-.section-corals table em {
-  color: #EBD5AF; /* Tan for italic species names */
-}
-
-.section-corals tr:hover {
+.section-2 tr:hover {
   background: rgba(235, 213, 175, 0.08);
 }
 
-/* Table styling in Sandbar section (Equipment) */
-.section-equipment table {
-  background: rgba(16, 97, 106, 0.05); /* Patch Reef tint */
+.section-2 table em {
+  color: #EBD5AF;
 }
 
-.section-equipment th {
-  color: #10616A !important; /* Patch Reef */
-  border-bottom-color: #10616A;
+/* Section 3 Tables */
+.section-3 table {
+  background: rgba(16, 97, 106, 0.05);
+}
+
+.section-3 th {
+  color: #10616A !important;
   background: rgba(16, 97, 106, 0.1);
+  border-bottom-color: #10616A !important;
 }
 
-.section-equipment td {
+.section-3 td {
   color: #333 !important;
+  border-bottom-color: rgba(16, 97, 106, 0.1) !important;
 }
 
-.section-equipment table em {
-  color: #10616A !important; /* Patch Reef for italic */
+.section-3 tr:hover {
+  background: rgba(16, 97, 106, 0.05);
 }
 
-.section-equipment tr:hover {
-  background: rgba(16, 97, 106, 0.08);
+.section-3 table em {
+  color: #10616A !important;
 }
 
-/* Table styling in Heritage Trees section (Services/Pricing) */
-.section-pricing table {
-  background: rgba(194, 229, 223, 0.05); /* Sandbar tint */
+/* Section 4 Tables */
+.section-4 table {
+  background: rgba(194, 229, 223, 0.05);
 }
 
-.section-pricing th {
-  color: #C2E5DF !important; /* Sandbar */
-  border-bottom-color: #C2E5DF;
+.section-4 th {
+  color: #45BBE6 !important;
   background: rgba(194, 229, 223, 0.1);
+  border-bottom-color: #76C7C3 !important;
 }
 
-.section-pricing td {
+.section-4 td {
   color: #fff !important;
+  border-bottom-color: rgba(194, 229, 223, 0.2) !important;
 }
 
-.section-pricing table em {
-  color: #C2E5DF !important; /* Sandbar for italic */
-}
-
-.section-pricing tr:hover {
+.section-4 tr:hover {
   background: rgba(194, 229, 223, 0.08);
 }
-/* Section Anchor Links */
-.page-body a[id] {
+
+.section-4 table em {
+  color: #45BBE6 !important;
+}
+
+/* ==========================================================================
+   9. BUOY BOX (for facilities Equipment section)
+   ========================================================================== */
+.nursery-live-data {
+  margin: 40px auto 60px auto !important;
+}
+
+/* ==========================================================================
+   10. CONTACT FORM
+   ========================================================================== */
+.contact-form {
+  max-width: 600px;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #fff;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  margin-top: 8px;
+  padding: 12px;
+  border: 2px solid #C2E5DF;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: 'Nursery-Body', sans-serif;
+  font-size: 1rem;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.contact-form textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+.contact-form button {
+  background: #EBD5AF;
+  color: #10616A;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: 0.3s;
+  align-self: center;
+  min-width: 200px;
+}
+
+.contact-form button:hover {
+  background: #fff;
+  color: #10616A;
+}
+
+.contact-form select option {
+  background: #10616A;
+  color: #fff;
+}
+
+/* ==========================================================================
+   11. IMAGE SLIDER (for monitoring sections)
+   ========================================================================== */
+.image-slider-container {
+  max-width: 800px;
+  margin: 40px auto;
+}
+
+.image-slider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  user-select: none;
+}
+
+.slider-image-bottom,
+.slider-image-top {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.slider-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: inset(0 50% 0 0);
+  pointer-events: none;
+}
+
+.slider-button-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.slider-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 3;
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.slider-button {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.slider-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 100%;
+  background: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.slider-line::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.slider-line::after {
+  content: '◀  ▶';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #333;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.slider-caption {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* ==========================================================================
+   12. ANCHOR LINKS
+   ========================================================================== */
+.section-1 a[id],
+.section-2 a[id],
+.section-3 a[id],
+.section-4 a[id] {
   display: block;
   position: relative;
   top: -100px;
@@ -679,113 +961,7 @@ table em {
 }
 
 /* ==========================================================================
-   RESEARCH PAGE SECTIONS
-   ========================================================================== */
-
-/* Section 1: Collaborations - Patch Reef */
-.section-collaborations {
-  background: #10616A; /* Patch Reef */
-  padding: 80px 0;
-  margin: 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-.section-collaborations h2,
-.section-collaborations h3 {
-  color: #fff;
-}
-
-.section-collaborations > * {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
-/* Section 2: Student Projects - Deep Ocean */
-.section-students {
-  background: #00446F; /* Deep Ocean */
-  padding: 80px 0;
-  margin: 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-.section-students h2,
-.section-students h3 {
-  color: #EBD5AF; /* Shoreline/Tan */
-}
-
-.section-students > * {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
-.section-students a {
-  color: #EBD5AF !important;
-}
-
-.section-students a:hover {
-  color: #C2E5DF !important;
-}
-
-/* Section 3: Monitoring - Sandbar */
-.section-monitoring {
-  background: #C2E5DF; /* Sandbar */
-  padding: 80px 0 100vh 0; /* Extend to bottom */
-  margin: 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-.section-monitoring h2,
-.section-monitoring h3,
-.section-monitoring p,
-.section-monitoring li {
-  color: #333 !important;
-}
-
-.section-monitoring > * {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
-.section-monitoring a {
-  color: #10616A !important;
-}
-
-.section-monitoring a:hover {
-  color: #00446F !important;
-}
-
-/* Curved Section Tops */
-.section-rounded {
-  border-radius: 40px 40px 0 0;
-  margin-top: -40px;
-}
-
-/* ==========================================================================
-   5. ANIMATIONS & EFFECTS
+   13. ANIMATIONS
    ========================================================================== */
 @keyframes fadeInStay {
   0% { opacity: 0; transform: translateY(30px); }
@@ -793,7 +969,7 @@ table em {
 }
 
 /* ==========================================================================
-   6. NARROW DESKTOP (1025px - 1208px)
+   14. NARROW DESKTOP (768px - 1208px)
    ========================================================================== */
 @media (max-width: 1208px) and (min-width: 768px) {
   .fade-in-text {
@@ -813,8 +989,7 @@ table em {
     white-space: nowrap;
   }
   
-  /* iPad video sizing - fill height like mobile */
-  .video-container iframe {
+  .video-container video {
     height: 100vh;
     height: 100dvh;
     width: 177.78vh;
@@ -826,85 +1001,77 @@ table em {
 }
 
 /* ==========================================================================
-   7. RESPONSIVE / MOBILE OVERRIDES
+   15. MOBILE (≤767px)
    ========================================================================== */
-
-/* --- Mobile Rules (Only apply if screen is 767px or less) --- */
 @media (max-width: 767px) {
-   
-* {
+  
+  * {
     -webkit-tap-highlight-color: transparent;
   }
-   
+  
   .hero { 
-  height: 100vh;
-  height: 100dvh;
+    height: 100vh;
+    height: 100dvh;
   }
 
-  .video-container iframe { 
-  position: absolute;
-  height: 100vh;
-  height: 100dvh;
-  width: 177.78vh;
-  width: 177.78dvh;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
+  .video-container video { 
+    position: absolute;
+    height: 100vh;
+    height: 100dvh;
+    width: 177.78vh;
+    width: 177.78dvh;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
   }
   
-  /* Mobile hero text - split into 3 lines and left-aligned */
   .fade-in-text { 
-  display: block !important;
-  font-size: 5rem;
-  text-align: left;
-  width: 100%;
-  padding-left: 18px;
-  line-height: 0.75;
-  word-spacing: 100vw;
+    display: block !important;
+    font-size: 5rem;
+    text-align: left;
+    width: 100%;
+    padding-left: 18px;
+    line-height: 0.75;
+    word-spacing: 100vw;
   }
 
   .fade-in-subtext { 
-  display: none; 
+    display: none; 
   }
 
   .hero-overlay {
-  justify-content: flex-start !important;
-  align-items: flex-start !important;
-  padding-top: 60px !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    padding-top: 60px !important;
   }
   
-  /* Mobile header - teal on all pages */
-.main-header {
-  background: #10616A !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
-}
+  .main-header {
+    background: #10616A !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+  }
 
-/* Homepage overrides back to transparent */
-.homepage .main-header {
-  background: transparent !important;
-  box-shadow: none !important;
-}
+  .homepage .main-header {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
 
-/* White logo on all mobile pages */
-.logo {
-  color: #ffffff !important;
-  display: block !important;
-  margin-right: auto !important;
-  margin-left: 0 !important;
-}
+  .logo {
+    color: #ffffff !important;
+    display: block !important;
+    margin-right: auto !important;
+    margin-left: 0 !important;
+  }
 
-/* Hide logo on homepage only */
-.homepage .logo {
-  display: none !important;
-}
+  .homepage .logo {
+    display: none !important;
+  }
   
   .nav-container {
     justify-content: flex-end;
     padding: 0 20px;
   }
   
-  /* Show white hamburger on mobile */
   .hamburger {
     display: flex !important;
   }
@@ -917,7 +1084,6 @@ table em {
     background: #333 !important;
   }
   
-  /* Mobile navigation menu - full screen overlay */
   .nav-menu {
     position: fixed;
     left: -100%;
@@ -953,44 +1119,43 @@ table em {
     color: #10616A;
   }
   
-  /* Mobile dropdown: tap to expand */
-  .dropdown > a::after {
-    content: ' +';
-    margin-left: 8px;
-  }
-  
-  .dropdown.open > a::after {
-    content: ' −';
-  }
-  
   .dropdown-menu {
     position: static !important;
     box-shadow: none !important;
     background: transparent !important;
     padding: 10px 0 !important;
+    margin-top: 10px !important;
   }
   
   .dropdown-menu a {
     font-size: 1.5rem !important;
     color: #45BBE6 !important;
+    padding: 8px 20px !important;
   }
   
-  .section { 
-    flex-direction: column !important; 
-    text-align: center; 
+  .feature-section {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+    margin: 50px 0 !important;
   }
-   /* Feature sections stack on mobile */
-.feature-section {
-  grid-template-columns: 1fr !important;
-  gap: 30px !important;
-  margin: 50px 0 !important;
-}
 
-.feature-section.reverse .feature-image {
-  order: 0 !important;
-}
+  .feature-section.reverse .feature-image {
+    order: 0 !important;
+  }
 
-.feature-text h2 {
-  font-size: 2rem !important;
-}
+  .feature-text h2 {
+    font-size: 2rem !important;
+  }
+
+  .page-title {
+    font-size: 3rem !important;
+    line-height: 1.1 !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  .full-width-section {
+    padding: 0 20px !important;
+  }
 }
