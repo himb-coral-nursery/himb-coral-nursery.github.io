@@ -7,21 +7,20 @@
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
   <link rel="preload" as="video" href="/assets/videos/hero-zoom.mp4" type="video/mp4">
   <style>
-  /* For your Headings (OTF) */
-  @font-face {
-    font-family: 'Nursery-Heading';
-    src: url('{{ "/fonts/heading-font.otf" | relative_url }}') format('opentype');
-    font-weight: bold;
-  }
-  /* For your Body Text (TTF) */
-  @font-face {
-    font-family: 'Nursery-Body';
-    src: url('{{ "/fonts/body-font.ttf" | relative_url }}') format('truetype');
-    font-weight: normal;
-  }
-</style>
+    @font-face {
+      font-family: 'Nursery-Heading';
+      src: url('{{ "/fonts/heading-font.otf" | relative_url }}') format('opentype');
+      font-weight: bold;
+    }
+    @font-face {
+      font-family: 'Nursery-Body';
+      src: url('{{ "/fonts/body-font.ttf" | relative_url }}') format('truetype');
+      font-weight: normal;
+    }
+  </style>
 </head>
 <body class="{% if page.url == '/' %}homepage{% elsif page.url contains 'research' %}research-page{% elsif page.url contains 'facilities' %}facilities-page{% endif %}">
+
   <header class="main-header">
     <div class="nav-container">
       <a href="/" class="logo">HIMB CORAL NURSERY</a>
@@ -34,83 +33,65 @@
       </button>
       
       <nav class="nav-menu" id="navMenu">
-  <ul class="nav-links">
-    <li><a href="/#about">About</a></li>
-    <li class="dropdown">
-      <a href="/facilities">Facilities</a>
-      <ul class="dropdown-menu">
-        <li><a href="/facilities/#the-nursery">The Nursery</a></li>
-        <li><a href="/facilities/#the-corals">The Corals</a></li>
-        <li><a href="/facilities/#equipment">Equipment</a></li>
-        <li><a href="/facilities/#services">Services</a></li>
-      </ul>
-    </li>
-    <li><a href="/research">Research</a></li>
-    <li><a href="/contact">Contact</a></li>
-  </ul>
-</nav>
+        <ul class="nav-links">
+          <li><a href="/#about">About</a></li>
+          <li class="dropdown">
+            <a href="/facilities">Facilities</a>
+            <ul class="dropdown-menu">
+              <li><a href="/facilities/#the-nursery">The Nursery</a></li>
+              <li><a href="/facilities/#the-corals">The Corals</a></li>
+              <li><a href="/facilities/#equipment">Equipment</a></li>
+              <li><a href="/facilities/#services">Services</a></li>
+            </ul>
+          </li>
+          <li><a href="/research">Research</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
   
   {{ content }}
   
   <script>
-
-    // Mobile dropdown handling
-document.addEventListener('DOMContentLoaded', function() {
-  const dropdowns = document.querySelectorAll('.dropdown > a');
-  
-  dropdowns.forEach(dropdown => {
-    dropdown.addEventListener('click', (e) => {
-      // Only on mobile (when hamburger is visible)
-      if (window.innerWidth <= 767) {
-        e.preventDefault(); // Don't follow the link
-        const menu = dropdown.nextElementSibling;
-        
-        // Toggle dropdown
-        if (menu.style.display === 'block') {
-          menu.style.display = 'none';
-        } else {
-          // Close other dropdowns
-          document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
-          menu.style.display = 'block';
-        }
-      }
-    });
-  });
-  
-  // Close menu when clicking a link (existing code updated)
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-      // Don't close if it's a dropdown parent on mobile
-      if (!link.parentElement.classList.contains('dropdown') || window.innerWidth > 767) {
-        document.querySelector('.hamburger').classList.remove('active');
-        document.getElementById('navMenu').classList.remove('active');
-        // Close any open dropdowns
-        document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
-      }
-    });
-  });
-});
-    
+    // Toggle hamburger menu
     function toggleMenu() {
       const hamburger = document.querySelector('.hamburger');
       const navMenu = document.getElementById('navMenu');
       
       hamburger.classList.toggle('active');
       navMenu.classList.toggle('active');
-      
-      console.log('Menu toggled!'); // Debug message
     }
     
-    // Close menu when clicking a link
     document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-          document.querySelector('.hamburger').classList.remove('active');
-          document.getElementById('navMenu').classList.remove('active');
+      
+      // Mobile dropdown: tap to expand inline
+      document.querySelectorAll('.dropdown > a').forEach(parent => {
+        parent.addEventListener('click', (e) => {
+          if (window.innerWidth <= 767) {
+            e.preventDefault();
+            parent.parentElement.classList.toggle('open');
+          }
         });
       });
+      
+      // Close menu when clicking a link (except dropdown parents on mobile)
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          const isDropdownParent = link.parentElement.classList.contains('dropdown');
+          
+          // Don't close if it's a dropdown parent on mobile (it's toggling the submenu)
+          if (isDropdownParent && window.innerWidth <= 767) return;
+          
+          // Close hamburger menu
+          document.querySelector('.hamburger').classList.remove('active');
+          document.getElementById('navMenu').classList.remove('active');
+          
+          // Close any open dropdowns
+          document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+        });
+      });
+      
     });
   </script>
 </body>
