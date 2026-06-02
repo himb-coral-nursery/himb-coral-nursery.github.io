@@ -131,9 +131,9 @@ permalink: /facilities/
     <ul>
       <li>LiCor 3 channel PAR meter</li>
       <li>Apogee handheld PAR meter</li>
-      <li>Odyssey PAR sensors w/ automated wiper</li>
+      <li>Odyssey PAR sensors w/ automated wipers</li>
       <li>HOBO irradiance/temperature loggers</li>
-      <li>SoFar SmartBuoy (captures live temperature data at 1 and 3 meters)</li>
+      <li>SoFar SmartBuoy</li>
     </ul>
   </div>
   <div class="feature-image">
@@ -155,8 +155,8 @@ permalink: /facilities/
     <h3>Additional Resources</h3>
     <ul>
       <li><strong>HIMB:</strong> <a href="http://www.himb.hawaii.edu/">Boats, Housing, SCUBA, etc.</a></li>
-      <li><strong>ToBo Lab:</strong> <a href="http://tobolab.org/">Genetics Core Lab, Wet Lab Resources</a></li>
-      <li><strong>UH Manoa:</strong> <a href="https://manoa.hawaii.edu/">University Resources for Use/Rent</a></li>
+      <li><strong>ToBo Lab:</strong> <a href="http://tobolab.org/">Genetics Core & Wet Lab</a></li>
+      <li><strong>UH Manoa:</strong> <a href="https://manoa.hawaii.edu/">Main Campus Services</a></li>
     </ul>
   </div>
   <div class="feature-image">

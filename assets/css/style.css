@@ -237,65 +237,7 @@ h1, h2, h3, .logo {
 }
 
 /* ==========================================================================
-   4. ABOUT SECTION (Homepage)
-   ========================================================================== */
-.about-section {
-  background: #10616A;
-  width: calc(100% + 50px); /* Wider than viewport */
-  margin-left: -20px;       /* Center it */
-  overflow-x: hidden;
-  padding: 80px 0;
-  border-radius: 100px 100px 0 0;
-  margin-top: -40px;
-  position: relative;
-  z-index: 100;
-}
-
-.about-body {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
-
-.about-body h2 {
-  font-family: 'Nursery-Heading', sans-serif;
-  font-size: 2.2rem;
-  color: #fff;
-  margin-top: 50px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 3px solid #fff;
-}
-
-.about-body p, .about-body li {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 15px;
-  color: #fff;
-}
-
-.about-body ol, .about-body ul {
-  margin-left: 30px;
-  margin-bottom: 20px;
-}
-
-.about-body a {
-  color: #9AA731;
-  text-decoration: underline;
-}
-
-.about-body a:hover {
-  color: #EBD5AF;
-  text-decoration: underline;
-}
-
-.about-body strong {
-  color: #fff;
-  font-weight: 600;
-}
-
-/* ==========================================================================
-   5. PAGE CONTENT (Interior Pages)
+   4. PAGE CONTENT (Interior Pages)
    ========================================================================== */
 .page-content {
   min-height: 100vh;
@@ -309,6 +251,7 @@ h1, h2, h3, .logo {
   font-family: 'Nursery-Heading', sans-serif;
   font-size: 4.5rem;
   margin: 0;
+  margin-top: -20px;
   text-align: center;
 }
 
@@ -383,8 +326,8 @@ h1, h2, h3, .logo {
 }
 
 /* ==========================================================================
-   6. UNIVERSAL SECTION CLASSES
-   Use these on ANY page in order: section-1, section-2, section-3, section-4
+   5. UNIVERSAL SECTION CLASSES
+   Use these on ANY page: section-1, section-2, section-3, section-4
    ========================================================================== */
 
 /* Shared properties for all sections */
@@ -398,7 +341,24 @@ h1, h2, h3, .logo {
   margin-right: -50vw;
 }
 
-/* Apply rounded tops to sections 2, 3, 4 (not the first section) */
+/* When section-1 follows the hero (homepage), give it a curved top */
+.hero + .section-1 {
+  margin-top: -40px;
+  z-index: 100;
+}
+
+.hero + .section-1::before {
+  content: '';
+  position: absolute;
+  bottom: 96%;
+  left: -12px;
+  right: -12px;
+  height: 100px;
+  background: #10616A;
+  border-radius: 80px 80px 0 0;
+}
+
+/* Apply rounded tops to sections 2, 3, 4 */
 .section-2, .section-3, .section-4 {
   border-radius: 80px 80px 0 0;
   margin-top: -80px;
@@ -432,7 +392,7 @@ h1, h2, h3, .logo {
 
 .section-3 hr {
   border: none;
-  border-top: 3px solid #EBD5AF;
+  border-top: 3px solid #00446F;
   margin: 30px 0;
 }
 
@@ -457,8 +417,8 @@ h1, h2, h3, .logo {
 .section-1 .feature-text h2,
 .section-1 h2,
 .section-1 h3 {
-  color: #C2E5DF !important;
-  border-bottom-color: #fff !important;
+  color: #EBD5AF !important;
+  border-bottom-color: #C2E5DF !important;
 }
 
 .section-1 p,
@@ -472,7 +432,7 @@ h1, h2, h3, .logo {
 }
 
 .section-1 a:hover {
-  color: #fff !important;
+  color: #45BBE6 !important;
 }
 
 /* ==========================================================================
@@ -490,8 +450,8 @@ h1, h2, h3, .logo {
 .section-2 .feature-text h2,
 .section-2 h2,
 .section-2 h3 {
-  color: #EBD5AF !important;
-  border-bottom-color: #45BBE6 !important;
+  color: #C2E5DF !important;
+  border-bottom-color: #EBD5AF !important;
 }
 
 .section-2 p,
@@ -505,7 +465,7 @@ h1, h2, h3, .logo {
 }
 
 .section-2 a:hover {
-  color: #fff !important;
+  color: #EBD5AF !important;
 }
 
 /* ==========================================================================
@@ -524,7 +484,7 @@ h1, h2, h3, .logo {
 .section-3 h2,
 .section-3 h3 {
   color: #10616A !important;
-  border-bottom-color: #EBD5AF !important;
+  border-bottom-color: #4B682F !important;
 }
 
 .section-3 p,
@@ -572,25 +532,35 @@ h1, h2, h3, .logo {
 }
 
 .section-4 a {
-  color: #C2E5DF !important;
+  color: #EBD5AF !important;
 }
 
 .section-4 a:hover {
-  color: #fff !important;
+  color: #00446F !important;
 }
 
 /* ==========================================================================
-   7. SHARED TYPOGRAPHY IN SECTIONS
+   6. SHARED TYPOGRAPHY IN SECTIONS
    ========================================================================== */
 .section-1 h2,
 .section-2 h2,
 .section-3 h2,
 .section-4 h2 {
   font-family: 'Nursery-Heading', sans-serif;
-  margin-top: 10px;
+  font-size: 2.2rem;
+  margin-top: 20px;
   margin-bottom: 20px;
   padding-bottom: 10px;
   border-bottom: 3px solid;
+  text-align: center;
+}
+
+/* Feature-text h2s are column headers - keep them centered */
+.section-1 .feature-text h2,
+.section-2 .feature-text h2,
+.section-3 .feature-text h2,
+.section-4 .feature-text h2 {
+  text-align: center;
 }
 
 .section-1 h3,
@@ -610,14 +580,31 @@ h1, h2, h3, .logo {
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 20px;
+  text-align: center;
+}
+
+/* DONT CENTER TEXT IN FACILITIES COLUMNS */
+.feature-text p {
+  text-align: left;
 }
 
 .section-1 ul, .section-1 ol,
 .section-2 ul, .section-2 ol,
 .section-3 ul, .section-3 ol,
 .section-4 ul, .section-4 ol {
-  margin-left: 30px;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
   margin-bottom: 20px;
+  list-style-position: inside;
+  text-align: center;
+}
+
+/* DONT CENTER LISTS IN FACILITIES COLUMNS */
+.feature-text ul,
+.feature-text ol {
+  text-align: left;
+  list-style-position: outside;
+  padding-left: 20px !important;
 }
 
 .section-1 li,
@@ -642,7 +629,7 @@ h1, h2, h3, .logo {
 }
 
 /* ==========================================================================
-   8. TABLE STYLING BY SECTION
+   7. TABLE STYLING BY SECTION
    ========================================================================== */
 table {
   width: 100%;
@@ -768,14 +755,154 @@ td {
 }
 
 /* ==========================================================================
-   9. BUOY BOX (for facilities Equipment section)
+   8. FUNDER LOGOS (Homepage)
+   ========================================================================== */
+.funder-logos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  margin: 30px auto 50px auto;
+  max-width: 900px;
+}
+
+.funder-logos a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 140px;
+  background: white;
+  border-radius: 12px;
+  padding: 10px;
+  transition: transform 0.3s;
+}
+
+.funder-logos a:hover {
+  transform: scale(1.05);
+}
+
+.funder-logos img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   9. DONATE BUTTON
+   ========================================================================== */
+.donate-container {
+  text-align: center;
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.donate-container p {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.section-1 .donate-button {
+  display: inline-block;
+  background: #EBD5AF !important;
+  color: #10616A !important;
+  padding: 16px 40px;
+  border-radius: 6px;
+  text-decoration: none !important;
+  font-family: 'Nursery-Heading', sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.section-1 .donate-button:hover {
+  background: #fff !important;
+  color: #10616A !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================================================
+   10. FOOTER
+   ========================================================================== */
+.site-footer {
+  background: #fff;
+  color: #10616A;
+  padding: 20px 40px;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  display: flex;
+  align-items: center;
+}
+
+.footer-left {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.footer-center {
+  flex: 1;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.footer-right {
+  flex: 1;
+  justify-content: flex-end;
+  gap: 18px;
+}
+
+.site-footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.site-footer a {
+  color: #10616A;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.site-footer a:hover {
+  color: #45BBE6;
+}
+
+.footer-right svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+/* ==========================================================================
+   11. BUOY BOX (Facilities Equipment section)
    ========================================================================== */
 .nursery-live-data {
   margin: 40px auto 60px auto !important;
 }
 
 /* ==========================================================================
-   10. CONTACT FORM
+   12. CONTACT FORM
    ========================================================================== */
 .contact-form {
   max-width: 600px;
@@ -841,7 +968,7 @@ td {
 }
 
 /* ==========================================================================
-   11. IMAGE SLIDER (for monitoring sections)
+   13. IMAGE SLIDER (Research Monitoring section)
    ========================================================================== */
 .image-slider-container {
   max-width: 800px;
@@ -948,7 +1075,7 @@ td {
 }
 
 /* ==========================================================================
-   12. ANCHOR LINKS
+   14. ANCHOR LINKS
    ========================================================================== */
 .section-1 a[id],
 .section-2 a[id],
@@ -961,7 +1088,7 @@ td {
 }
 
 /* ==========================================================================
-   13. ANIMATIONS
+   15. ANIMATIONS
    ========================================================================== */
 @keyframes fadeInStay {
   0% { opacity: 0; transform: translateY(30px); }
@@ -969,7 +1096,7 @@ td {
 }
 
 /* ==========================================================================
-   14. NARROW DESKTOP (768px - 1208px)
+   16. NARROW DESKTOP (768px - 1208px)
    ========================================================================== */
 @media (max-width: 1208px) and (min-width: 768px) {
   .fade-in-text {
@@ -1001,7 +1128,7 @@ td {
 }
 
 /* ==========================================================================
-   15. MOBILE (≤767px)
+   17. MOBILE (≤767px)
    ========================================================================== */
 @media (max-width: 767px) {
   
@@ -1157,5 +1284,18 @@ td {
   
   .full-width-section {
     padding: 0 20px !important;
+  }
+  
+  /* Footer stacks on mobile */
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  
+  .footer-left,
+  .footer-center,
+  .footer-right {
+    justify-content: center;
   }
 }
