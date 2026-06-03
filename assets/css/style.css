@@ -831,7 +831,7 @@ td {
 .site-footer {
   background: #fff;
   color: #10616A;
-  padding: 20px 40px;
+  padding: 10px 40px;
   width: 100vw;
   position: relative;
   left: 50%;
@@ -844,7 +844,6 @@ td {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1400px;
   margin: 0 auto;
   gap: 20px;
 }
