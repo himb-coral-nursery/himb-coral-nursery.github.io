@@ -150,6 +150,7 @@
     font-weight: 300;
   }
   .panel-title strong { color: var(--accent); font-weight: 500; }
+  .panel-title .nowrap-title { white-space: nowrap; }
   .panel-meta {
     color: var(--text-3);
     font-size: 0.85rem;
@@ -206,35 +207,67 @@
   .chart-toolbar label.threshold-input {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     font-size: 0.9rem;
     color: var(--text-2);
   }
-  .chart-toolbar label.threshold-input input[type="number"] {
-    width: 80px;
-    padding: 4px 4px 4px 8px;
-    border-radius: 4px;
+  .chart-toolbar label.threshold-input .full-label { display: inline; }
+  .chart-toolbar label.threshold-input .short-label { display: none; }
+  /* Stepper: − [input] + */
+  .num-stepper {
+    display: inline-flex;
+    align-items: stretch;
+    border-radius: 5px;
+    overflow: hidden;
     border: 1px solid var(--border);
     background: rgba(255,255,255,0.95);
+  }
+  .num-stepper button {
+    background: rgba(0, 68, 111, 0.06);
+    border: none;
+    color: var(--bg);
+    font-size: 1rem;
+    font-weight: 600;
+    width: 24px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    font-family: inherit;
+    transition: background 0.12s;
+    user-select: none;
+  }
+  .num-stepper button:active {
+    background: rgba(0, 68, 111, 0.18);
+  }
+  @media (hover: hover) {
+    .num-stepper button:hover {
+      background: rgba(0, 68, 111, 0.12);
+    }
+  }
+  .num-stepper input[type="number"] {
+    width: 56px;
+    padding: 4px 4px;
+    border: none;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    background: transparent;
     color: var(--bg);
     font-family: inherit;
     font-size: 0.9rem;
     font-weight: 500;
-    /* Force spinner buttons to show */
-    -moz-appearance: number-input;
-    appearance: auto;
+    text-align: center;
+    /* Hide native spinners since we have our own buttons */
+    -moz-appearance: textfield;
+    appearance: textfield;
   }
-  /* Make WebKit spinners always visible and styled */
-  .chart-toolbar label.threshold-input input[type="number"]::-webkit-inner-spin-button,
-  .chart-toolbar label.threshold-input input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: inner-spin-button;
-    opacity: 1;
-    height: 24px;
-    cursor: pointer;
+  .num-stepper input[type="number"]::-webkit-inner-spin-button,
+  .num-stepper input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
-  .chart-toolbar label.threshold-input input[type="number"]:hover {
-    background: #fff;
-    border-color: var(--accent);
+  .num-stepper input[type="number"]:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
   }
   .chart-toolbar .smoothing-group {
     display: flex;
@@ -271,34 +304,6 @@
     font-size: 0.78rem;
     line-height: 1;
     letter-spacing: 0;
-  }
-  .chart-toolbar .range-buttons {
-    display: flex;
-    gap: 2px;
-    background: rgba(0,0,0,0.25);
-    border-radius: 6px;
-    padding: 2px;
-  }
-  .chart-toolbar .range-btn {
-    padding: 4px 12px;
-    background: transparent;
-    color: var(--text-2);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-family: inherit;
-    font-weight: 400;
-    transition: 0.12s;
-  }
-  .chart-toolbar .range-btn:hover {
-    color: var(--text);
-    background: rgba(255,255,255,0.06);
-  }
-  .chart-toolbar .range-btn.active {
-    background: var(--accent);
-    color: var(--bg);
-    font-weight: 500;
   }
   .toggle-marker {
     display: inline-block;
@@ -416,7 +421,7 @@
   }
   .range-slider {
     position: relative;
-    height: 38px;
+    height: 32px;
     user-select: none;
   }
   .range-slider .track {
@@ -424,57 +429,52 @@
     top: 50%;
     left: 0;
     right: 0;
-    height: 10px;
+    height: 6px;
     background: rgba(255,255,255,0.10);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 5px;
+    border-radius: 3px;
     transform: translateY(-50%);
   }
   .range-slider .selected {
     position: absolute;
     top: 50%;
-    height: 12px;
-    background: linear-gradient(180deg, #EBD5AF, #d6b988);
-    border: 1px solid rgba(0,0,0,0.15);
-    border-radius: 6px;
+    height: 6px;
+    background: #EBD5AF;
+    border-radius: 3px;
     transform: translateY(-50%);
     cursor: grab;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-    /* Grip dots so the selected band looks draggable */
-    background-image: 
-      radial-gradient(circle, rgba(0,0,0,0.28) 1px, transparent 1.5px),
-      linear-gradient(180deg, #EBD5AF, #d6b988);
-    background-size: 6px 6px, 100% 100%;
-    background-position: center, 0 0;
-    background-repeat: repeat-x, no-repeat;
   }
-  .range-slider .selected:hover {
-    filter: brightness(1.06);
-  }
-  .range-slider .selected:active { cursor: grabbing; filter: brightness(1.1); }
+  .range-slider .selected:active { cursor: grabbing; }
   .range-slider .handle {
     position: absolute;
     top: 50%;
-    width: 22px;
-    height: 26px;
-    background: linear-gradient(180deg, #fff, #EBD5AF);
+    width: 14px;
+    height: 20px;
+    background: #EBD5AF;
     border: 2px solid var(--bg);
-    border-radius: 5px;
-    transform: translate(-50%, -50%);
+    border-radius: 3px;
     cursor: ew-resize;
     z-index: 2;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    /* Three vertical grip lines so it looks grabbable */
-    background-image:
-      linear-gradient(90deg, transparent 7px, rgba(0,68,111,0.55) 7px, rgba(0,68,111,0.55) 8px, transparent 8px, transparent 10px, rgba(0,68,111,0.55) 10px, rgba(0,68,111,0.55) 11px, transparent 11px, transparent 13px, rgba(0,68,111,0.55) 13px, rgba(0,68,111,0.55) 14px, transparent 14px),
-      linear-gradient(180deg, #fff, #EBD5AF);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
   }
-  .range-slider .handle:hover { 
-    background-image:
-      linear-gradient(90deg, transparent 7px, rgba(0,68,111,0.7) 7px, rgba(0,68,111,0.7) 8px, transparent 8px, transparent 10px, rgba(0,68,111,0.7) 10px, rgba(0,68,111,0.7) 11px, transparent 11px, transparent 13px, rgba(0,68,111,0.7) 13px, rgba(0,68,111,0.7) 14px, transparent 14px),
-      linear-gradient(180deg, #fff, #fff);
+  /* Start handle anchors with right edge at data position */
+  .range-slider .handle#slider-handle-start {
+    transform: translate(-100%, -50%);
   }
-  .range-slider .handle:active { cursor: grabbing; transform: translate(-50%, -50%) scale(0.97); }
+  /* End handle anchors with left edge at data position */
+  .range-slider .handle#slider-handle-end {
+    transform: translate(0, -50%);
+  }
+  .range-slider .handle:active { cursor: grabbing; }
+  /* Touch / mobile: bigger handles */
+  @media (max-width: 768px), (hover: none) {
+    .range-slider {
+      height: 40px;
+    }
+    .range-slider .handle {
+      width: 18px;
+      height: 28px;
+    }
+  }
   
   /* Threshold inputs */
   .threshold-row {
@@ -953,10 +953,11 @@
    * ========================================== */
   @media (max-width: 768px) {
     .site-header {
+      position: relative;
       flex-direction: row;
       align-items: center;
-      padding: 10px 16px;
-      gap: 8px;
+      padding: 10px 14px;
+      gap: 10px;
       flex-wrap: nowrap;
     }
     /* Logo: stack 3 words on 3 lines, smaller */
@@ -967,42 +968,63 @@
       line-height: 1.1;
       letter-spacing: 0.06em;
       flex-shrink: 0;
+      max-width: 90px;
     }
     .logo .logo-word {
       display: block;
     }
-    /* Title: stack PAR / Visualizer, centered, fill middle */
+    /* Title: absolutely-centered overlay - independent of side widths */
     .title {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-size: 1.1rem;
+      justify-content: center;
+      font-size: 1.05rem;
       line-height: 1.1;
-      flex: 1;
       text-align: center;
+      pointer-events: none;
     }
     .title .title-word {
       display: block;
+      width: 100%;
+      text-align: center;
     }
-    /* Active sensor: stack label above pill, right aligned */
+    /* Active sensor: pushed to right, label centered above pill */
     .active-sensor {
-      align-items: flex-end;
+      align-items: center;
       gap: 2px;
       flex-shrink: 0;
+      margin-left: auto;
     }
     .active-sensor-row {
       flex-direction: column;
-      align-items: flex-end;
+      align-items: center;
       gap: 3px;
     }
     .active-sensor .label {
-      font-size: 0.6rem;
+      font-size: 0.55rem;
+      text-align: center;
+      letter-spacing: 0.04em;
     }
     .sensor-pill {
-      font-size: 0.8rem;
-      padding: 3px 9px;
+      font-size: 0.68rem;
+      padding: 2px 8px;
+      gap: 4px;
     }
-    .active-sensor .meta-line { font-size: 0.65rem; }
+    .sun-icon { width: 12px; height: 12px; }
+    .active-sensor .meta-line {
+      font-size: 0.58rem;
+      text-align: center;
+      max-width: 110px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
+    }
     
     /* Container padding tighter */
     .container { padding: 10px 12px; }
@@ -1010,17 +1032,115 @@
     /* Tabs - smaller padding */
     .tab { padding: 8px 14px; font-size: 0.9rem; }
     
-    /* Toolbar wraps naturally - already does, but ensure gap */
-    .chart-toolbar { gap: 10px; padding: 8px 10px; }
+    /* Toolbar: flexbox flow, items wrap naturally per logical group */
+    .chart-toolbar {
+      gap: 8px 6px;
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    /* Smoothing takes a full row */
+    .chart-toolbar .smoothing-group {
+      flex: 1 0 100%;
+      justify-content: flex-start;
+    }
+    .chart-toolbar .smoothing-group select {
+      flex: 1;
+    }
+    /* All three toggles share one row, equal width */
+    .chart-toolbar label.toggle {
+      flex: 1 1 0;
+      min-width: 0;
+      justify-content: flex-start;
+      font-size: 0.7rem;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .chart-toolbar label.toggle .toggle-dot,
+    .chart-toolbar label.toggle .toggle-marker {
+      flex-shrink: 0;
+    }
+    .chart-toolbar label.toggle.toggle-stacked .stacked-text {
+      font-size: 0.62rem;
+      white-space: normal;
+      line-height: 1;
+    }
+    /* Threshold inputs: both share a row at half width */
+    .chart-toolbar label.threshold-input {
+      flex: 1 1 calc(50% - 3px);
+      min-width: 0;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      font-size: 0.72rem;
+    }
+    /* Abbreviate label text on mobile */
+    .chart-toolbar label.threshold-input .full-label { display: none; }
+    .chart-toolbar label.threshold-input .short-label { display: inline; }
+    /* Force first threshold to start a new row */
+    .chart-toolbar label.threshold-input:nth-of-type(1) {
+      margin-top: 2px;
+    }
+    /* Stepper takes remaining space within each threshold-input */
+    .chart-toolbar label.threshold-input .num-stepper {
+      flex: 1;
+      min-width: 0;
+    }
+    .chart-toolbar label.threshold-input .num-stepper input[type="number"] {
+      width: auto;
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+      font-size: 0.78rem;
+      padding: 4px 2px;
+    }
+    .chart-toolbar label.threshold-input .num-stepper button {
+      width: 26px;
+      font-size: 1rem;
+    }
     
-    /* Date controls - stack vertically */
-    .date-controls { gap: 8px; }
+    /* Date controls: stack vertically with full-width inputs */
+    .date-controls {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 10px;
+      align-items: center;
+      padding: 10px 12px;
+    }
+    .date-controls label {
+      display: contents;
+    }
+    .date-controls label > input {
+      grid-column: 2;
+    }
+    .date-controls input[type="datetime-local"] {
+      width: 100%;
+    }
+    .date-controls button {
+      grid-column: 1 / -1;
+      width: 100%;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+    .date-controls button.export-btn {
+      margin-left: 0;
+    }
     
     /* Day chip grid - smaller min width */
     .days-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
     
     /* Stats: 2 columns instead of 4 */
     .stats-row { grid-template-columns: repeat(2, 1fr); }
+    
+    /* Heatmap: rotate to vertical layout - days run TOP to BOTTOM, hours LEFT to RIGHT */
+    /* This means we render with the canvas rotated 90deg, or we just re-render with swapped axes */
+    /* See JS for the actual swap; here just make the container narrower */
+    #heatmap-container {
+      padding: 8px;
+    }
     
     /* Cal mini charts: stack vertically on narrow screens */
     .cal-ts-wrap { flex-direction: column !important; height: auto !important; }
@@ -1058,7 +1178,7 @@
     
     <div id="initial-loading" class="loading-state">
       <div class="spinner"></div>
-      <p style="margin-top:12px;">Loading data from Firebase…</p>
+      <p style="margin-top:12px;">Loading par data…</p>
     </div>
     
     <div id="dashboard-content" style="display:none;">
@@ -1077,12 +1197,6 @@
               <option value="3h">3-hour rolling</option>
               <option value="daily">Daily mean</option>
             </select>
-          </div>
-          
-          <div class="range-buttons">
-            <button class="range-btn" data-days="30">30d</button>
-            <button class="range-btn" data-days="60">60d</button>
-            <button class="range-btn" data-days="90">90d</button>
           </div>
           
           <label class="toggle">
@@ -1104,12 +1218,20 @@
           </label>
           
           <label class="threshold-input">
-            Saturation point
-            <input type="number" id="sat-threshold" value="400" min="0" step="50">
+            <span class="full-label">Saturation point</span><span class="short-label">Sat</span>
+            <span class="num-stepper">
+              <button class="num-step-down" data-target="sat-threshold" aria-label="decrease">−</button>
+              <input type="number" id="sat-threshold" value="400" min="0" step="50">
+              <button class="num-step-up" data-target="sat-threshold" aria-label="increase">+</button>
+            </span>
           </label>
           <label class="threshold-input">
-            Stress point
-            <input type="number" id="stress-threshold" value="1200" min="0" step="50">
+            <span class="full-label">Stress point</span><span class="short-label">Stress</span>
+            <span class="num-stepper">
+              <button class="num-step-down" data-target="stress-threshold" aria-label="decrease">−</button>
+              <input type="number" id="stress-threshold" value="1200" min="0" step="50">
+              <button class="num-step-up" data-target="stress-threshold" aria-label="increase">+</button>
+            </span>
           </label>
         </div>
         
@@ -1189,8 +1311,7 @@
   <div class="tab-panel" id="tab-heatmap">
     <div class="panel">
       <div class="panel-header">
-        <div class="panel-title">Diel <strong>heatmap</strong></div>
-        <div class="panel-meta">Each column = one day · vertical = time of day</div>
+        <div class="panel-title"><span class="nowrap-title">Diel <strong>heatmap</strong></span></div>
       </div>
       
       <div class="date-controls" style="margin-top:0;margin-bottom:14px;">
@@ -1203,7 +1324,6 @@
           <input type="datetime-local" id="hm-end-input">
         </label>
         <button id="hm-apply-range">Apply</button>
-        <button class="ghost" id="hm-reset-range">Last 30 days</button>
         <button class="ghost" id="hm-match-dashboard">Match time series range</button>
       </div>
       
@@ -2645,11 +2765,17 @@ function updateHeatmap() {
     return;
   }
   
+  // Detect mobile to swap orientation: on narrow screens, days run top-bottom, time runs left-right
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  
   // Layout
   const containerW = canvas.parentElement.getBoundingClientRect().width - 24;
   const dpr = window.devicePixelRatio || 1;
   const cssW = containerW;
-  const cssH = 500;
+  // On mobile, canvas height scales with number of days (one row per day, min 14px)
+  const cssH = isMobile 
+    ? Math.max(280, days.length * 18 + 60)
+    : 500;
   canvas.width = cssW * dpr;
   canvas.height = cssH * dpr;
   canvas.style.width = cssW + 'px';
@@ -2659,17 +2785,9 @@ function updateHeatmap() {
   ctx.scale(dpr, dpr);
   ctx.clearRect(0, 0, cssW, cssH);
   
-  // Margins for axis labels
-  const ML = 60, MR = 10, MT = 10, MB = 30;
-  const W = cssW - ML - MR;
-  const H = cssH - MT - MB;
-  
   // Time-of-day axis: focus on daylight hours
   const TOD_START_HR = 5, TOD_END_HR = 20;
   const todRange = TOD_END_HR - TOD_START_HR;
-  
-  // Column width: one per day
-  const colW = W / days.length;
   
   // Find global max for color scaling
   let globalMax = 0;
@@ -2680,68 +2798,116 @@ function updateHeatmap() {
   
   document.getElementById('heatmap-max').textContent = Math.round(globalMax).toLocaleString();
   
-  // For each day, plot vertical strip
-  for (let i = 0; i < days.length; i++) {
-    const day = days[i];
-    const x = ML + i * colW;
-    
-    // Build a per-pixel value array for this column
-    // Each pixel row = one fraction of the day
-    const samples = day.samples;
-    if (samples.length === 0) continue;
-    
-    // Sort by time of day
-    const todSamples = samples.map(s => {
-      const hr = s.t.getHours() + s.t.getMinutes()/60 + s.t.getSeconds()/3600;
-      return { hr, par: s.par };
-    }).sort((a,b) => a.hr - b.hr);
-    
-    // Draw row by row
-    for (let py = 0; py < H; py++) {
-      const hr = TOD_START_HR + (py / H) * todRange;
-      // Find par at this hour (interpolate between adjacent samples)
-      let par = 0;
-      // Binary-ish search
-      let lo = 0, hi = todSamples.length - 1;
-      if (hr <= todSamples[0].hr) {
-        par = todSamples[0].par;
-      } else if (hr >= todSamples[hi].hr) {
-        par = todSamples[hi].par;
-      } else {
-        // Linear scan (could optimize but fast enough)
-        for (let j = 0; j < todSamples.length - 1; j++) {
-          if (hr >= todSamples[j].hr && hr <= todSamples[j+1].hr) {
-            const t = (hr - todSamples[j].hr) / (todSamples[j+1].hr - todSamples[j].hr);
-            par = todSamples[j].par + t * (todSamples[j+1].par - todSamples[j].par);
-            break;
-          }
-        }
+  // ----- Helper to compute interpolated PAR at a given hour of day -----
+  function todSamplesForDay(day) {
+    return day.samples.map(s => ({
+      hr: s.t.getHours() + s.t.getMinutes()/60 + s.t.getSeconds()/3600,
+      par: s.par
+    })).sort((a,b) => a.hr - b.hr);
+  }
+  function parAtHour(todSamples, hr) {
+    if (todSamples.length === 0) return 0;
+    if (hr <= todSamples[0].hr) return todSamples[0].par;
+    if (hr >= todSamples[todSamples.length-1].hr) return todSamples[todSamples.length-1].par;
+    for (let j = 0; j < todSamples.length - 1; j++) {
+      if (hr >= todSamples[j].hr && hr <= todSamples[j+1].hr) {
+        const t = (hr - todSamples[j].hr) / (todSamples[j+1].hr - todSamples[j].hr);
+        return todSamples[j].par + t * (todSamples[j+1].par - todSamples[j].par);
       }
-      const v = par / globalMax;
-      const [r,g,b] = colorForValue(v);
-      ctx.fillStyle = `rgb(${r},${g},${b})`;
-      ctx.fillRect(x, MT + py, colW + 0.5, 1);
     }
+    return 0;
   }
   
-  // Y-axis labels (time of day)
-  ctx.fillStyle = 'rgba(255,255,255,0.7)';
-  ctx.font = '11px -apple-system, sans-serif';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
-  const hourTicks = [6, 8, 10, 12, 14, 16, 18];
-  for (const hr of hourTicks) {
-    const y = MT + ((hr - TOD_START_HR) / todRange) * H;
-    ctx.fillText(`${String(hr).padStart(2,'0')}:00`, ML - 8, y);
-  }
-  
-  // X-axis labels (dates) - show subset to avoid overcrowding
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  const labelStep = Math.max(1, Math.ceil(days.length / 12));
-  for (let i = 0; i < days.length; i += labelStep) {
-    const x = ML + i * colW + colW/2;
-    ctx.fillText(fmtShort(days[i].date), x, MT + H + 6);
+  if (isMobile) {
+    // ===========================================
+    // MOBILE: vertical layout (days = rows, hours = columns)
+    // ===========================================
+    const ML = 50, MR = 10, MT = 24, MB = 12;
+    const W = cssW - ML - MR;
+    const H = cssH - MT - MB;
+    const rowH = H / days.length;
+    
+    // For each day, draw a horizontal strip
+    for (let i = 0; i < days.length; i++) {
+      const day = days[i];
+      const y = MT + i * rowH;
+      const todSamples = todSamplesForDay(day);
+      if (todSamples.length === 0) continue;
+      
+      for (let px = 0; px < W; px++) {
+        const hr = TOD_START_HR + (px / W) * todRange;
+        const par = parAtHour(todSamples, hr);
+        const v = par / globalMax;
+        const [r,g,b] = colorForValue(v);
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.fillRect(ML + px, y, 1, rowH + 0.5);
+      }
+    }
+    
+    // X-axis labels (time of day) - at top
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.font = '10px -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    const hourTicks = [6, 9, 12, 15, 18];
+    for (const hr of hourTicks) {
+      const x = ML + ((hr - TOD_START_HR) / todRange) * W;
+      ctx.fillText(`${String(hr).padStart(2,'0')}:00`, x, MT - 4);
+    }
+    
+    // Y-axis labels (dates) - to the left
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.font = '10px -apple-system, sans-serif';
+    const labelStep = Math.max(1, Math.ceil(days.length / 14));
+    for (let i = 0; i < days.length; i += labelStep) {
+      const y = MT + i * rowH + rowH/2;
+      ctx.fillText(fmtShort(days[i].date), ML - 6, y);
+    }
+  } else {
+    // ===========================================
+    // DESKTOP: horizontal layout (days = cols, hours = rows)
+    // ===========================================
+    const ML = 60, MR = 10, MT = 10, MB = 30;
+    const W = cssW - ML - MR;
+    const H = cssH - MT - MB;
+    const colW = W / days.length;
+    
+    for (let i = 0; i < days.length; i++) {
+      const day = days[i];
+      const x = ML + i * colW;
+      const todSamples = todSamplesForDay(day);
+      if (todSamples.length === 0) continue;
+      
+      for (let py = 0; py < H; py++) {
+        const hr = TOD_START_HR + (py / H) * todRange;
+        const par = parAtHour(todSamples, hr);
+        const v = par / globalMax;
+        const [r,g,b] = colorForValue(v);
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.fillRect(x, MT + py, colW + 0.5, 1);
+      }
+    }
+    
+    // Y-axis labels (time of day)
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.font = '11px -apple-system, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    const hourTicks = [6, 8, 10, 12, 14, 16, 18];
+    for (const hr of hourTicks) {
+      const y = MT + ((hr - TOD_START_HR) / todRange) * H;
+      ctx.fillText(`${String(hr).padStart(2,'0')}:00`, ML - 8, y);
+    }
+    
+    // X-axis labels (dates)
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    const labelStep = Math.max(1, Math.ceil(days.length / 12));
+    for (let i = 0; i < days.length; i += labelStep) {
+      const x = ML + i * colW + colW/2;
+      ctx.fillText(fmtShort(days[i].date), x, MT + H + 6);
+    }
   }
 }
 
@@ -2911,30 +3077,9 @@ function refreshAfterZoom() {
   updateRangeDisplay();
   updateDateInputs();
   updateRangeSlider();
-  updateRangeButtons();
   updateStats();
   updateDays();
   // Note: heatmap is on its own tab with own date controls, not refreshed here
-}
-
-function updateRangeButtons() {
-  // Highlight range button if current zoom matches that span (ending at latest data)
-  const buttons = document.querySelectorAll('.range-btn');
-  if (!buttons.length || state.raw.length === 0 || !state.zoom) {
-    buttons.forEach(b => b.classList.remove('active'));
-    return;
-  }
-  const newest = state.raw[state.raw.length - 1].t.getTime();
-  const endMs = state.zoom[1].getTime();
-  const startMs = state.zoom[0].getTime();
-  const spanDays = (endMs - startMs) / DAY_MS;
-  const endsAtNewest = Math.abs(endMs - newest) < DAY_MS / 24;  // within 1 hour
-  
-  buttons.forEach(b => {
-    const days = parseInt(b.dataset.days, 10);
-    const matches = endsAtNewest && Math.abs(spanDays - days) < 0.5;
-    b.classList.toggle('active', matches);
-  });
 }
 
 function updateRangeDisplay() {
@@ -2969,6 +3114,32 @@ function setupEventListeners() {
     updateDays();
   });
   
+  // Custom +/− stepper buttons
+  document.querySelectorAll('.num-step-up').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById(btn.dataset.target);
+      if (!input) return;
+      const step = parseFloat(input.step) || 1;
+      const min = input.min !== '' ? parseFloat(input.min) : -Infinity;
+      const max = input.max !== '' ? parseFloat(input.max) : Infinity;
+      const current = parseFloat(input.value) || 0;
+      input.value = Math.max(min, Math.min(max, current + step));
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  });
+  document.querySelectorAll('.num-step-down').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById(btn.dataset.target);
+      if (!input) return;
+      const step = parseFloat(input.step) || 1;
+      const min = input.min !== '' ? parseFloat(input.min) : -Infinity;
+      const max = input.max !== '' ? parseFloat(input.max) : Infinity;
+      const current = parseFloat(input.value) || 0;
+      input.value = Math.max(min, Math.min(max, current - step));
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  });
+  
   // New toolbar controls
   document.getElementById('smoothing-select').addEventListener('change', e => {
     state.smoothing = e.target.value;
@@ -2992,13 +3163,20 @@ function setupEventListeners() {
     refreshChart();
   });
   
-  // Range buttons (30 / 60 / 90 days)
-  document.querySelectorAll('.range-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const days = parseInt(btn.dataset.days, 10);
-      setRangeFromLatest(days);
-    });
-  });
+  // Helper: check if requested range is outside the available data, warn user with the range we DO have.
+  // Returns true if OK to proceed, false if user should reconsider (alert already shown).
+  function validateRequestedRange(s, e) {
+    if (state.raw.length === 0) return true;  // no data, can't validate
+    const dataStart = state.raw[0].t;
+    const dataEnd = state.raw[state.raw.length - 1].t;
+    // If requested range is entirely outside available data
+    if (e < dataStart || s > dataEnd) {
+      const fmt = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      alert(`No data in that range.\n\nAvailable data: ${fmt(dataStart)} → ${fmt(dataEnd)}`);
+      return false;
+    }
+    return true;
+  }
   
   document.getElementById('apply-range').addEventListener('click', () => {
     const startStr = document.getElementById('start-input').value;
@@ -3010,6 +3188,7 @@ function setupEventListeners() {
       alert('End must be after start');
       return;
     }
+    if (!validateRequestedRange(s, e)) return;
     state.zoom = [s, e];
     applyZoomToChart();
     refreshAfterZoom();
@@ -3026,17 +3205,8 @@ function setupEventListeners() {
     const s = new Date(startStr);
     const e = new Date(endStr);
     if (e <= s) { alert('End must be after start'); return; }
+    if (!validateRequestedRange(s, e)) return;
     state.hmZoom = [s, e];
-    updateHeatmap();
-  });
-  document.getElementById('hm-reset-range').addEventListener('click', () => {
-    if (state.raw.length === 0) return;
-    const newest = state.raw[state.raw.length-1].t;
-    const thirtyAgo = new Date(newest.getTime() - 30 * DAY_MS);
-    const oldestT = state.raw[0].t;
-    state.hmZoom = [thirtyAgo > oldestT ? thirtyAgo : oldestT, newest];
-    document.getElementById('hm-start-input').value = fmtForInput(state.hmZoom[0]);
-    document.getElementById('hm-end-input').value = fmtForInput(state.hmZoom[1]);
     updateHeatmap();
   });
   document.getElementById('hm-match-dashboard').addEventListener('click', () => {
@@ -3109,7 +3279,7 @@ async function loadLastUploadMeta() {
     }
     const d = new Date(latest.uploaded_at);
     const dateStr = d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
-    document.getElementById('dataset-meta').textContent = `Last data upload on ${dateStr}`;
+    document.getElementById('dataset-meta').textContent = `last upload: ${dateStr}`;
   } catch (e) {
     document.getElementById('dataset-meta').textContent = '';
   }
