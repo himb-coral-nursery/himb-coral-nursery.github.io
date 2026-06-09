@@ -1,0 +1,3679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAR Visualizer | HIMB Coral Nursery</title>
+<style>
+  :root {
+    --bg: #10616A;
+    --bg-2: #0a4a52;
+    --panel: rgba(255,255,255,0.06);
+    --panel-2: rgba(255,255,255,0.10);
+    --text: #ffffff;
+    --text-2: rgba(255,255,255,0.75);
+    --text-3: rgba(255,255,255,0.55);
+    --accent: #45BBE6;
+    --accent-2: #C2E5DF;
+    --warm: #EBD5AF;
+    --alert: #dc2626;
+    --good: #76C7C3;
+    --border: rgba(255,255,255,0.12);
+    --card-bg: #00446F;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  .site-header {
+    background: #fff;
+    padding: 12px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid var(--accent);
+  }
+  .logo {
+    color: var(--bg);
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+  }
+  .logo .logo-himb { color: var(--bg); font-weight: 700; }
+  .logo .logo-coral, .logo .logo-nursery { color: var(--accent); font-weight: 500; }
+  .title {
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--bg);
+  }
+  .title strong { color: var(--accent); font-weight: 600; }
+  .active-sensor {
+    font-size: 0.85rem;
+    color: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    min-width: 0;
+  }
+  .active-sensor-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .active-sensor .label { 
+    color: rgba(0,0,0,0.5); 
+    letter-spacing: 0.05em; 
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+  .sensor-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 2px solid var(--bg);
+    background: rgba(255,255,255,0.5);
+    color: var(--bg);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .sun-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    flex-shrink: 0;
+    animation: sun-blink 1.6s ease-in-out infinite;
+  }
+  .sun-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  @keyframes sun-blink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(0.92); }
+  }
+  .meta-line {
+    color: rgba(0,0,0,0.5);
+    font-size: 0.72rem;
+    text-align: right;
+    white-space: nowrap;
+  }
+  
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 16px 40px;
+  }
+  
+  .panel {
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 14px 0;
+    border: 1px solid var(--border);
+  }
+  .panel.panel-cream {
+    background: #faf6ec;
+    border-color: rgba(0,0,0,0.08);
+  }
+  .panel.panel-cream .panel-title {
+    color: var(--bg);
+  }
+  .panel.panel-cream .panel-title strong {
+    color: var(--accent);
+  }
+  .panel.panel-cream .panel-meta {
+    color: rgba(0,0,0,0.5);
+  }
+  .panel.panel-cream .panel-header {
+    border-bottom-color: rgba(0,0,0,0.08);
+  }
+  .panel-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .panel-title {
+    font-size: 1.2rem;
+    font-weight: 300;
+  }
+  .panel-title strong { color: var(--accent); font-weight: 500; }
+  .panel-meta {
+    color: var(--text-3);
+    font-size: 0.85rem;
+  }
+  
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 14px;
+  }
+  .tab {
+    padding: 10px 22px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--text-2);
+    font-size: 1rem;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: 0.15s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  
+  /* Time-series chart */
+  .chart-container {
+    position: relative;
+    height: 360px;
+    background: #faf6ec;
+    border-radius: 8px;
+    padding: 12px;
+  }
+  
+  /* Chart toolbar */
+  .chart-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.15);
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .chart-toolbar label.threshold-input {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: var(--text-2);
+  }
+  .chart-toolbar label.threshold-input input[type="number"] {
+    width: 80px;
+    padding: 4px 4px 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.95);
+    color: var(--bg);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    /* Force spinner buttons to show */
+    -moz-appearance: number-input;
+    appearance: auto;
+  }
+  /* Make WebKit spinners always visible and styled */
+  .chart-toolbar label.threshold-input input[type="number"]::-webkit-inner-spin-button,
+  .chart-toolbar label.threshold-input input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: inner-spin-button;
+    opacity: 1;
+    height: 24px;
+    cursor: pointer;
+  }
+  .chart-toolbar label.threshold-input input[type="number"]:hover {
+    background: #fff;
+    border-color: var(--accent);
+  }
+  .chart-toolbar .smoothing-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--text-2);
+  }
+  .chart-toolbar select {
+    padding: 7px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.25);
+    color: var(--text);
+    font-family: inherit;
+    cursor: pointer;
+    color-scheme: dark;
+  }
+  .chart-toolbar label.toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--text-2);
+    cursor: pointer;
+    user-select: none;
+  }
+  .chart-toolbar label.toggle input { accent-color: var(--accent); }
+  .chart-toolbar label.toggle.toggle-stacked {
+    gap: 6px;
+  }
+  .chart-toolbar .stacked-text {
+    display: inline-block;
+    font-size: 0.78rem;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+  .chart-toolbar .range-buttons {
+    display: flex;
+    gap: 2px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 6px;
+    padding: 2px;
+  }
+  .chart-toolbar .range-btn {
+    padding: 4px 12px;
+    background: transparent;
+    color: var(--text-2);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: inherit;
+    font-weight: 400;
+    transition: 0.12s;
+  }
+  .chart-toolbar .range-btn:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.06);
+  }
+  .chart-toolbar .range-btn.active {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 500;
+  }
+  .toggle-marker {
+    display: inline-block;
+    width: 14px;
+    height: 2px;
+    background: currentColor;
+    vertical-align: middle;
+  }
+  .toggle-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .chart-toolbar button.action-btn {
+    padding: 7px 14px;
+    background: transparent;
+    color: var(--text-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.15s;
+  }
+  .chart-toolbar button.action-btn:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+  
+  .chart-hint-overlay {
+    position: absolute;
+    bottom: 1px;
+    right: 14px;
+    color: rgba(0, 68, 111, 0.45);
+    font-size: 0.65rem;
+    font-style: italic;
+    pointer-events: none;
+    letter-spacing: 0.02em;
+    z-index: 5;
+  }
+  
+  /* Date controls */
+  .date-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.12);
+    border-radius: 6px;
+    margin-top: 10px;
+  }
+  .date-controls label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 400;
+  }
+  .date-controls input[type="datetime-local"], 
+  .date-controls input[type="date"] {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.25);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.8rem;
+    color-scheme: dark;
+  }
+  .date-controls button {
+    padding: 4px 12px;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.8rem;
+  }
+  .date-controls button:hover { background: var(--warm); }
+  .date-controls button.export-btn {
+    background: transparent;
+    color: var(--text-2);
+    border: 1px solid var(--border);
+    margin-left: auto;
+    padding: 4px 14px;
+    font-weight: 400;
+  }
+  .date-controls button.export-btn:hover {
+    color: var(--text);
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.05);
+  }
+  .date-controls button.ghost {
+    background: transparent;
+    color: var(--text-2);
+    border: 1px solid var(--border);
+    font-weight: 400;
+  }
+  .date-controls button.ghost:hover { 
+    color: var(--text); 
+    border-color: var(--accent); 
+    background: rgba(255,255,255,0.05);
+  }
+  
+  /* Range slider */
+  .range-slider-wrap {
+    margin-top: 14px;
+    padding: 0 14px;
+  }
+  .range-slider {
+    position: relative;
+    height: 38px;
+    user-select: none;
+  }
+  .range-slider .track {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 5px;
+    transform: translateY(-50%);
+  }
+  .range-slider .selected {
+    position: absolute;
+    top: 50%;
+    height: 12px;
+    background: linear-gradient(180deg, #EBD5AF, #d6b988);
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 6px;
+    transform: translateY(-50%);
+    cursor: grab;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    /* Grip dots so the selected band looks draggable */
+    background-image: 
+      radial-gradient(circle, rgba(0,0,0,0.28) 1px, transparent 1.5px),
+      linear-gradient(180deg, #EBD5AF, #d6b988);
+    background-size: 6px 6px, 100% 100%;
+    background-position: center, 0 0;
+    background-repeat: repeat-x, no-repeat;
+  }
+  .range-slider .selected:hover {
+    filter: brightness(1.06);
+  }
+  .range-slider .selected:active { cursor: grabbing; filter: brightness(1.1); }
+  .range-slider .handle {
+    position: absolute;
+    top: 50%;
+    width: 22px;
+    height: 26px;
+    background: linear-gradient(180deg, #fff, #EBD5AF);
+    border: 2px solid var(--bg);
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+    cursor: ew-resize;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    /* Three vertical grip lines so it looks grabbable */
+    background-image:
+      linear-gradient(90deg, transparent 7px, rgba(0,68,111,0.55) 7px, rgba(0,68,111,0.55) 8px, transparent 8px, transparent 10px, rgba(0,68,111,0.55) 10px, rgba(0,68,111,0.55) 11px, transparent 11px, transparent 13px, rgba(0,68,111,0.55) 13px, rgba(0,68,111,0.55) 14px, transparent 14px),
+      linear-gradient(180deg, #fff, #EBD5AF);
+  }
+  .range-slider .handle:hover { 
+    background-image:
+      linear-gradient(90deg, transparent 7px, rgba(0,68,111,0.7) 7px, rgba(0,68,111,0.7) 8px, transparent 8px, transparent 10px, rgba(0,68,111,0.7) 10px, rgba(0,68,111,0.7) 11px, transparent 11px, transparent 13px, rgba(0,68,111,0.7) 13px, rgba(0,68,111,0.7) 14px, transparent 14px),
+      linear-gradient(180deg, #fff, #fff);
+  }
+  .range-slider .handle:active { cursor: grabbing; transform: translate(-50%, -50%) scale(0.97); }
+  
+  /* Threshold inputs */
+  .threshold-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(0,0,0,0.15);
+    border-radius: 8px;
+    margin-top: 12px;
+  }
+  .threshold-row label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-2);
+  }
+  .threshold-row input[type="number"] {
+    width: 80px;
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.3);
+    color: var(--text);
+    font-family: inherit;
+  }
+  .threshold-row input[type="checkbox"] {
+    accent-color: var(--accent);
+    width: 16px;
+    height: 16px;
+  }
+  
+  /* Stats note */
+  .stats-note {
+    background: rgba(69, 187, 230, 0.1);
+    border-left: 3px solid var(--accent);
+    padding: 10px 16px;
+    margin: 16px 0;
+    font-style: italic;
+    color: var(--text-2);
+    font-size: 0.9rem;
+  }
+  
+  /* Stat cards */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 900px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 500px) {
+    .stats-row { grid-template-columns: 1fr; }
+  }
+  .stat-card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(69, 187, 230, 0.2);
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-2);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .stat-value {
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1;
+  }
+  .stat-value .unit {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-3);
+    margin-left: 6px;
+  }
+  .stat-sub {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: var(--text-2);
+  }
+  .stat-context {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--text-2);
+    line-height: 1.4;
+  }
+  
+  /* Day chips */
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .day-divider {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 0;
+    margin: 4px 0;
+  }
+  .day-divider-line {
+    flex: 1;
+    height: 0;
+    border-top: 1.5px dashed rgba(0, 68, 111, 0.4);
+  }
+  .day-divider-label {
+    font-size: 0.72rem;
+    color: rgba(0, 68, 111, 0.65);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    background: rgba(0, 68, 111, 0.06);
+    border-radius: 4px;
+  }
+  .day-card {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 14px;
+    border-left: 4px solid var(--accent);
+    cursor: pointer;
+    transition: 0.15s;
+    position: relative;
+    color: var(--text);
+  }
+  .day-card:hover {
+    background: var(--bg-2);
+    transform: translateY(-1px);
+  }
+  .day-card.stress { border-left-color: var(--alert); }
+  .day-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .day-card-date {
+    font-weight: 500;
+    color: var(--text);
+  }
+  .day-card-stress-badge {
+    background: var(--alert);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .day-card-curve {
+    height: 40px;
+    margin: 8px 0;
+    position: relative;
+  }
+  .day-card-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    margin-top: 8px;
+    font-size: 0.7rem;
+  }
+  .day-card-stats .lbl {
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .day-card-stats .val {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.85rem;
+  }
+  
+  /* Heatmap */
+  #heatmap-container {
+    position: relative;
+    background: rgba(0,0,0,0.15);
+    border-radius: 14px;
+    padding: 16px;
+    overflow: hidden;
+  }
+  #heatmap-canvas {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+  }
+  .heatmap-legend {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--text-2);
+  }
+  .heatmap-gradient {
+    width: 200px;
+    height: 14px;
+    border-radius: 4px;
+  }
+  
+  /* Calibration tab */
+  .cal-equation-banner {
+    background: rgba(0, 68, 111, 0.05);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+  }
+  .cal-equation-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(0,0,0,0.55);
+    margin-bottom: 6px;
+  }
+  .cal-equation {
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 1.4rem;
+    color: var(--bg);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .cal-equation strong {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .cal-equation-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.65);
+  }
+  .cal-equation-meta strong { color: var(--bg); font-weight: 500; }
+  .cal-equation-meta .grade-a { color: #1a8a3a; font-weight: 700; }
+  .cal-equation-meta .grade-b { color: #45822e; font-weight: 700; }
+  .cal-equation-meta .grade-c { color: #b87b1b; font-weight: 700; }
+  .cal-equation-meta .grade-d { color: #b8581b; font-weight: 700; }
+  .cal-equation-meta .grade-f { color: #dc2626; font-weight: 700; }
+  
+  .cal-explain {
+    background: rgba(0,0,0,0.04);
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    color: rgba(0,0,0,0.75);
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+  .cal-explain-equation {
+    font-family: 'Monaco', 'Courier New', monospace;
+    color: var(--bg);
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+  .cal-explain-text {
+    color: rgba(0,0,0,0.65);
+  }
+  .cal-explain-text code {
+    background: rgba(0,0,0,0.07);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--bg);
+    font-family: 'Monaco', 'Courier New', monospace;
+  }
+  
+  .cal-scatter-wrap, .cal-ts-wrap {
+    position: relative;
+    height: 380px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .cal-ts-wrap { height: 320px; }
+  
+  .cal-scatter-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    font-size: 0.82rem;
+    color: rgba(0,0,0,0.6);
+    margin-top: 10px;
+    padding: 0 4px;
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .legend-line {
+    display: inline-block;
+    width: 24px;
+    height: 2px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  
+  .cal-data-toolbar {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 8px 14px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 0.88rem;
+  }
+  .cal-data-toolbar label.toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(0,0,0,0.7);
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .cal-history-table-wrap {
+    overflow-x: auto;
+  }
+  .cal-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  .cal-history-table th {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+    color: rgba(0,0,0,0.55);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+  }
+  .cal-history-table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    color: var(--bg);
+  }
+  .cal-history-table tr {
+    cursor: pointer;
+    transition: 0.12s;
+  }
+  .cal-history-table tr:hover {
+    background: rgba(69,187,230,0.07);
+  }
+  .cal-history-table tr.active {
+    background: rgba(69,187,230,0.12);
+  }
+  .cal-history-table .sensor-pill-sm {
+    display: inline-block;
+    background: var(--bg);
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .cal-history-table .grade-a { color: #1a8a3a; font-weight: 700; }
+  .cal-history-table .grade-b { color: #45822e; font-weight: 700; }
+  .cal-history-table .grade-c { color: #b87b1b; font-weight: 700; }
+  .cal-history-table .grade-d { color: #b8581b; font-weight: 700; }
+  .cal-history-table .grade-f { color: #dc2626; font-weight: 700; }
+  .cal-history-table code {
+    background: rgba(0,0,0,0.06);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.85em;
+  }
+  
+  .loading-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-2);
+  }
+  .spinner {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(255,255,255,0.2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-3);
+  }
+  .empty-state h3 { color: var(--text-2); margin-bottom: 8px; }
+  
+  .warning-banner {
+    background: rgba(232, 149, 107, 0.15);
+    border-left: 4px solid var(--alert);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 16px 0;
+    color: var(--text);
+  }
+  
+  /* Custom selection overlay on chart */
+  .selection-overlay {
+    position: absolute;
+    background: rgba(235, 213, 175, 0.2);
+    border-left: 2px solid var(--warm);
+    border-right: 2px solid var(--warm);
+    pointer-events: none;
+    display: none;
+  }
+  
+  /* About tab */
+  .about-image {
+    width: 100%;
+    max-width: 700px;
+    border-radius: 8px;
+    margin: 0 auto 24px;
+    display: block;
+  }
+  .about-content {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .about-content h3 {
+    color: var(--accent-2);
+    font-size: 1rem;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .about-content h3:first-child { margin-top: 0; }
+  .about-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .about-content li {
+    color: var(--text-2);
+    padding: 4px 0 4px 18px;
+    position: relative;
+    font-size: 0.95rem;
+  }
+  .about-content li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    color: var(--accent);
+    font-weight: bold;
+  }
+  .about-content code {
+    background: rgba(0,0,0,0.3);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.85em;
+    color: var(--warm);
+  }
+  /* ==========================================
+   * MOBILE / NARROW LAYOUT (≤768px)
+   * ========================================== */
+  @media (max-width: 768px) {
+    .site-header {
+      flex-direction: row;
+      align-items: center;
+      padding: 10px 16px;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+    /* Logo: stack 3 words on 3 lines, smaller */
+    .logo {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.7rem;
+      line-height: 1.1;
+      letter-spacing: 0.06em;
+      flex-shrink: 0;
+    }
+    .logo .logo-word {
+      display: block;
+    }
+    /* Title: stack PAR / Visualizer, centered, fill middle */
+    .title {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 1.1rem;
+      line-height: 1.1;
+      flex: 1;
+      text-align: center;
+    }
+    .title .title-word {
+      display: block;
+    }
+    /* Active sensor: stack label above pill, right aligned */
+    .active-sensor {
+      align-items: flex-end;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+    .active-sensor-row {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+    }
+    .active-sensor .label {
+      font-size: 0.6rem;
+    }
+    .sensor-pill {
+      font-size: 0.8rem;
+      padding: 3px 9px;
+    }
+    .active-sensor .meta-line { font-size: 0.65rem; }
+    
+    /* Container padding tighter */
+    .container { padding: 10px 12px; }
+    
+    /* Tabs - smaller padding */
+    .tab { padding: 8px 14px; font-size: 0.9rem; }
+    
+    /* Toolbar wraps naturally - already does, but ensure gap */
+    .chart-toolbar { gap: 10px; padding: 8px 10px; }
+    
+    /* Date controls - stack vertically */
+    .date-controls { gap: 8px; }
+    
+    /* Day chip grid - smaller min width */
+    .days-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+    
+    /* Stats: 2 columns instead of 4 */
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    
+    /* Cal mini charts: stack vertically on narrow screens */
+    .cal-ts-wrap { flex-direction: column !important; height: auto !important; }
+    .cal-ts-wrap > div { min-height: 220px; border-left: none !important; border-top: 1px dashed rgba(0, 68, 111, 0.35); padding-left: 0 !important; padding-top: 6px; }
+    .cal-ts-wrap > div:first-child { border-top: none; padding-top: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo"><span class="logo-word logo-himb">HIMB</span> <span class="logo-word logo-coral">CORAL</span> <span class="logo-word logo-nursery">NURSERY</span></div>
+  <div class="title"><span class="title-word">PAR</span> <strong class="title-word">Visualizer</strong></div>
+  <div class="active-sensor">
+    <div class="active-sensor-row">
+      <span class="label">Active Sensor</span>
+      <span class="sensor-pill" id="active-sensor-pill"><span class="sun-icon" aria-hidden="true"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="3" fill="#f5b73a"/><g stroke="#f5b73a" stroke-width="1.2" stroke-linecap="round"><line x1="8" y1="0.5" x2="8" y2="2.2"/><line x1="8" y1="13.8" x2="8" y2="15.5"/><line x1="0.5" y1="8" x2="2.2" y2="8"/><line x1="13.8" y1="8" x2="15.5" y2="8"/><line x1="2.7" y1="2.7" x2="3.9" y2="3.9"/><line x1="12.1" y1="12.1" x2="13.3" y2="13.3"/><line x1="2.7" y1="13.3" x2="3.9" y2="12.1"/><line x1="12.1" y1="3.9" x2="13.3" y2="2.7"/></g></svg></span><span id="active-sensor-name">—</span></span>
+    </div>
+    <div class="meta-line" id="dataset-meta">—</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Tab navigation -->
+  <div class="tabs">
+    <button class="tab active" data-tab="dashboard">Time series</button>
+    <button class="tab" data-tab="heatmap">Heatmap</button>
+    <button class="tab" data-tab="calibration">Calibration</button>
+    <button class="tab" data-tab="about">About</button>
+  </div>
+
+  <!-- DASHBOARD TAB -->
+  <div class="tab-panel active" id="tab-dashboard">
+    
+    <div id="initial-loading" class="loading-state">
+      <div class="spinner"></div>
+      <p style="margin-top:12px;">Loading data from Firebase…</p>
+    </div>
+    
+    <div id="dashboard-content" style="display:none;">
+      
+      <!-- TIME SERIES -->
+      <div class="panel">
+        <!-- Chart toolbar -->
+        <div class="chart-toolbar">
+          <div class="smoothing-group">
+            <span>Smoothing</span>
+            <select id="smoothing-select">
+              <option value="raw" selected>Raw 5-min</option>
+              <option value="15m">15-min rolling</option>
+              <option value="30m">30-min rolling</option>
+              <option value="1h">1-hour rolling</option>
+              <option value="3h">3-hour rolling</option>
+              <option value="daily">Daily mean</option>
+            </select>
+          </div>
+          
+          <div class="range-buttons">
+            <button class="range-btn" data-days="30">30d</button>
+            <button class="range-btn" data-days="60">60d</button>
+            <button class="range-btn" data-days="90">90d</button>
+          </div>
+          
+          <label class="toggle">
+            <input type="checkbox" id="show-par" checked>
+            <span class="toggle-dot" style="color:#0a7099;"></span>
+            PAR
+          </label>
+          
+          <label class="toggle toggle-stacked">
+            <input type="checkbox" id="show-dli-overlay">
+            <span class="toggle-marker" style="color:#EBD5AF;height:8px;width:14px;"></span>
+            <span class="stacked-text">Daily Light<br>Integral</span>
+          </label>
+          
+          <label class="toggle">
+            <input type="checkbox" id="show-daily-max" checked>
+            <span class="toggle-dot" style="color:#dc2626;"></span>
+            Daily max
+          </label>
+          
+          <label class="threshold-input">
+            Saturation point
+            <input type="number" id="sat-threshold" value="400" min="0" step="50">
+          </label>
+          <label class="threshold-input">
+            Stress point
+            <input type="number" id="stress-threshold" value="1200" min="0" step="50">
+          </label>
+        </div>
+        
+        <div class="chart-container">
+          <canvas id="main-chart"></canvas>
+          <div class="chart-hint-overlay">drag to zoom · double-click to reset</div>
+        </div>
+        
+        <!-- Range slider directly below chart -->
+        <div class="range-slider-wrap">
+          <div class="range-slider" id="range-slider">
+            <div class="track"></div>
+            <div class="selected" id="slider-selected"></div>
+            <div class="handle" id="slider-handle-start"></div>
+            <div class="handle" id="slider-handle-end"></div>
+          </div>
+        </div>
+        
+        <!-- Date pickers + Export below slider -->
+        <div class="date-controls">
+          <label>
+            START
+            <input type="datetime-local" id="start-input">
+          </label>
+          <label>
+            END
+            <input type="datetime-local" id="end-input">
+          </label>
+          <button id="apply-range">Apply</button>
+          <button class="export-btn" id="export-btn">↓ Export</button>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-note">
+        Stats below reflect the date range visible in the graph above.
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Mean DLI</div>
+          <div class="stat-value"><span id="stat-dli">—</span><span class="unit">mol·m⁻²·d⁻¹</span></div>
+          <div class="stat-sub" id="stat-dli-sub">—</div>
+          <div class="stat-context" id="stat-dli-context"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Mean Hsat / day</div>
+          <div class="stat-value"><span id="stat-hsat">—</span><span class="unit">hours</span></div>
+          <div class="stat-sub" id="stat-hsat-sub">—</div>
+          <div class="stat-context" id="stat-hsat-context">When PAR exceeds saturation, additional light no longer increases photosynthesis</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Stress Dose / day</div>
+          <div class="stat-value"><span id="stat-dose">—</span><span class="unit">mol·m⁻²</span></div>
+          <div class="stat-sub" id="stat-dose-sub">—</div>
+          <div class="stat-context" id="stat-dose-context">Sustained accumulation here drives photoinhibition</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Peak Instant PAR</div>
+          <div class="stat-value"><span id="stat-peak">—</span><span class="unit">µmol·m⁻²·s⁻¹</span></div>
+          <div class="stat-sub" id="stat-peak-sub">—</div>
+          <div class="stat-context" id="stat-peak-context"></div>
+        </div>
+      </div>
+
+      <!-- DAILY CHIPS -->
+      <div class="panel panel-cream">
+        <div class="panel-header">
+          <div class="panel-title">Daily light <strong>environment</strong></div>
+          <div class="panel-meta">Per-day diel curve · click any day to zoom</div>
+        </div>
+        <div class="days-grid" id="days-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEATMAP TAB -->
+  <div class="tab-panel" id="tab-heatmap">
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Diel <strong>heatmap</strong></div>
+        <div class="panel-meta">Each column = one day · vertical = time of day</div>
+      </div>
+      
+      <div class="date-controls" style="margin-top:0;margin-bottom:14px;">
+        <label>
+          START
+          <input type="datetime-local" id="hm-start-input">
+        </label>
+        <label>
+          END
+          <input type="datetime-local" id="hm-end-input">
+        </label>
+        <button id="hm-apply-range">Apply</button>
+        <button class="ghost" id="hm-reset-range">Last 30 days</button>
+        <button class="ghost" id="hm-match-dashboard">Match time series range</button>
+      </div>
+      
+      <div id="heatmap-container">
+        <canvas id="heatmap-canvas"></canvas>
+      </div>
+      <div class="heatmap-legend">
+        <span>0</span>
+        <div class="heatmap-gradient" id="heatmap-gradient"></div>
+        <span><span id="heatmap-max">—</span> µmol·m⁻²·s⁻¹</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALIBRATION TAB -->
+  <div class="tab-panel" id="tab-calibration">
+    
+    <div id="cal-empty" class="empty-state" style="display:none;">
+      <h3>No calibration sessions found</h3>
+      <p>Upload paired Odyssey + LI-COR CAL files to derive calibrations.</p>
+    </div>
+    
+    <div id="cal-loading" class="loading-state">
+      <div class="spinner"></div>
+      <p style="margin-top:12px;">Loading calibration data…</p>
+    </div>
+    
+    <div id="cal-content" style="display:none;">
+      
+      <!-- ACTIVE CALIBRATION -->
+      <div class="panel panel-cream">
+        <div class="panel-header">
+          <div class="panel-title">Active <strong>calibration</strong></div>
+          <div class="panel-meta" id="cal-active-meta">—</div>
+        </div>
+        
+        <div class="cal-equation-banner">
+          <div class="cal-equation-label">DERIVED FROM LI-COR REGRESSION</div>
+          <div class="cal-equation" id="cal-equation">—</div>
+          <div class="cal-equation-meta">
+            <span>Method: <strong>Linear, raw 5-min pairs (no binning)</strong></span>
+            <span>R²: <strong id="cal-r2-val">—</strong></span>
+            <span>N: <strong id="cal-n-val">—</strong></span>
+            <span>RMSE: <strong id="cal-rmse-val">—</strong> µmol·m⁻²·s⁻¹</span>
+            <span>Grade: <strong id="cal-grade-val">—</strong></span>
+          </div>
+        </div>
+        
+        <div class="cal-explain">
+          <div class="cal-explain-equation" id="cal-equation-explain">—</div>
+          <div class="cal-explain-text" id="cal-explain-text">—</div>
+        </div>
+        
+        <div class="cal-scatter-wrap">
+          <canvas id="cal-scatter"></canvas>
+        </div>
+        <div class="cal-scatter-legend">
+          <span><span class="legend-dot" style="background:#10616A;"></span>Included in regression</span>
+          <span><span class="legend-dot" style="background:#cbb89e;"></span>Excluded (UW1/UW2 disagreement &gt;25% — lensing)</span>
+          <span><span class="legend-line" style="background:#0a7099;"></span>Regression line</span>
+        </div>
+      </div>
+      
+      <!-- CALIBRATION DATA TIME SERIES -->
+      <div class="panel panel-cream">
+        <div class="panel-header">
+          <div class="panel-title">Calibration <strong>data</strong></div>
+          <div class="panel-meta" id="cal-data-meta">—</div>
+        </div>
+        
+        <div class="cal-data-toolbar">
+          <div style="display:flex;align-items:center;gap:8px;color:rgba(0,0,0,0.65);font-size:0.88rem;">
+            <span>Smoothing</span>
+            <select id="cal-smoothing-select" style="padding:5px 10px;border-radius:6px;border:1px solid rgba(0,0,0,0.15);background:#fff;color:var(--bg);font-family:inherit;font-size:0.85rem;cursor:pointer;">
+              <option value="raw" selected>Raw 5-min</option>
+              <option value="15m">15-min rolling</option>
+              <option value="30m">30-min rolling</option>
+              <option value="1h">1-hour rolling</option>
+              <option value="3h">3-hour rolling</option>
+            </select>
+          </div>
+          
+          <label class="toggle">
+            <input type="checkbox" id="cal-show-air">
+            <span class="legend-dot" style="background:#e8a534;"></span>
+            Compare with Air (INPUT1)
+          </label>
+          
+          <button id="cal-chunk-back" style="display:none;margin-left:auto;padding:5px 14px;background:transparent;color:rgba(0,0,0,0.7);border:1px solid rgba(0,0,0,0.2);border-radius:6px;cursor:pointer;font-size:0.85rem;font-family:inherit;">← Show all chunks</button>
+          <button id="cal-reset-zoom" style="margin-left:8px;padding:5px 14px;background:transparent;color:rgba(0,0,0,0.65);border:1px solid rgba(0,0,0,0.15);border-radius:6px;cursor:pointer;font-size:0.85rem;font-family:inherit;">Reset zoom</button>
+        </div>
+        
+        <div class="cal-ts-wrap" id="cal-ts-wrap">
+          <!-- Side-by-side mini-charts inserted here, one per data chunk -->
+        </div>
+        <div class="cal-scatter-legend">
+          <span><span class="legend-line" style="background:#6b7339;"></span>Odyssey (calibrated)</span>
+          <span><span class="legend-line" style="background:#0a3855;"></span>LI-COR UW1 (INPUT2)</span>
+          <span><span class="legend-line" style="background:#45BBE6;"></span>LI-COR UW2 (INPUT3)</span>
+        </div>
+      </div>
+      
+      <!-- CALIBRATION HISTORY -->
+      <div class="panel panel-cream">
+        <div class="panel-header">
+          <div class="panel-title">Calibration <strong>history</strong></div>
+          <div class="panel-meta">Click a row to view its data · Re-derive periodically with LI-COR</div>
+        </div>
+        
+        <div class="cal-history-table-wrap">
+          <table class="cal-history-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Sensor</th>
+                <th>Equation</th>
+                <th>R²</th>
+                <th>N</th>
+                <th>Grade</th>
+                <th>LI-COR Period</th>
+              </tr>
+            </thead>
+            <tbody id="cal-history-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- ABOUT TAB -->
+  <div class="tab-panel" id="tab-about">
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">About this <strong>dashboard</strong></div>
+        <div class="panel-meta">HIMB Coral Nursery light monitoring</div>
+      </div>
+      
+      <img src="assets/images/par-sensors.jpg" alt="PAR sensors on coral nursery" class="about-image" onerror="this.style.display='none'">
+      
+      <div class="about-content">
+        <h3>Equipment</h3>
+        <ul>
+          <li>2× Odyssey integrating PAR sensors with wipers</li>
+          <li>Sensor names: MARINARA, ALFREDO</li>
+          <li>1× LI-COR LI-1500 (calibration cross-check, deployed occasionally)</li>
+        </ul>
+        
+        <h3>Deployment</h3>
+        <ul>
+          <li>Depth: 1 m below surface</li>
+          <li>Location: HIMB Coral Nursery, Coconut Island, Kāneʻohe Bay</li>
+          <li>One Odyssey sensor deployed at a time (active sensor shown in header)</li>
+        </ul>
+        
+        <h3>Sampling</h3>
+        <ul>
+          <li>Interval: 5 minutes</li>
+          <li>Wipers: clean optical face every 15 minutes, on the hour</li>
+          <li>Data retrieved: first week of each month</li>
+        </ul>
+        
+        <h3>Calibration</h3>
+        <ul>
+          <li>Calibration coefficients applied in logger software (Odyssey software)</li>
+          <li>LI-COR deployed alongside Odyssey periodically as ground truth</li>
+          <li>Files flagged <code>_CAL</code> in dataset for traceability</li>
+        </ul>
+        
+        <h3>Data flow</h3>
+        <ul>
+          <li>Loggers pulled, CSVs exported</li>
+          <li>Files uploaded via private upload tool (auth required)</li>
+          <li>Data stored in Firebase Realtime Database</li>
+          <li>Dashboard reads data on page load</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Chart.js + zoom plugin + datalabels -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+  getDatabase, ref, get, query, orderByChild, startAt, endAt, limitToLast
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyChmuNkSPugArKlJ8VFMMwKi-dfaFCqBAw",
+  authDomain: "himbcoralnurserypar.firebaseapp.com",
+  databaseURL: "https://himbcoralnurserypar-default-rtdb.firebaseio.com",
+  projectId: "himbcoralnurserypar",
+  storageBucket: "himbcoralnurserypar.firebasestorage.app",
+  messagingSenderId: "39037465136",
+  appId: "1:39037465136:web:b730f264e7c5230ddcb3f5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// Register the zoom plugin
+Chart.register(ChartZoom);
+
+// ============================================================
+// STATE
+// ============================================================
+const state = {
+  activeSensor: null,
+  raw: [],                    // sorted array of { t, par, raw, calSource, calSlope, calIntercept, calSessionDate }
+  oldestLoaded: null,
+  newestLoaded: null,
+  intervalSec: 300,
+  zoom: null,
+  satThreshold: 400,
+  stressThreshold: 1200,
+  excludeIncomplete: true,
+  smoothing: 'raw',
+  showDailyMax: true,
+  showDLIOverlay: false,
+  showPar: true,
+  uploadBoundaries: [],     // [{ ms, label, sensor }]
+  mainChart: null,
+  hmChart: null,
+  hmZoom: null,
+  calChart: null,
+  licorData: [],
+  calSessions: [],
+  activeCalSession: null,
+  // Derived per-sensor calibrations sorted by date
+  // { MARINARA: [{date, slope, intercept, n, sessionStart, sessionEnd}, ...] }
+  derivedCals: { MARINARA: [], ALFREDO: [] },
+};
+
+// Smoothing window in ms
+const SMOOTHING_MS = {
+  'raw': 0,
+  '15m': 15 * 60 * 1000,
+  '30m': 30 * 60 * 1000,
+  '1h': 60 * 60 * 1000,
+  '3h': 3 * 60 * 60 * 1000,
+  'daily': 'daily'
+};
+
+const LAT = 21.43, LON = -157.78;  // Coconut Island, Hawaii
+const DAY_MS = 86400000;
+
+// ============================================================
+// FIREBASE DATA LOADING
+// ============================================================
+async function loadActiveSensor() {
+  const snap = await get(ref(db, 'state/active_sensor'));
+  if (snap.exists()) return snap.val();
+  
+  // Fallback: find sensor with most data
+  const [marSnap, alfSnap] = await Promise.all([
+    get(query(ref(db, 'readings/MARINARA'), limitToLast(1))),
+    get(query(ref(db, 'readings/ALFREDO'), limitToLast(1)))
+  ]);
+  
+  if (marSnap.exists()) return 'MARINARA';
+  if (alfSnap.exists()) return 'ALFREDO';
+  return 'MARINARA'; // default
+}
+
+async function loadReadings(sensor, sinceMs, untilMs = null) {
+  // Build query for readings in range
+  let q;
+  if (untilMs !== null) {
+    q = query(
+      ref(db, `readings/${sensor}`),
+      orderByChild('t_ms'),
+      startAt(sinceMs),
+      endAt(untilMs)
+    );
+  } else {
+    q = query(
+      ref(db, `readings/${sensor}`),
+      orderByChild('t_ms'),
+      startAt(sinceMs)
+    );
+  }
+  
+  const snap = await get(q);
+  if (!snap.exists()) return [];
+  
+  const out = [];
+  snap.forEach(child => {
+    const v = child.val();
+    if (v && typeof v.t_ms === 'number' && typeof v.calibrated === 'number') {
+      out.push({
+        t: new Date(v.t_ms),
+        par: v.calibrated,
+        raw: v.raw,
+        ms: v.t_ms,
+        sensor: sensor,
+        uncalibrated: v.uncalibrated === true || v.raw === v.calibrated
+      });
+    }
+  });
+  out.sort((a, b) => a.ms - b.ms);
+  return out;
+}
+
+// ============================================================
+// POST-HOC CALIBRATION
+// ============================================================
+//
+// Strategy:
+// 1. Find all CAL sessions per sensor (Odyssey CAL data paired with LI-COR)
+// 2. For each session, build paired (raw, uw1) and (raw, uw2) samples
+// 3. Run two linear regressions: uw1~raw and uw2~raw
+// 4. Average the slopes and intercepts → "averaged regression"
+// 5. For any uncalibrated reading, find the most recent applicable cal session
+//    (most recent ≤ reading date, per-sensor). Fallback: nearest after.
+// 6. Apply: par_corrected = slope * raw + intercept
+// 7. Annotate reading with calSource: 'logger' | 'derived_pre' | 'derived_post' | 'none'
+
+function linRegression(points) {
+  const n = points.length;
+  if (n < 2) return null;
+  let sx = 0, sy = 0, sxy = 0, sxx = 0;
+  for (const [x, y] of points) {
+    sx += x; sy += y; sxy += x*y; sxx += x*x;
+  }
+  const denom = n * sxx - sx * sx;
+  if (denom === 0) return null;
+  const slope = (n * sxy - sx * sy) / denom;
+  const intercept = (sy - slope * sx) / n;
+  return { slope, intercept, n };
+}
+
+async function buildDerivedCalibrations() {
+  // Reset
+  state.derivedCals = { MARINARA: [], ALFREDO: [] };
+  
+  // 1. Load all uploads and find CAL sessions
+  const uploadsSnap = await get(ref(db, 'uploads'));
+  if (!uploadsSnap.exists()) return;
+  
+  // Group cal uploads by date range (Odyssey CAL + LI-COR with matching dates form a session)
+  const sessions = new Map();
+  uploadsSnap.forEach(child => {
+    const u = child.val();
+    if (u.type !== 'calibration_data' && u.type !== 'licor_check') return;
+    const key = `${u.start_date}_${u.end_date}`;
+    if (!sessions.has(key)) {
+      sessions.set(key, { start: u.start_date, end: u.end_date, sensor: null, hasOdy: false, hasLicor: false });
+    }
+    const s = sessions.get(key);
+    if (u.type === 'calibration_data') {
+      s.hasOdy = true;
+      s.sensor = u.sensor;
+    } else {
+      s.hasLicor = true;
+    }
+  });
+  
+  // 2. For each paired session, compute calibration
+  for (const [key, session] of sessions) {
+    if (!session.hasOdy || !session.hasLicor || !session.sensor) continue;
+    
+    const startMs = new Date(session.start + 'T00:00:00').getTime();
+    const endMs = new Date(session.end + 'T23:59:59').getTime();
+    
+    // Fetch Odyssey CAL data
+    const odyQ = query(ref(db, `readings/${session.sensor}`), orderByChild('t_ms'), startAt(startMs), endAt(endMs));
+    const licorQ = query(ref(db, 'licor_checks'), orderByChild('t_ms'), startAt(startMs), endAt(endMs));
+    const [odySnap, licorSnap] = await Promise.all([get(odyQ), get(licorQ)]);
+    if (!odySnap.exists() || !licorSnap.exists()) continue;
+    
+    // Build sorted list of LI-COR readings for nearest-neighbor lookup
+    const licorList = [];
+    licorSnap.forEach(c => {
+      const v = c.val();
+      if (v && typeof v.t_ms === 'number') licorList.push(v);
+    });
+    licorList.sort((a, b) => a.t_ms - b.t_ms);
+    
+    // For each Odyssey reading, find the LI-COR sample within ±1 min closest in time
+    const PAIRING_TOLERANCE_MS = 60 * 1000;  // ±1 minute
+    
+    function findNearestLicor(odyMs) {
+      // Binary search would be faster, but linear is fine for cal session sizes
+      let best = null;
+      let bestDelta = Infinity;
+      for (const lv of licorList) {
+        const delta = Math.abs(lv.t_ms - odyMs);
+        if (delta > PAIRING_TOLERANCE_MS) continue;
+        if (delta < bestDelta) {
+          best = lv;
+          bestDelta = delta;
+        }
+      }
+      return best;
+    }
+    
+    // Build all paired samples
+    const allPairs = []; // { ms, raw, uw1, uw2, uwAvg, excluded, reason }
+    odySnap.forEach(c => {
+      const ody = c.val();
+      if (!ody || typeof ody.t_ms !== 'number') return;
+      const lv = findNearestLicor(ody.t_ms);
+      if (!lv) return;
+      
+      const uwAvg = (lv.uw1 + lv.uw2) / 2;
+      // Lensing filter: exclude pairs where uw1 and uw2 disagree by >25%
+      let excluded = false;
+      let reason = null;
+      if (uwAvg > 0) {
+        const disagreement = Math.abs(lv.uw1 - lv.uw2) / uwAvg;
+        if (disagreement > 0.25) {
+          excluded = true;
+          reason = 'lensing';
+        }
+      }
+      
+      allPairs.push({
+        ms: ody.t_ms,
+        raw: ody.raw,
+        uw1: lv.uw1,
+        uw2: lv.uw2,
+        uwAvg,
+        excluded,
+        reason
+      });
+    });
+    
+    if (allPairs.length === 0) continue;
+    
+    // Regression on non-excluded pairs only
+    const goodPairs = allPairs.filter(p => !p.excluded);
+    if (goodPairs.length < 3) continue;
+    
+    // Single regression: y = uwAvg, x = raw (Odyssey raw counts per 5-min interval)
+    const regPoints = goodPairs.map(p => [p.raw, p.uwAvg]);
+    const reg = linRegression(regPoints);
+    if (!reg) continue;
+    
+    // Compute R²
+    const meanY = goodPairs.reduce((a, p) => a + p.uwAvg, 0) / goodPairs.length;
+    let ssTot = 0, ssRes = 0;
+    for (const p of goodPairs) {
+      const predicted = reg.slope * p.raw + reg.intercept;
+      ssTot += (p.uwAvg - meanY) ** 2;
+      ssRes += (p.uwAvg - predicted) ** 2;
+    }
+    const r2 = ssTot > 0 ? Math.max(0, 1 - ssRes / ssTot) : 0;
+    
+    // RMSE
+    const rmse = Math.sqrt(ssRes / goodPairs.length);
+    
+    // Use the middle of the session date range as the "calibration date"
+    const calDateMs = (startMs + endMs) / 2;
+    
+    state.derivedCals[session.sensor].push({
+      dateMs: calDateMs,
+      sessionStart: session.start,
+      sessionEnd: session.end,
+      sensor: session.sensor,
+      slope: reg.slope,
+      intercept: reg.intercept,
+      r2,
+      rmse,
+      n: goodPairs.length,
+      nExcluded: allPairs.length - goodPairs.length,
+      allPairs   // keep for scatter plot rendering
+    });
+  }
+  
+  // Sort each sensor's cals by date
+  for (const sensor of Object.keys(state.derivedCals)) {
+    state.derivedCals[sensor].sort((a, b) => a.dateMs - b.dateMs);
+  }
+}
+
+// Find best calibration for a (sensor, timestamp) pair
+// Returns { cal, isPre } or null
+function findCalibrationFor(sensor, timestampMs) {
+  const cals = state.derivedCals[sensor];
+  if (!cals || cals.length === 0) return null;
+  
+  // Find most recent cal at or before timestamp
+  let before = null;
+  let after = null;
+  for (const c of cals) {
+    if (c.dateMs <= timestampMs) {
+      before = c;
+    } else {
+      after = c;
+      break;
+    }
+  }
+  
+  if (before) return { cal: before, isPre: true };
+  if (after) return { cal: after, isPre: false };
+  return null;
+}
+
+// Apply calibration to a reading IN PLACE, annotating it with cal_source etc.
+function applyCalibrationToReading(reading) {
+  if (!reading.uncalibrated) {
+    // Logger calibration was applied at Odyssey software
+    reading.calSource = 'logger';
+    reading.calSlope = null;
+    reading.calIntercept = null;
+    reading.calSessionDate = null;
+    return;
+  }
+  
+  // Try to find a derived cal
+  const found = findCalibrationFor(reading.sensor, reading.ms);
+  if (!found) {
+    reading.calSource = 'none';
+    reading.calSlope = null;
+    reading.calIntercept = null;
+    reading.calSessionDate = null;
+    return;
+  }
+  
+  // Apply
+  const corrected = found.cal.slope * reading.raw + found.cal.intercept;
+  reading.par = corrected;  // overwrite par for chart/stats
+  reading.calSource = found.isPre ? 'derived_pre' : 'derived_post';
+  reading.calSlope = found.cal.slope;
+  reading.calIntercept = found.cal.intercept;
+  reading.calSessionDate = `${found.cal.sessionStart}_${found.cal.sessionEnd}`;
+}
+
+function applyAllCalibrations() {
+  for (const r of state.raw) {
+    applyCalibrationToReading(r);
+  }
+}
+
+// Load upload boundaries (end-of-deployment dates) for chart vertical lines
+async function loadUploadBoundaries() {
+  state.uploadBoundaries = [];
+  try {
+    const snap = await get(ref(db, 'uploads'));
+    if (!snap.exists()) return;
+    snap.forEach(child => {
+      const u = child.val();
+      // Only show boundaries for regular data uploads (not LI-COR or CAL sessions)
+      if (u.type !== 'data') return;
+      if (!u.end_date || !u.sensor) return;
+      // End-of-deployment is end of the end_date day
+      const ms = new Date(u.end_date + 'T23:59:59').getTime();
+      state.uploadBoundaries.push({
+        ms,
+        endDate: u.end_date,
+        sensor: u.sensor,
+        filename: u.filename
+      });
+    });
+    state.uploadBoundaries.sort((a, b) => a.ms - b.ms);
+  } catch (e) {
+    console.error('Failed to load upload boundaries:', e);
+  }
+}
+
+async function loadInitialData() {
+  state.activeSensor = await loadActiveSensor();
+  updateActiveSensorUI();
+  
+  const ninetyDaysAgo = Date.now() - 90 * DAY_MS;
+  const readings = await loadReadings(state.activeSensor, ninetyDaysAgo);
+  
+  state.raw = readings;
+  if (readings.length > 0) {
+    state.oldestLoaded = readings[0].ms;
+    state.newestLoaded = readings[readings.length - 1].ms;
+  }
+  
+  // Build derived calibrations from CAL sessions, then apply to data
+  await buildDerivedCalibrations();
+  applyAllCalibrations();
+  
+  // Load upload boundaries for chart vertical lines
+  await loadUploadBoundaries();
+  
+  // Default zoom: last 15 days
+  if (readings.length > 0) {
+    const newest = readings[readings.length - 1].t;
+    const target = new Date(newest.getTime() - 15 * DAY_MS);
+    const oldestT = readings[0].t;
+    state.zoom = [target > oldestT ? target : oldestT, newest];
+  }
+  
+  document.getElementById('initial-loading').style.display = 'none';
+  document.getElementById('dashboard-content').style.display = 'block';
+  
+  if (readings.length === 0) {
+    document.getElementById('dashboard-content').innerHTML = `
+      <div class="empty-state">
+        <h3>No data yet</h3>
+        <p>Upload an Odyssey CSV through the upload tool to populate the dashboard.</p>
+      </div>`;
+    return;
+  }
+  
+  initializeMainChart();
+  initializeRangeSlider();
+  setupEventListeners();
+  refreshAll();
+}
+
+async function loadEarlierData() {
+  if (!state.oldestLoaded) return;
+  const earlierUntil = state.oldestLoaded - 1;
+  const earlierSince = earlierUntil - 90 * DAY_MS;
+  
+  const btn = document.getElementById('load-more');
+  btn.disabled = true;
+  btn.textContent = 'Loading…';
+  
+  const more = await loadReadings(state.activeSensor, earlierSince, earlierUntil);
+  if (more.length > 0) {
+    state.raw = [...more, ...state.raw];
+    state.oldestLoaded = more[0].ms;
+    applyAllCalibrations();
+    refreshAll();
+  }
+  
+  btn.disabled = false;
+  btn.textContent = 'Load earlier data';
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function getFilteredRawData() {
+  if (!state.excludeIncomplete || state.raw.length < 2) return state.raw;
+  const firstKey = state.raw[0].t.toDateString();
+  const lastKey = state.raw[state.raw.length - 1].t.toDateString();
+  return state.raw.filter(d => {
+    const k = d.t.toDateString();
+    return k !== firstKey && k !== lastKey;
+  });
+}
+
+function getVisibleData() {
+  const base = getFilteredRawData();
+  if (!state.zoom) return base;
+  const [t0, t1] = state.zoom;
+  return base.filter(d => d.t >= t0 && d.t <= t1);
+}
+
+function fmtDate(d) {
+  return d.toISOString().slice(0, 10);
+}
+function fmtDateTime(d) {
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+function fmtForInput(d) {
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+function fmtShort(d) {
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+// ============================================================
+// SMOOTHING
+// ============================================================
+const GAP_MS = 15 * 60 * 1000;  // gap = >15 min between consecutive samples
+
+// Insert null breakpoints into a sorted {x, y} series wherever there's a gap.
+// Chart.js will skip drawing a line across nulls, leaving visible gaps.
+function insertGaps(series) {
+  if (series.length < 2) return series;
+  const out = [series[0]];
+  for (let i = 1; i < series.length; i++) {
+    const prev = series[i-1].x.getTime();
+    const cur = series[i].x.getTime();
+    if (cur - prev > GAP_MS) {
+      // Insert a null at the midpoint to break the line
+      out.push({ x: new Date(prev + (cur - prev) / 2), y: null });
+    }
+    out.push(series[i]);
+  }
+  return out;
+}
+
+function smoothData(data, mode) {
+  if (mode === 'raw' || !mode) return insertGaps(data.map(d => ({ x: d.t, y: d.par })));
+  
+  if (mode === 'daily') {
+    // Daily mean - one point per day at noon (no gap insertion needed, sparse already)
+    const days = new Map();
+    for (const d of data) {
+      const k = d.t.toDateString();
+      if (!days.has(k)) days.set(k, []);
+      days.get(k).push(d.par);
+    }
+    const out = [];
+    for (const [k, arr] of days) {
+      const noon = new Date(k);
+      noon.setHours(12, 0, 0, 0);
+      out.push({ x: noon, y: arr.reduce((a,b)=>a+b,0)/arr.length });
+    }
+    return out.sort((a,b) => a.x - b.x);
+  }
+  
+  // Centered rolling mean
+  const windowMs = SMOOTHING_MS[mode];
+  if (!windowMs) return insertGaps(data.map(d => ({ x: d.t, y: d.par })));
+  const half = windowMs / 2;
+  const out = [];
+  for (let i = 0; i < data.length; i++) {
+    const tc = data[i].t.getTime();
+    let sum = 0, n = 0;
+    // Walk back
+    for (let j = i; j >= 0 && (tc - data[j].t.getTime()) <= half; j--) {
+      sum += data[j].par; n++;
+    }
+    // Walk forward
+    for (let j = i+1; j < data.length && (data[j].t.getTime() - tc) <= half; j++) {
+      sum += data[j].par; n++;
+    }
+    out.push({ x: data[i].t, y: sum / n });
+  }
+  return insertGaps(out);
+}
+
+// Daily max points: one per day at the time of max, colored by threshold
+function dailyMaxPoints(data) {
+  const days = new Map();
+  for (const d of data) {
+    const k = d.t.toDateString();
+    if (!days.has(k)) days.set(k, []);
+    days.get(k).push(d);
+  }
+  const out = [];
+  for (const [k, samples] of days) {
+    let max = samples[0];
+    for (const s of samples) if (s.par > max.par) max = s;
+    out.push({ 
+      x: max.t, 
+      y: max.par, 
+      stress: max.par > state.stressThreshold 
+    });
+  }
+  return out.sort((a,b) => a.x - b.x);
+}
+
+// Daily DLI bars: one bar centered on each day's noon
+function dailyDLIBars(data) {
+  const days = new Map();
+  for (const d of data) {
+    const k = d.t.toDateString();
+    if (!days.has(k)) days.set(k, []);
+    days.get(k).push(d.par);
+  }
+  const out = [];
+  for (const [k, arr] of days) {
+    const noon = new Date(k);
+    noon.setHours(12, 0, 0, 0);
+    const dli = arr.reduce((a,b) => a + b * state.intervalSec / 1e6, 0);
+    out.push({ x: noon, y: dli });
+  }
+  return out.sort((a,b) => a.x - b.x);
+}
+
+// ============================================================
+// MAIN TIME-SERIES CHART
+// ============================================================
+function initializeMainChart() {
+  const ctx = document.getElementById('main-chart').getContext('2d');
+  
+  state.mainChart = new Chart(ctx, {
+    data: {
+      datasets: buildChartDatasets()
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'nearest', axis: 'x', intersect: false },
+      scales: {
+        x: {
+          type: 'time',
+          time: { 
+            tooltipFormat: 'MMM d, yyyy HH:mm',
+            displayFormats: { day: 'MMM d', hour: 'MMM d HH:mm' }
+          },
+          ticks: { color: 'rgba(0,0,0,0.6)', maxRotation: 0 },
+          grid: { color: 'rgba(0,0,0,0.06)' }
+        },
+        y: {
+          type: 'linear',
+          position: 'left',
+          beginAtZero: true,
+          ticks: { color: 'rgba(0,0,0,0.6)' },
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          title: { display: true, text: 'PAR (µmol·m⁻²·s⁻¹)', color: 'rgba(0,0,0,0.7)' }
+        },
+        y2: {
+          type: 'linear',
+          position: 'right',
+          beginAtZero: true,
+          display: state.showDLIOverlay,
+          ticks: { color: 'rgba(0,0,0,0.5)' },
+          grid: { display: false },
+          title: { display: true, text: 'Daily Light Integral (mol·m⁻²·d⁻¹)', color: 'rgba(0,0,0,0.6)' }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        datalabels: {
+          display: false  // overridden per-dataset
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 68, 111, 0.95)',
+          titleColor: '#EBD5AF',
+          bodyColor: '#fff',
+          padding: 12,
+          callbacks: {
+            title: items => {
+              if (!items.length) return '';
+              const d = new Date(items[0].parsed.x);
+              return d.toLocaleDateString('en-US', { month:'short', day:'numeric' }) +
+                     ', ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+            },
+            label: (ctx) => {
+              // Only show useful tooltip on PAR line (dataset 0)
+              if (ctx.dataset.label !== 'PAR') return null;
+              const t = new Date(ctx.parsed.x);
+              const par = ctx.parsed.y;
+              // Look up raw value at this timestamp
+              const sample = state.raw.find(d => Math.abs(d.t.getTime() - t.getTime()) < 60000);
+              const lines = [];
+              lines.push(`PAR: ${par.toFixed(0)} µmol·m⁻²·s⁻¹`);
+              if (sample) lines.push(`Raw: ${sample.raw.toLocaleString()} / 5min`);
+              // Status
+              if (par > state.stressThreshold) lines.push('↑ above stress');
+              else if (par > state.satThreshold) lines.push('↑ above saturation');
+              else lines.push('below saturation');
+              return lines;
+            }
+          }
+        },
+        zoom: {
+          pan: { enabled: false },
+          zoom: {
+            drag: { 
+              enabled: true,
+              backgroundColor: 'rgba(235, 213, 175, 0.3)',
+              borderColor: '#EBD5AF',
+              borderWidth: 1
+            },
+            mode: 'x',
+            onZoomComplete: ({ chart }) => {
+              const { min, max } = chart.scales.x;
+              state.zoom = [new Date(min), new Date(max)];
+              refreshAfterZoom();
+            }
+          }
+        },
+        // Custom threshold lines plugin
+        thresholdLines: true
+      }
+    },
+    plugins: [thresholdLinesPlugin, ChartDataLabels]
+  });
+  
+  // Double-click handler to reset to default range (15 days)
+  document.getElementById('main-chart').addEventListener('dblclick', () => {
+    if (state.mainChart && state.raw.length > 0) {
+      setRangeFromLatest(15);
+    }
+  });
+  
+  applyZoomToChart();
+}
+
+// Threshold lines plugin - draws sat/stress horizontal lines + labels
+const thresholdLinesPlugin = {
+  id: 'thresholdLines',
+  afterDraw(chart) {
+    const { ctx, chartArea: ca, scales } = chart;
+    if (!ca || !scales.y) return;
+    
+    // Saturation line
+    const satY = scales.y.getPixelForValue(state.satThreshold);
+    if (satY >= ca.top && satY <= ca.bottom) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(154, 167, 49, 0.7)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      ctx.moveTo(ca.left, satY);
+      ctx.lineTo(ca.right, satY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#9AA731';
+      ctx.font = '500 10px -apple-system, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`SATURATION · ${state.satThreshold}`, ca.right - 6, satY - 9);
+      ctx.restore();
+    }
+    
+    // Stress line
+    const stressY = scales.y.getPixelForValue(state.stressThreshold);
+    if (stressY >= ca.top && stressY <= ca.bottom) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(220, 38, 38, 0.8)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      ctx.moveTo(ca.left, stressY);
+      ctx.lineTo(ca.right, stressY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#dc2626';
+      ctx.font = '500 10px -apple-system, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`STRESS · ${state.stressThreshold}`, ca.right - 6, stressY - 9);
+      ctx.restore();
+    }
+    
+    // Day-stripe background (vertical alternating stripes)
+    const xScale = scales.x;
+    const dayMs = 86400000;
+    const minMs = xScale.min;
+    const maxMs = xScale.max;
+    const firstDay = new Date(minMs);
+    firstDay.setHours(0,0,0,0);
+    ctx.save();
+    let dayN = 0;
+    for (let t = firstDay.getTime(); t < maxMs; t += dayMs) {
+      if (dayN % 2 === 0) {
+        const x0 = xScale.getPixelForValue(Math.max(t, minMs));
+        const x1 = xScale.getPixelForValue(Math.min(t + dayMs, maxMs));
+        if (x1 > ca.left && x0 < ca.right) {
+          ctx.fillStyle = 'rgba(0, 68, 111, 0.04)';
+          ctx.fillRect(Math.max(x0, ca.left), ca.top, Math.min(x1, ca.right) - Math.max(x0, ca.left), ca.bottom - ca.top);
+        }
+      }
+      dayN++;
+    }
+    ctx.restore();
+    
+    // Upload boundary lines — always shown ("sensor pulled" markers)
+    if (state.uploadBoundaries && state.uploadBoundaries.length > 0) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(0, 68, 111, 0.55)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 3]);
+      for (const b of state.uploadBoundaries) {
+        if (b.ms < minMs || b.ms > maxMs) continue;
+        const x = xScale.getPixelForValue(b.ms);
+        if (x < ca.left || x > ca.right) continue;
+        ctx.beginPath();
+        ctx.moveTo(x, ca.top);
+        ctx.lineTo(x, ca.bottom);
+        ctx.stroke();
+        // Vertical "sensor pulled" label along the line, bottom-to-top
+        // Positioned higher (above where PAR=0 sits) and 5px from the line
+        ctx.setLineDash([]);
+        ctx.save();
+        ctx.translate(x + 5, ca.bottom - 28);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillStyle = 'rgba(0, 68, 111, 0.75)';
+        ctx.font = '500 9px -apple-system, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('sensor pulled', 0, 0);
+        ctx.restore();
+        ctx.setLineDash([4, 3]);
+      }
+      ctx.restore();
+    }
+  },
+  beforeDatasetsDraw(chart) {
+    // Make sure stripes are behind data - move to beforeDatasetsDraw
+  }
+};
+
+function buildChartDatasets() {
+  const datasets = [];
+  
+  // 1. DLI bars (drawn first, behind everything) - on y2 axis
+  if (state.showDLIOverlay) {
+    const dliPoints = dailyDLIBars(state.raw);
+    datasets.push({
+      label: 'DLI',
+      type: 'bar',
+      data: dliPoints,
+      backgroundColor: 'rgba(235, 213, 175, 0.45)',
+      borderColor: 'rgba(235, 213, 175, 0.7)',
+      borderWidth: 1,
+      yAxisID: 'y2',
+      order: 10,
+      barPercentage: 0.85,
+      categoryPercentage: 1.0,
+      datalabels: {
+        display: true,
+        color: '#00446F',
+        font: { weight: '600', size: 12 },
+        anchor: 'end',
+        align: 'bottom',
+        offset: 4,
+        textAlign: 'left',
+        clip: false,
+        formatter: (v) => v.y.toFixed(1)
+      }
+    });
+  }
+  
+  // 2. Raw ghost (light line behind smoothed) - shown when smoothing != raw AND PAR is on
+  if (state.smoothing !== 'raw' && state.showPar) {
+    datasets.push({
+      label: 'Raw ghost',
+      type: 'line',
+      data: insertGaps(state.raw.map(d => ({ x: d.t, y: d.par }))),
+      borderColor: 'rgba(118, 199, 195, 0.35)',
+      borderWidth: 1,
+      pointRadius: 0,
+      fill: false,
+      spanGaps: false,
+      yAxisID: 'y',
+      order: 5,
+      datalabels: { display: false }
+    });
+  }
+  
+  // 3. Main PAR line - shown when PAR toggle is on
+  if (state.showPar) {
+    const smoothed = smoothData(state.raw, state.smoothing);
+    datasets.push({
+      label: 'PAR',
+      type: 'line',
+      data: smoothed,
+      borderColor: '#0a7099',
+      backgroundColor: 'rgba(69, 187, 230, 0.15)',
+      borderWidth: 1.5,
+      fill: true,
+      pointRadius: 0,
+      pointHoverRadius: 4,
+      tension: 0.2,
+      spanGaps: false,
+      yAxisID: 'y',
+      order: 2,
+      datalabels: { display: false }
+    });
+  }
+  
+  // 4. Daily max dots
+  if (state.showDailyMax) {
+    const maxPts = dailyMaxPoints(state.raw);
+    datasets.push({
+      label: 'Daily max',
+      type: 'scatter',
+      data: maxPts,
+      backgroundColor: maxPts.map(p => p.stress ? '#dc2626' : '#00446F'),
+      borderColor: maxPts.map(p => p.stress ? '#dc2626' : '#00446F'),
+      pointRadius: 4,
+      pointHoverRadius: 6,
+      showLine: false,
+      yAxisID: 'y',
+      order: 1,
+      datalabels: { display: false }
+    });
+  }
+  
+  return datasets;
+}
+
+function applyZoomToChart() {
+  if (!state.mainChart) return;
+  if (state.zoom) {
+    // Set BOTH the options.scales (for layout) AND use the plugin's API
+    // (so the plugin's internal "current zoom" matches what we want)
+    state.mainChart.options.scales.x.min = state.zoom[0].valueOf();
+    state.mainChart.options.scales.x.max = state.zoom[1].valueOf();
+    try {
+      state.mainChart.zoomScale('x', {
+        min: state.zoom[0].valueOf(),
+        max: state.zoom[1].valueOf()
+      }, 'none');
+    } catch (e) {
+      state.mainChart.update('none');
+    }
+  } else {
+    try { state.mainChart.resetZoom('none'); } catch (e) {}
+    delete state.mainChart.options.scales.x.min;
+    delete state.mainChart.options.scales.x.max;
+    state.mainChart.update('none');
+  }
+}
+
+// Set view to last N days ending at most recent data point
+function setRangeFromLatest(days) {
+  if (state.raw.length === 0) return;
+  const newest = state.raw[state.raw.length - 1].t;
+  const target = new Date(newest.getTime() - days * DAY_MS);
+  const oldestT = state.raw[0].t;
+  state.zoom = [target > oldestT ? target : oldestT, newest];
+  applyZoomToChart();
+  refreshAfterZoom();
+}
+
+function refreshChart() {
+  if (!state.mainChart) return;
+  state.mainChart.data.datasets = buildChartDatasets();
+  // Toggle y2 axis visibility
+  state.mainChart.options.scales.y2.display = state.showDLIOverlay;
+  applyZoomToChart();
+}
+
+// ============================================================
+// SUN / ASTRONOMICAL
+// ============================================================
+function astronomicalSunTimes(date) {
+  const d = new Date(date);
+  d.setHours(12, 0, 0, 0);
+  const dayOfYear = (Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 0)) / 86400000;
+  const gamma = 2 * Math.PI / 365 * (dayOfYear - 1);
+  const eqtime = 229.18 * (0.000075 + 0.001868 * Math.cos(gamma) - 0.032077 * Math.sin(gamma)
+    - 0.014615 * Math.cos(2*gamma) - 0.040849 * Math.sin(2*gamma));
+  const decl = 0.006918 - 0.399912 * Math.cos(gamma) + 0.070257 * Math.sin(gamma)
+    - 0.006758 * Math.cos(2*gamma) + 0.000907 * Math.sin(2*gamma)
+    - 0.002697 * Math.cos(3*gamma) + 0.00148 * Math.sin(3*gamma);
+  const latRad = LAT * Math.PI / 180;
+  const cosHA = (Math.cos(90.833 * Math.PI / 180) - Math.sin(latRad) * Math.sin(decl)) / (Math.cos(latRad) * Math.cos(decl));
+  if (cosHA < -1 || cosHA > 1) return null;
+  const HA = Math.acos(cosHA) * 180 / Math.PI;
+  const solarNoonUTC = 720 - 4 * LON - eqtime;
+  const mkDate = (minUTC) => {
+    const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    dt.setUTCMinutes(minUTC);
+    return dt;
+  };
+  return { 
+    sunrise: mkDate(solarNoonUTC - 4 * HA), 
+    sunset: mkDate(solarNoonUTC + 4 * HA), 
+    noon: mkDate(solarNoonUTC) 
+  };
+}
+
+// ============================================================
+// DAILY ANALYSIS (adapted from par.html)
+// ============================================================
+function analyzeDays(data) {
+  data = data || state.raw;
+  const days = new Map();
+  for (const d of data) {
+    const key = `${d.t.getFullYear()}-${String(d.t.getMonth()+1).padStart(2,'0')}-${String(d.t.getDate()).padStart(2,'0')}`;
+    if (!days.has(key)) days.set(key, []);
+    days.get(key).push(d);
+  }
+  const result = [];
+  for (const [key, samples] of days) {
+    samples.sort((a,b) => a.t - b.t);
+    const pars = samples.map(s => s.par);
+    const peak = Math.max(...pars);
+    const peakIdx = pars.indexOf(peak);
+    const peakTime = samples[peakIdx].t;
+    const dli = pars.reduce((acc, par) => acc + par * state.intervalSec / 1e6, 0);
+    const hsatCount = pars.filter(p => p > state.satThreshold).length;
+    const hsatHours = hsatCount * state.intervalSec / 3600;
+    const stressCount = pars.filter(p => p > state.stressThreshold).length;
+    const stressHours = stressCount * state.intervalSec / 3600;
+    const stressDose = pars
+      .filter(p => p > state.stressThreshold)
+      .reduce((acc, p) => acc + (p - state.stressThreshold) * state.intervalSec / 1e6, 0);
+    
+    const dateObj = new Date(samples[0].t.getFullYear(), samples[0].t.getMonth(), samples[0].t.getDate());
+    const astro = astronomicalSunTimes(dateObj);
+    
+    let sunriseSample = null, sunsetSample = null;
+    for (let i = 0; i < samples.length; i++) {
+      if (pars[i] > 10) { 
+        if (!sunriseSample) sunriseSample = samples[i]; 
+        sunsetSample = samples[i]; 
+      }
+    }
+    
+    result.push({ 
+      date: dateObj, key, peak, peakTime, dli, 
+      hsatHours, stressHours, stressDose,
+      sunriseSample, sunsetSample, astro, samples, pars 
+    });
+  }
+  return result.sort((a,b) => a.date - b.date);
+}
+
+function filterIncomplete(days) {
+  if (!state.excludeIncomplete || days.length < 2 || state.raw.length === 0) return days;
+  const firstKey = state.raw[0].t.toDateString();
+  const lastKey = state.raw[state.raw.length-1].t.toDateString();
+  return days.filter(d => d.date.toDateString() !== firstKey && d.date.toDateString() !== lastKey);
+}
+
+// ============================================================
+// STATS UPDATE
+// ============================================================
+function updateStats() {
+  const visible = getVisibleData();
+  const allDays = analyzeDays(visible);
+  const days = filterIncomplete(allDays);
+  
+  if (days.length === 0) {
+    document.getElementById('stat-dli').textContent = '—';
+    document.getElementById('stat-hsat').textContent = '—';
+    document.getElementById('stat-dose').textContent = '—';
+    document.getElementById('stat-peak').textContent = '—';
+    return;
+  }
+  
+  const meanDLI = days.reduce((a,d) => a + d.dli, 0) / days.length;
+  const meanHsat = days.reduce((a,d) => a + d.hsatHours, 0) / days.length;
+  const meanDose = days.reduce((a,d) => a + d.stressDose, 0) / days.length;
+  const meanStressHrs = days.reduce((a,d) => a + d.stressHours, 0) / days.length;
+  let peakDay = days[0], peak = days[0].peak;
+  for (const d of days) {
+    if (d.peak > peak) { peak = d.peak; peakDay = d; }
+  }
+  
+  document.getElementById('stat-dli').textContent = meanDLI.toFixed(1);
+  document.getElementById('stat-dli-sub').textContent = `Daily light integral, ${days.length}-day mean`;
+  document.getElementById('stat-dli-context').textContent = 
+    meanDLI > 25 ? 'High light — typical shallow-water Hawaiian reef' :
+    meanDLI > 15 ? 'Moderate light — typical mid-depth conditions' :
+    meanDLI > 7 ? 'Low light — deeper or shaded environment' :
+    'Very low light';
+  
+  document.getElementById('stat-hsat').textContent = meanHsat.toFixed(1);
+  document.getElementById('stat-hsat-sub').textContent = `Hours/day above ${state.satThreshold} µmol`;
+  
+  document.getElementById('stat-dose').textContent = meanDose.toFixed(2);
+  document.getElementById('stat-dose-sub').textContent = 
+    `Excess above ${state.stressThreshold} µmol, integrated · ${meanStressHrs.toFixed(1)} h/day above threshold`;
+  
+  document.getElementById('stat-peak').textContent = Math.round(peak).toLocaleString();
+  const peakDt = peakDay.peakTime;
+  const peakLabel = `${peakDt.toLocaleDateString('en-US', {month:'short', day:'numeric'})}, ${String(peakDt.getHours()).padStart(2,'0')}:${String(peakDt.getMinutes()).padStart(2,'0')}`;
+  document.getElementById('stat-peak-sub').textContent = peakLabel;
+  document.getElementById('stat-peak-context').textContent = 
+    peak > state.stressThreshold ? 'Above stress threshold — investigate' :
+    peak > state.satThreshold ? 'Above saturation' : 'Within saturation range';
+}
+
+// ============================================================
+// DAILY CHIPS
+// ============================================================
+function updateDays() {
+  const visible = getVisibleData();
+  const allDays = analyzeDays(visible);
+  const days = filterIncomplete(allDays);
+  
+  const container = document.getElementById('days-grid');
+  container.innerHTML = '';
+  
+  for (let i = 0; i < days.length; i++) {
+    const day = days[i];
+    
+    // Day chip dividers — always show where a sensor was pulled between two days
+    if (i > 0 && state.uploadBoundaries) {
+      const prevDayEnd = new Date(days[i-1].date.getFullYear(), days[i-1].date.getMonth(), days[i-1].date.getDate(), 23, 59, 59).getTime();
+      const thisDayStart = new Date(day.date.getFullYear(), day.date.getMonth(), day.date.getDate()).getTime();
+      const boundary = state.uploadBoundaries.find(b => b.ms >= prevDayEnd && b.ms <= thisDayStart);
+      if (boundary) {
+        const divider = document.createElement('div');
+        divider.className = 'day-divider';
+        divider.innerHTML = `<div class="day-divider-line"></div><div class="day-divider-label">sensor pulled</div>`;
+        container.appendChild(divider);
+      }
+    }
+    
+    const card = document.createElement('div');
+    card.className = 'day-card' + (day.stressHours > 0 ? ' stress' : '');
+    
+    const stressBadge = day.stressHours > 0 
+      ? `<span class="day-card-stress-badge">${day.stressHours.toFixed(1)}h ⚠</span>` 
+      : '';
+    
+    const sunriseStr = day.sunriseSample 
+      ? `${String(day.sunriseSample.t.getHours()).padStart(2,'0')}:${String(day.sunriseSample.t.getMinutes()).padStart(2,'0')}`
+      : '—';
+    const sunsetStr = day.sunsetSample
+      ? `${String(day.sunsetSample.t.getHours()).padStart(2,'0')}:${String(day.sunsetSample.t.getMinutes()).padStart(2,'0')}`
+      : '—';
+    
+    card.innerHTML = `
+      <div class="day-card-header">
+        <span class="day-card-date">${fmtShort(day.date)}</span>
+        ${stressBadge}
+      </div>
+      <div class="day-card-curve">
+        <canvas data-day-curve></canvas>
+      </div>
+      <div class="day-card-stats">
+        <div><div class="lbl">DLI</div><div class="val">${day.dli.toFixed(1)}</div></div>
+        <div><div class="lbl">PEAK</div><div class="val">${Math.round(day.peak)}</div></div>
+        <div><div class="lbl">HSAT</div><div class="val">${day.hsatHours.toFixed(1)}h</div></div>
+        <div><div class="lbl">SUN</div><div class="val" style="font-size:0.7rem;">${sunriseStr}<br>${sunsetStr}</div></div>
+      </div>
+    `;
+    
+    card.addEventListener('click', () => zoomToDay(day.date));
+    container.appendChild(card);
+    
+    // Draw the mini curve
+    const cvs = card.querySelector('canvas');
+    drawDayCurve(cvs, day);
+  }
+}
+
+function drawDayCurve(canvas, day) {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = rect.height;
+  
+  if (day.samples.length === 0) return;
+  
+  // Find max for scaling
+  const dayMax = Math.max(...day.pars, state.stressThreshold);
+  
+  // Time range: 0-24h relative to start of day
+  const dayStart = new Date(day.date).getTime();
+  const dayEnd = dayStart + DAY_MS;
+  
+  // Draw threshold lines
+  ctx.strokeStyle = 'rgba(220, 38, 38, 0.5)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([3, 3]);
+  ctx.beginPath();
+  const stressY = H - (state.stressThreshold / dayMax) * H;
+  ctx.moveTo(0, stressY);
+  ctx.lineTo(W, stressY);
+  ctx.stroke();
+  
+  ctx.strokeStyle = 'rgba(118, 199, 195, 0.4)';
+  const satY = H - (state.satThreshold / dayMax) * H;
+  ctx.beginPath();
+  ctx.moveTo(0, satY);
+  ctx.lineTo(W, satY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  
+  // Draw curve
+  ctx.strokeStyle = '#45BBE6';
+  ctx.fillStyle = 'rgba(69, 187, 230, 0.2)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  
+  let started = false;
+  for (const s of day.samples) {
+    const x = ((s.t.getTime() - dayStart) / DAY_MS) * W;
+    const y = H - (s.par / dayMax) * H;
+    if (!started) { ctx.moveTo(x, y); started = true; }
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  
+  // Fill
+  ctx.lineTo(((day.samples[day.samples.length-1].t.getTime() - dayStart) / DAY_MS) * W, H);
+  ctx.lineTo(((day.samples[0].t.getTime() - dayStart) / DAY_MS) * W, H);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function zoomToDay(date) {
+  const start = new Date(date);
+  start.setHours(0, 0, 0, 0);
+  const end = new Date(date);
+  end.setHours(23, 59, 59, 999);
+  state.zoom = [start, end];
+  applyZoomToChart();
+  updateRangeSlider();
+  refreshAfterZoom();
+  // Scroll to chart
+  document.querySelector('.chart-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ============================================================
+// HEATMAP
+// ============================================================
+const HEATMAP_COLORS = [
+  // 0 -> 1 gradient: deep ocean blue -> cream -> tailwind red
+  [0.0, [0, 68, 111]],
+  [0.5, [250, 246, 236]],
+  [1.0, [220, 38, 38]]
+];
+
+function colorForValue(v) {
+  v = Math.max(0, Math.min(1, v));
+  for (let i = 1; i < HEATMAP_COLORS.length; i++) {
+    if (v <= HEATMAP_COLORS[i][0]) {
+      const t = (v - HEATMAP_COLORS[i-1][0]) / (HEATMAP_COLORS[i][0] - HEATMAP_COLORS[i-1][0]);
+      const c0 = HEATMAP_COLORS[i-1][1], c1 = HEATMAP_COLORS[i][1];
+      return [
+        Math.round(c0[0] + (c1[0]-c0[0])*t),
+        Math.round(c0[1] + (c1[1]-c0[1])*t),
+        Math.round(c0[2] + (c1[2]-c0[2])*t),
+      ];
+    }
+  }
+  return HEATMAP_COLORS[HEATMAP_COLORS.length-1][1];
+}
+
+function updateHeatmap() {
+  // Heatmap uses its own zoom (hmZoom), not the dashboard zoom
+  // Always snap to full days — round start DOWN to start-of-day, end UP to end-of-day
+  let visible;
+  if (state.hmZoom) {
+    const [t0Raw, t1Raw] = state.hmZoom;
+    const t0 = new Date(t0Raw.getFullYear(), t0Raw.getMonth(), t0Raw.getDate(), 0, 0, 0, 0);
+    const t1 = new Date(t1Raw.getFullYear(), t1Raw.getMonth(), t1Raw.getDate(), 23, 59, 59, 999);
+    visible = state.raw.filter(d => d.t >= t0 && d.t <= t1);
+  } else {
+    visible = state.raw;
+  }
+  const days = filterIncomplete(analyzeDays(visible));
+  const canvas = document.getElementById('heatmap-canvas');
+  if (!canvas) return;
+  
+  if (days.length === 0) {
+    canvas.width = 100;
+    canvas.height = 100;
+    document.getElementById('heatmap-max').textContent = '—';
+    return;
+  }
+  
+  // Layout
+  const containerW = canvas.parentElement.getBoundingClientRect().width - 24;
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = containerW;
+  const cssH = 500;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  canvas.style.width = cssW + 'px';
+  canvas.style.height = cssH + 'px';
+  
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, cssW, cssH);
+  
+  // Margins for axis labels
+  const ML = 60, MR = 10, MT = 10, MB = 30;
+  const W = cssW - ML - MR;
+  const H = cssH - MT - MB;
+  
+  // Time-of-day axis: focus on daylight hours
+  const TOD_START_HR = 5, TOD_END_HR = 20;
+  const todRange = TOD_END_HR - TOD_START_HR;
+  
+  // Column width: one per day
+  const colW = W / days.length;
+  
+  // Find global max for color scaling
+  let globalMax = 0;
+  for (const day of days) {
+    for (const p of day.pars) if (p > globalMax) globalMax = p;
+  }
+  if (globalMax === 0) globalMax = 1;
+  
+  document.getElementById('heatmap-max').textContent = Math.round(globalMax).toLocaleString();
+  
+  // For each day, plot vertical strip
+  for (let i = 0; i < days.length; i++) {
+    const day = days[i];
+    const x = ML + i * colW;
+    
+    // Build a per-pixel value array for this column
+    // Each pixel row = one fraction of the day
+    const samples = day.samples;
+    if (samples.length === 0) continue;
+    
+    // Sort by time of day
+    const todSamples = samples.map(s => {
+      const hr = s.t.getHours() + s.t.getMinutes()/60 + s.t.getSeconds()/3600;
+      return { hr, par: s.par };
+    }).sort((a,b) => a.hr - b.hr);
+    
+    // Draw row by row
+    for (let py = 0; py < H; py++) {
+      const hr = TOD_START_HR + (py / H) * todRange;
+      // Find par at this hour (interpolate between adjacent samples)
+      let par = 0;
+      // Binary-ish search
+      let lo = 0, hi = todSamples.length - 1;
+      if (hr <= todSamples[0].hr) {
+        par = todSamples[0].par;
+      } else if (hr >= todSamples[hi].hr) {
+        par = todSamples[hi].par;
+      } else {
+        // Linear scan (could optimize but fast enough)
+        for (let j = 0; j < todSamples.length - 1; j++) {
+          if (hr >= todSamples[j].hr && hr <= todSamples[j+1].hr) {
+            const t = (hr - todSamples[j].hr) / (todSamples[j+1].hr - todSamples[j].hr);
+            par = todSamples[j].par + t * (todSamples[j+1].par - todSamples[j].par);
+            break;
+          }
+        }
+      }
+      const v = par / globalMax;
+      const [r,g,b] = colorForValue(v);
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
+      ctx.fillRect(x, MT + py, colW + 0.5, 1);
+    }
+  }
+  
+  // Y-axis labels (time of day)
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.font = '11px -apple-system, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  const hourTicks = [6, 8, 10, 12, 14, 16, 18];
+  for (const hr of hourTicks) {
+    const y = MT + ((hr - TOD_START_HR) / todRange) * H;
+    ctx.fillText(`${String(hr).padStart(2,'0')}:00`, ML - 8, y);
+  }
+  
+  // X-axis labels (dates) - show subset to avoid overcrowding
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  const labelStep = Math.max(1, Math.ceil(days.length / 12));
+  for (let i = 0; i < days.length; i += labelStep) {
+    const x = ML + i * colW + colW/2;
+    ctx.fillText(fmtShort(days[i].date), x, MT + H + 6);
+  }
+}
+
+// Update gradient bar
+function updateHeatmapLegend() {
+  const grad = document.getElementById('heatmap-gradient');
+  if (!grad) return;
+  const stops = HEATMAP_COLORS.map(([t, [r,g,b]]) => 
+    `rgb(${r},${g},${b}) ${(t*100).toFixed(0)}%`
+  ).join(', ');
+  grad.style.background = `linear-gradient(to right, ${stops})`;
+}
+
+// ============================================================
+// RANGE SLIDER
+// ============================================================
+function initializeRangeSlider() {
+  if (state.raw.length === 0) return;
+  
+  const slider = document.getElementById('range-slider');
+  const handleStart = document.getElementById('slider-handle-start');
+  const handleEnd = document.getElementById('slider-handle-end');
+  const selected = document.getElementById('slider-selected');
+  
+  let dragging = null;  // 'start', 'end', or 'pan'
+  let panStartX = 0;
+  let panStartZoom = null;
+  
+  function getSliderRect() { return slider.getBoundingClientRect(); }
+  
+  function update() {
+    if (state.raw.length === 0) return;
+    const minMs = state.raw[0].t.getTime();
+    const maxMs = state.raw[state.raw.length-1].t.getTime();
+    const range = maxMs - minMs;
+    if (range <= 0) return;
+    
+    let z0, z1;
+    if (state.zoom) {
+      z0 = state.zoom[0].getTime();
+      z1 = state.zoom[1].getTime();
+    } else {
+      z0 = minMs; z1 = maxMs;
+    }
+    
+    const pStart = Math.max(0, Math.min(1, (z0 - minMs) / range));
+    const pEnd = Math.max(0, Math.min(1, (z1 - minMs) / range));
+    
+    handleStart.style.left = (pStart * 100) + '%';
+    handleEnd.style.left = (pEnd * 100) + '%';
+    selected.style.left = (pStart * 100) + '%';
+    selected.style.right = ((1-pEnd) * 100) + '%';
+    
+    // Slider date labels removed in v15
+  }
+  
+  function startDrag(which, ev) {
+    dragging = which;
+    if (which === 'pan') {
+      panStartX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+      panStartZoom = state.zoom ? [state.zoom[0].getTime(), state.zoom[1].getTime()] : null;
+    }
+    ev.preventDefault();
+    ev.stopPropagation();
+  }
+  
+  function onMove(ev) {
+    if (!dragging) return;
+    const rect = getSliderRect();
+    const x = (ev.touches ? ev.touches[0].clientX : ev.clientX) - rect.left;
+    
+    const minMs = state.raw[0].t.getTime();
+    const maxMs = state.raw[state.raw.length-1].t.getTime();
+    
+    if (dragging === 'pan' && panStartZoom) {
+      // Move whole window keeping size fixed
+      const clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+      const dx = clientX - panStartX;
+      const dpFraction = dx / rect.width;
+      const totalRange = maxMs - minMs;
+      const dMs = dpFraction * totalRange;
+      
+      const windowSize = panStartZoom[1] - panStartZoom[0];
+      let newStart = panStartZoom[0] + dMs;
+      let newEnd = panStartZoom[1] + dMs;
+      
+      // Clamp to data range, preserving window size
+      if (newStart < minMs) {
+        newStart = minMs;
+        newEnd = minMs + windowSize;
+      }
+      if (newEnd > maxMs) {
+        newEnd = maxMs;
+        newStart = maxMs - windowSize;
+      }
+      
+      state.zoom = [new Date(newStart), new Date(newEnd)];
+    } else {
+      // Edge handle drag (resize)
+      const p = Math.max(0, Math.min(1, x / rect.width));
+      const t = minMs + p * (maxMs - minMs);
+      
+      if (!state.zoom) {
+        state.zoom = [new Date(minMs), new Date(maxMs)];
+      }
+      
+      if (dragging === 'start') {
+        if (t < state.zoom[1].getTime() - 60000) {
+          state.zoom[0] = new Date(t);
+        }
+      } else if (dragging === 'end') {
+        if (t > state.zoom[0].getTime() + 60000) {
+          state.zoom[1] = new Date(t);
+        }
+      }
+    }
+    
+    update();
+    applyZoomToChart();
+    debouncedRefresh();
+  }
+  
+  function endDrag() { 
+    dragging = null; 
+    panStartZoom = null;
+  }
+  
+  handleStart.addEventListener('mousedown', e => startDrag('start', e));
+  handleEnd.addEventListener('mousedown', e => startDrag('end', e));
+  handleStart.addEventListener('touchstart', e => startDrag('start', e));
+  handleEnd.addEventListener('touchstart', e => startDrag('end', e));
+  // Pan: drag the middle "selected" section
+  selected.addEventListener('mousedown', e => startDrag('pan', e));
+  selected.addEventListener('touchstart', e => startDrag('pan', e));
+  
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', endDrag);
+  document.addEventListener('touchmove', onMove);
+  document.addEventListener('touchend', endDrag);
+  
+  update();
+  
+  // Expose for external updates
+  state.updateRangeSlider = update;
+}
+
+function updateRangeSlider() {
+  if (state.updateRangeSlider) state.updateRangeSlider();
+}
+
+// Debounce slider updates
+let refreshTimer = null;
+function debouncedRefresh() {
+  if (refreshTimer) clearTimeout(refreshTimer);
+  refreshTimer = setTimeout(() => refreshAfterZoom(), 150);
+}
+
+// ============================================================
+// FULL REFRESH
+// ============================================================
+function refreshAll() {
+  refreshChart();
+  refreshAfterZoom();
+}
+
+function refreshAfterZoom() {
+  updateRangeDisplay();
+  updateDateInputs();
+  updateRangeSlider();
+  updateRangeButtons();
+  updateStats();
+  updateDays();
+  // Note: heatmap is on its own tab with own date controls, not refreshed here
+}
+
+function updateRangeButtons() {
+  // Highlight range button if current zoom matches that span (ending at latest data)
+  const buttons = document.querySelectorAll('.range-btn');
+  if (!buttons.length || state.raw.length === 0 || !state.zoom) {
+    buttons.forEach(b => b.classList.remove('active'));
+    return;
+  }
+  const newest = state.raw[state.raw.length - 1].t.getTime();
+  const endMs = state.zoom[1].getTime();
+  const startMs = state.zoom[0].getTime();
+  const spanDays = (endMs - startMs) / DAY_MS;
+  const endsAtNewest = Math.abs(endMs - newest) < DAY_MS / 24;  // within 1 hour
+  
+  buttons.forEach(b => {
+    const days = parseInt(b.dataset.days, 10);
+    const matches = endsAtNewest && Math.abs(spanDays - days) < 0.5;
+    b.classList.toggle('active', matches);
+  });
+}
+
+function updateRangeDisplay() {
+  // no-op: range-display element removed in v14 (range visible on chart axis)
+}
+
+function updateDateInputs() {
+  if (!state.zoom) return;
+  document.getElementById('start-input').value = fmtForInput(state.zoom[0]);
+  document.getElementById('end-input').value = fmtForInput(state.zoom[1]);
+}
+
+// ============================================================
+// UI HANDLERS
+// ============================================================
+function updateActiveSensorUI() {
+  const el = document.getElementById('active-sensor-name');
+  if (el) el.textContent = state.activeSensor || '—';
+}
+
+function setupEventListeners() {
+  document.getElementById('sat-threshold').addEventListener('input', e => {
+    state.satThreshold = parseFloat(e.target.value) || 400;
+    refreshChart();
+    updateStats();
+    updateDays();
+  });
+  document.getElementById('stress-threshold').addEventListener('input', e => {
+    state.stressThreshold = parseFloat(e.target.value) || 1200;
+    refreshChart();
+    updateStats();
+    updateDays();
+  });
+  
+  // New toolbar controls
+  document.getElementById('smoothing-select').addEventListener('change', e => {
+    state.smoothing = e.target.value;
+    refreshChart();
+  });
+  document.getElementById('show-daily-max').addEventListener('change', e => {
+    state.showDailyMax = e.target.checked;
+    refreshChart();
+  });
+  document.getElementById('show-dli-overlay').addEventListener('change', e => {
+    state.showDLIOverlay = e.target.checked;
+    refreshChart();
+  });
+  document.getElementById('show-par').addEventListener('change', e => {
+    state.showPar = e.target.checked;
+    // When PAR is unchecked, auto-enable DLI bars so the chart isn't empty
+    if (!state.showPar && !state.showDLIOverlay) {
+      state.showDLIOverlay = true;
+      document.getElementById('show-dli-overlay').checked = true;
+    }
+    refreshChart();
+  });
+  
+  // Range buttons (30 / 60 / 90 days)
+  document.querySelectorAll('.range-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const days = parseInt(btn.dataset.days, 10);
+      setRangeFromLatest(days);
+    });
+  });
+  
+  document.getElementById('apply-range').addEventListener('click', () => {
+    const startStr = document.getElementById('start-input').value;
+    const endStr = document.getElementById('end-input').value;
+    if (!startStr || !endStr) return;
+    const s = new Date(startStr);
+    const e = new Date(endStr);
+    if (e <= s) {
+      alert('End must be after start');
+      return;
+    }
+    state.zoom = [s, e];
+    applyZoomToChart();
+    refreshAfterZoom();
+  });
+  
+  // Export button - CSV of visible data
+  document.getElementById('export-btn').addEventListener('click', exportVisibleCSV);
+  
+  // Heatmap tab controls
+  document.getElementById('hm-apply-range').addEventListener('click', () => {
+    const startStr = document.getElementById('hm-start-input').value;
+    const endStr = document.getElementById('hm-end-input').value;
+    if (!startStr || !endStr) return;
+    const s = new Date(startStr);
+    const e = new Date(endStr);
+    if (e <= s) { alert('End must be after start'); return; }
+    state.hmZoom = [s, e];
+    updateHeatmap();
+  });
+  document.getElementById('hm-reset-range').addEventListener('click', () => {
+    if (state.raw.length === 0) return;
+    const newest = state.raw[state.raw.length-1].t;
+    const thirtyAgo = new Date(newest.getTime() - 30 * DAY_MS);
+    const oldestT = state.raw[0].t;
+    state.hmZoom = [thirtyAgo > oldestT ? thirtyAgo : oldestT, newest];
+    document.getElementById('hm-start-input').value = fmtForInput(state.hmZoom[0]);
+    document.getElementById('hm-end-input').value = fmtForInput(state.hmZoom[1]);
+    updateHeatmap();
+  });
+  document.getElementById('hm-match-dashboard').addEventListener('click', () => {
+    if (state.zoom) {
+      state.hmZoom = [new Date(state.zoom[0]), new Date(state.zoom[1])];
+      document.getElementById('hm-start-input').value = fmtForInput(state.hmZoom[0]);
+      document.getElementById('hm-end-input').value = fmtForInput(state.hmZoom[1]);
+      updateHeatmap();
+    }
+  });
+  
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+      if (tab.dataset.tab === 'calibration') {
+        loadCalibrationData();
+      }
+      if (tab.dataset.tab === 'heatmap') {
+        // Initialize hmZoom on first visit - default to time series zoom
+        if (!state.hmZoom && state.raw.length > 0) {
+          if (state.zoom) {
+            // Match the time series range
+            state.hmZoom = [new Date(state.zoom[0]), new Date(state.zoom[1])];
+          } else {
+            // Fallback: last 30 days
+            const newest = state.raw[state.raw.length-1].t;
+            const thirtyAgo = new Date(newest.getTime() - 30 * DAY_MS);
+            const oldestT = state.raw[0].t;
+            state.hmZoom = [thirtyAgo > oldestT ? thirtyAgo : oldestT, newest];
+          }
+          document.getElementById('hm-start-input').value = fmtForInput(state.hmZoom[0]);
+          document.getElementById('hm-end-input').value = fmtForInput(state.hmZoom[1]);
+        }
+        // Heatmap needs to render after tab becomes visible to get correct dimensions
+        setTimeout(() => updateHeatmap(), 50);
+      }
+    });
+  });
+  
+  window.addEventListener('resize', () => {
+    if (state.mainChart) state.mainChart.resize();
+    updateHeatmap();
+  });
+  
+  // Dataset meta — show last upload info
+  loadLastUploadMeta();
+  
+  // Wire up calibration tab controls
+  setupCalControls();
+  
+  updateHeatmapLegend();
+}
+
+async function loadLastUploadMeta() {
+  try {
+    const snap = await get(query(ref(db, 'uploads'), orderByChild('uploaded_at'), limitToLast(1)));
+    if (!snap.exists()) {
+      document.getElementById('dataset-meta').textContent = '';
+      return;
+    }
+    let latest = null;
+    snap.forEach(child => { latest = child.val(); });
+    if (!latest || !latest.uploaded_at) {
+      document.getElementById('dataset-meta').textContent = '';
+      return;
+    }
+    const d = new Date(latest.uploaded_at);
+    const dateStr = d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+    document.getElementById('dataset-meta').textContent = `Last data upload on ${dateStr}`;
+  } catch (e) {
+    document.getElementById('dataset-meta').textContent = '';
+  }
+}
+
+// ============================================================
+// EXPORT CSV
+// ============================================================
+function exportVisibleCSV() {
+  const visible = getVisibleData();
+  if (visible.length === 0) {
+    alert('No data in current range to export');
+    return;
+  }
+  
+  // CSV columns: time, date, sensor, raw, calibrated, cal_source, cal_slope, cal_intercept, cal_session_date
+  // cal_source values:
+  //   logger       = Odyssey software applied calibration at deployment
+  //   derived_pre  = post-hoc calibration from a CAL session BEFORE this data
+  //   derived_post = post-hoc calibration from a CAL session AFTER this data
+  //   none         = uncalibrated, no CAL session available
+  const lines = ['time,date,sensor,raw,calibrated,cal_source,cal_slope,cal_intercept,cal_session_date'];
+  for (const d of visible) {
+    const dt = d.t;
+    const date = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+    const time = `${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}:${String(dt.getSeconds()).padStart(2,'0')}`;
+    const sensor = d.sensor || state.activeSensor;
+    const calSource = d.calSource || 'none';
+    const calSlope = d.calSlope != null ? d.calSlope.toFixed(6) : '';
+    const calIntercept = d.calIntercept != null ? d.calIntercept.toFixed(4) : '';
+    const calSessionDate = d.calSessionDate || '';
+    lines.push(`${time},${date},${sensor},${d.raw},${d.par.toFixed(2)},${calSource},${calSlope},${calIntercept},${calSessionDate}`);
+  }
+  const csv = lines.join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  
+  const startStr = state.zoom ? fmtDate(state.zoom[0]) : 'all';
+  const endStr = state.zoom ? fmtDate(state.zoom[1]) : 'all';
+  const fname = `par_${state.activeSensor}_${startStr}_${endStr}.csv`;
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ============================================================
+// CALIBRATION TAB
+// ============================================================
+
+function gradeFromR2(r2) {
+  if (r2 >= 0.95) return { letter: 'A', desc: 'Excellent fit' };
+  if (r2 >= 0.85) return { letter: 'B', desc: 'Good fit' };
+  if (r2 >= 0.70) return { letter: 'C', desc: 'Fair fit' };
+  if (r2 >= 0.50) return { letter: 'D', desc: 'Poor fit — use with caution' };
+  return { letter: 'F', desc: 'Bad fit — do not trust' };
+}
+
+async function loadCalibrationData() {
+  document.getElementById('cal-loading').style.display = 'block';
+  document.getElementById('cal-content').style.display = 'none';
+  document.getElementById('cal-empty').style.display = 'none';
+  
+  // Calibrations are computed at page load via buildDerivedCalibrations()
+  // Gather them all into one sorted list (across sensors)
+  const all = [];
+  for (const sensor of Object.keys(state.derivedCals)) {
+    for (const c of state.derivedCals[sensor]) {
+      all.push(c);
+    }
+  }
+  all.sort((a, b) => b.dateMs - a.dateMs);  // most recent first
+  
+  document.getElementById('cal-loading').style.display = 'none';
+  
+  if (all.length === 0) {
+    document.getElementById('cal-empty').style.display = 'block';
+    return;
+  }
+  
+  document.getElementById('cal-content').style.display = 'block';
+  
+  // Render history table
+  renderCalHistoryTable(all);
+  
+  // Show most recent calibration as "active"
+  await showActiveCalibration(all[0]);
+}
+
+function renderCalHistoryTable(cals) {
+  const tbody = document.getElementById('cal-history-tbody');
+  tbody.innerHTML = '';
+  
+  for (const c of cals) {
+    const tr = document.createElement('tr');
+    tr.dataset.dateMs = c.dateMs;
+    const grade = gradeFromR2(c.r2);
+    const date = new Date(c.dateMs);
+    const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    
+    // Format equation: PAR = slope.toFixed(4) × raw + intercept.toFixed(2)
+    const eqStr = `PAR = ${c.slope.toFixed(4)} × raw ${c.intercept >= 0 ? '+' : '−'} ${Math.abs(c.intercept).toFixed(2)}`;
+    
+    tr.innerHTML = `
+      <td>${dateStr}</td>
+      <td><span class="sensor-pill-sm">${c.sensor}</span></td>
+      <td><code>${eqStr}</code></td>
+      <td>${c.r2.toFixed(3)}</td>
+      <td>${c.n}</td>
+      <td><span class="grade-${grade.letter.toLowerCase()}">${grade.letter}</span></td>
+      <td>${c.sessionStart} → ${c.sessionEnd}</td>
+    `;
+    tr.addEventListener('click', () => {
+      document.querySelectorAll('#cal-history-tbody tr').forEach(r => r.classList.remove('active'));
+      tr.classList.add('active');
+      showActiveCalibration(c);
+    });
+    tbody.appendChild(tr);
+  }
+  
+  // Mark first as active
+  const first = tbody.querySelector('tr');
+  if (first) first.classList.add('active');
+}
+
+async function showActiveCalibration(cal) {
+  state.activeCalSession = cal;
+  
+  const grade = gradeFromR2(cal.r2);
+  
+  // Header meta
+  document.getElementById('cal-active-meta').textContent = 
+    `${cal.sensor} · ${cal.sessionStart} → ${cal.sessionEnd}`;
+  
+  // Equation banner — show in human-readable form
+  // PAR = slope × raw + intercept (or − |intercept|)
+  const sign = cal.intercept >= 0 ? '+' : '−';
+  const absInt = Math.abs(cal.intercept);
+  document.getElementById('cal-equation').innerHTML = 
+    `PAR = <strong>${cal.slope.toFixed(4)}</strong> × raw ${sign} <strong>${absInt.toFixed(2)}</strong>`;
+  
+  document.getElementById('cal-r2-val').textContent = cal.r2.toFixed(3);
+  document.getElementById('cal-n-val').textContent = cal.n + (cal.nExcluded > 0 ? ` (${cal.nExcluded} excluded)` : '');
+  document.getElementById('cal-rmse-val').textContent = cal.rmse.toFixed(1);
+  
+  const gradeEl = document.getElementById('cal-grade-val');
+  gradeEl.textContent = grade.letter;
+  gradeEl.className = `grade-${grade.letter.toLowerCase()}`;
+  
+  // Plain English explanation
+  const odyMultiplier = cal.slope * 300;  // raw is per-5-min; per-second = ÷300, so multiplier for pps form = slope × 300
+  document.getElementById('cal-equation-explain').innerHTML = 
+    `Equivalent Odyssey software setting: <strong>multiplier = ${odyMultiplier.toFixed(2)}</strong> (use this if updating the logger calibration)`;
+  document.getElementById('cal-explain-text').innerHTML = `
+    <strong>slope</strong> (<code>${cal.slope.toFixed(4)}</code>): each Odyssey raw pulse count equals ${cal.slope.toFixed(4)} µmol·m⁻²·s⁻¹ of PAR.<br>
+    <strong>intercept</strong> (<code>${cal.intercept.toFixed(2)}</code>): baseline reading when sensor is dark (should be near 0; non-zero hints at sensor offset or noise).<br>
+    <strong>R² = ${cal.r2.toFixed(3)}</strong>: how tightly the Odyssey readings follow the LI-COR ground truth (1.0 = perfect line, 0 = no relationship). <strong>${grade.desc}</strong>.<br>
+    <strong>RMSE</strong>: typical deviation between predicted and measured PAR is ±${cal.rmse.toFixed(1)} µmol·m⁻²·s⁻¹.
+  `;
+  
+  // Render scatter
+  renderCalScatter(cal);
+  
+  // Render time series
+  document.getElementById('cal-data-meta').textContent = 
+    `${cal.sensor} · ${cal.sessionStart} → ${cal.sessionEnd}`;
+  await renderCalTimeSeries(cal);
+}
+
+function renderCalScatter(cal) {
+  const ctx = document.getElementById('cal-scatter').getContext('2d');
+  
+  // Included vs excluded points
+  const included = cal.allPairs.filter(p => !p.excluded).map(p => ({ x: p.raw, y: p.uwAvg }));
+  const excluded = cal.allPairs.filter(p => p.excluded).map(p => ({ x: p.raw, y: p.uwAvg }));
+  
+  // Regression line endpoints
+  const allX = cal.allPairs.map(p => p.raw);
+  const xMin = Math.min(...allX);
+  const xMax = Math.max(...allX);
+  const lineData = [
+    { x: xMin, y: cal.slope * xMin + cal.intercept },
+    { x: xMax, y: cal.slope * xMax + cal.intercept }
+  ];
+  
+  if (state.calChart) state.calChart.destroy();
+  
+  state.calChart = new Chart(ctx, {
+    type: 'scatter',
+    data: {
+      datasets: [
+        {
+          label: 'Excluded (lensing)',
+          data: excluded,
+          backgroundColor: '#cbb89e',
+          borderColor: '#cbb89e',
+          pointRadius: 3,
+          order: 3
+        },
+        {
+          label: 'Included',
+          data: included,
+          backgroundColor: 'rgba(16, 97, 106, 0.7)',
+          borderColor: '#10616A',
+          pointRadius: 3,
+          order: 2
+        },
+        {
+          label: 'Regression',
+          type: 'line',
+          data: lineData,
+          borderColor: '#0a7099',
+          borderWidth: 2,
+          pointRadius: 0,
+          fill: false,
+          order: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          title: { 
+            display: true, 
+            text: 'Odyssey raw (pulses per 5-min)',
+            color: 'rgba(0,0,0,0.65)'
+          },
+          ticks: { color: 'rgba(0,0,0,0.5)' },
+          grid: { color: 'rgba(0,0,0,0.07)' }
+        },
+        y: {
+          title: { 
+            display: true, 
+            text: 'LI-COR underwater avg (µmol·m⁻²·s⁻¹)',
+            color: 'rgba(0,0,0,0.65)'
+          },
+          ticks: { color: 'rgba(0,0,0,0.5)' },
+          grid: { color: 'rgba(0,0,0,0.07)' }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        datalabels: { display: false }
+      }
+    }
+  });
+}
+
+async function renderCalTimeSeries(cal) {
+  // Fetch all data in CAL session range (Odyssey + LI-COR)
+  const startMs = new Date(cal.sessionStart + 'T00:00:00').getTime();
+  const endMs = new Date(cal.sessionEnd + 'T23:59:59').getTime();
+  
+  const odyQ = query(ref(db, `readings/${cal.sensor}`), orderByChild('t_ms'), startAt(startMs), endAt(endMs));
+  const licorQ = query(ref(db, 'licor_checks'), orderByChild('t_ms'), startAt(startMs), endAt(endMs));
+  const [odySnap, licorSnap] = await Promise.all([get(odyQ), get(licorQ)]);
+  
+  // Collect Odyssey readings (sorted)
+  const odyList = [];
+  if (odySnap.exists()) {
+    odySnap.forEach(c => {
+      const v = c.val();
+      if (v && typeof v.t_ms === 'number') odyList.push(v);
+    });
+  }
+  odyList.sort((a, b) => a.t_ms - b.t_ms);
+  
+  // Collect LI-COR readings, filter where it was off (sorted)
+  const LICOR_OFF_THRESHOLD = 1;
+  const licorList = [];
+  if (licorSnap.exists()) {
+    licorSnap.forEach(c => {
+      const v = c.val();
+      if (v && typeof v.t_ms === 'number' && (v.uw1 + v.uw2) >= LICOR_OFF_THRESHOLD) {
+        licorList.push(v);
+      }
+    });
+  }
+  licorList.sort((a, b) => a.t_ms - b.t_ms);
+  
+  // For each Odyssey reading, find nearest LI-COR within ±1 min - build aligned triples
+  const PAIRING_TOLERANCE_MS = 60 * 1000;
+  let licorIdx = 0;
+  const triples = []; // { t_ms, odyPar, uw1, uw2, air }
+  for (const ody of odyList) {
+    // Advance licorIdx so it stays close to ody.t_ms
+    while (licorIdx < licorList.length - 1 && licorList[licorIdx + 1].t_ms < ody.t_ms - PAIRING_TOLERANCE_MS) {
+      licorIdx++;
+    }
+    // Check the window of LI-COR samples within ±1 min
+    let best = null;
+    let bestDelta = Infinity;
+    for (let i = licorIdx; i < licorList.length; i++) {
+      const delta = licorList[i].t_ms - ody.t_ms;
+      if (delta > PAIRING_TOLERANCE_MS) break;
+      const absDelta = Math.abs(delta);
+      if (absDelta > PAIRING_TOLERANCE_MS) continue;
+      if (absDelta < bestDelta) {
+        best = licorList[i];
+        bestDelta = absDelta;
+      }
+    }
+    if (best) {
+      triples.push({
+        t_ms: ody.t_ms,
+        odyPar: cal.slope * ody.raw + cal.intercept,
+        uw1: best.uw1,
+        uw2: best.uw2,
+        air: best.air
+      });
+    }
+  }
+  
+  if (triples.length === 0) {
+    // Nothing to display
+    const wrap = document.getElementById('cal-ts-wrap');
+    if (wrap) wrap.innerHTML = '<div style="text-align:center;color:rgba(0,0,0,0.4);padding:60px 20px;">No paired LI-COR/Odyssey data for this session</div>';
+    return;
+  }
+  
+  // Group triples into contiguous chunks separated by gaps > 30 min
+  const CHUNK_GAP_MS = 30 * 60 * 1000;
+  const chunks = [];
+  let current = [triples[0]];
+  for (let i = 1; i < triples.length; i++) {
+    if (triples[i].t_ms - triples[i-1].t_ms > CHUNK_GAP_MS) {
+      chunks.push(current);
+      current = [];
+    }
+    current.push(triples[i]);
+  }
+  if (current.length > 0) chunks.push(current);
+  
+  // Compute shared Y range
+  let yMin = Infinity, yMax = -Infinity;
+  for (const t of triples) {
+    const vals = [t.odyPar, t.uw1, t.uw2];
+    for (const v of vals) {
+      if (v < yMin) yMin = v;
+      if (v > yMax) yMax = v;
+    }
+  }
+  yMin = Math.min(0, yMin);  // ensure y starts at 0 if positive data
+  yMax = yMax * 1.05;
+  
+  // Apply smoothing per chunk
+  const calSmoothing = document.getElementById('cal-smoothing-select')?.value || 'raw';
+  const showAir = document.getElementById('cal-show-air').checked;
+  
+  // Clear and build container for side-by-side mini-charts
+  const wrap = document.getElementById('cal-ts-wrap');
+  wrap.innerHTML = '';
+  wrap.style.display = 'flex';
+  wrap.style.gap = '4px';
+  wrap.style.padding = '10px';
+  wrap.style.background = '#fff';
+  wrap.style.borderRadius = '8px';
+  wrap.style.height = '320px';
+  wrap.style.position = 'relative';
+  
+  // Destroy any old charts
+  if (state.calTsChartList) {
+    for (const c of state.calTsChartList) {
+      try { c.destroy(); } catch(e) {}
+    }
+  }
+  state.calTsChartList = [];
+  state.calTsChunkDivs = [];
+  state.calTsExpandedIdx = null;
+  
+  function fmtChunkDate(d) {
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+  
+  function applyChunkLayout() {
+    state.calTsChunkDivs.forEach((div, idx) => {
+      if (state.calTsExpandedIdx === null) {
+        div.style.display = 'flex';
+        div.style.flex = '1';
+      } else if (state.calTsExpandedIdx === idx) {
+        div.style.display = 'flex';
+        div.style.flex = '1';
+      } else {
+        div.style.display = 'none';
+      }
+    });
+    // Show/hide back button
+    const back = document.getElementById('cal-chunk-back');
+    if (back) back.style.display = state.calTsExpandedIdx === null ? 'none' : 'inline-block';
+    // Resize charts after layout change
+    setTimeout(() => {
+      state.calTsChartList.forEach(c => { try { c.resize(); } catch(e) {} });
+    }, 30);
+  }
+  state.calApplyChunkLayout = applyChunkLayout;
+  
+  // Render one chart per chunk
+  chunks.forEach((chunk, chunkIdx) => {
+    const chunkDiv = document.createElement('div');
+    chunkDiv.style.flex = '1';
+    chunkDiv.style.minWidth = '0';
+    chunkDiv.style.position = 'relative';
+    chunkDiv.style.display = 'flex';
+    chunkDiv.style.flexDirection = 'column';
+    if (chunkIdx > 0) {
+      chunkDiv.style.borderLeft = '1px dashed rgba(0, 68, 111, 0.35)';
+      chunkDiv.style.paddingLeft = '4px';
+    }
+    
+    // Date header — shown once per chunk, above the chart
+    const chunkDate = new Date(chunk[0].t_ms);
+    const dateHeader = document.createElement('div');
+    dateHeader.textContent = fmtChunkDate(chunkDate);
+    dateHeader.style.cssText = 'font-size:0.7rem;color:rgba(0,68,111,0.65);font-weight:600;letter-spacing:0.04em;padding:2px 4px 4px;text-align:left;cursor:pointer;user-select:none;';
+    dateHeader.title = 'Click chart to expand';
+    chunkDiv.appendChild(dateHeader);
+    
+    const canvasWrap = document.createElement('div');
+    canvasWrap.style.cssText = 'flex:1;min-height:0;position:relative;cursor:zoom-in;';
+    const canvas = document.createElement('canvas');
+    canvasWrap.appendChild(canvas);
+    chunkDiv.appendChild(canvasWrap);
+    wrap.appendChild(chunkDiv);
+    state.calTsChunkDivs.push(chunkDiv);
+    
+    // Click to expand (only when not already expanded, and there are >1 chunks)
+    // We need to distinguish a click from a drag-zoom - track mousedown position
+    let mdX = null, mdY = null;
+    canvasWrap.addEventListener('mousedown', (e) => {
+      mdX = e.clientX; mdY = e.clientY;
+    });
+    canvasWrap.addEventListener('mouseup', (e) => {
+      if (mdX === null) return;
+      const dx = Math.abs(e.clientX - mdX);
+      const dy = Math.abs(e.clientY - mdY);
+      mdX = null; mdY = null;
+      if (dx > 4 || dy > 4) return;  // it was a drag (zoom), not a click
+      if (chunks.length <= 1) return;
+      if (state.calTsExpandedIdx === chunkIdx) return;
+      if (state.calTsExpandedIdx === null) {
+        state.calTsExpandedIdx = chunkIdx;
+        applyChunkLayout();
+      }
+    });
+    
+    // Build data series for this chunk
+    const odyRaw = chunk.map(t => ({ t: new Date(t.t_ms), par: t.odyPar }));
+    const uw1Raw = chunk.map(t => ({ t: new Date(t.t_ms), par: t.uw1 }));
+    const uw2Raw = chunk.map(t => ({ t: new Date(t.t_ms), par: t.uw2 }));
+    const airRaw = chunk.map(t => ({ t: new Date(t.t_ms), par: t.air }));
+    
+    const odySmoothed = smoothData(odyRaw, calSmoothing);
+    const uw1Smoothed = smoothData(uw1Raw, calSmoothing);
+    const uw2Smoothed = smoothData(uw2Raw, calSmoothing);
+    const airSmoothed = smoothData(airRaw, calSmoothing);
+    
+    const datasets = [
+      { label: 'Odyssey', data: odySmoothed, borderColor: '#6b7339', borderWidth: 1.5, pointRadius: 0, tension: 0.2, spanGaps: false, fill: false },
+      { label: 'UW1', data: uw1Smoothed, borderColor: '#0a3855', borderWidth: 1.5, pointRadius: 0, tension: 0.2, spanGaps: false, fill: false },
+      { label: 'UW2', data: uw2Smoothed, borderColor: '#45BBE6', borderWidth: 1.5, pointRadius: 0, tension: 0.2, spanGaps: false, fill: false }
+    ];
+    if (showAir) {
+      datasets.push({ label: 'Air', data: airSmoothed, borderColor: '#e8a534', borderWidth: 1, pointRadius: 0, tension: 0.2, spanGaps: false, fill: false, borderDash: [4, 3] });
+    }
+    
+    const chart = new Chart(canvas.getContext('2d'), {
+      type: 'line',
+      data: { datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'nearest', axis: 'x', intersect: false },
+        scales: {
+          x: {
+            type: 'time',
+            time: { tooltipFormat: 'MMM d, yyyy HH:mm', displayFormats: { day: 'HH:mm', hour: 'HH:mm', minute: 'HH:mm' } },
+            ticks: { color: 'rgba(0,0,0,0.55)', maxRotation: 0, autoSkip: true, maxTicksLimit: 3, font: { size: 10 } },
+            grid: { color: 'rgba(0,0,0,0.05)' }
+          },
+          y: {
+            min: yMin,
+            max: yMax,
+            ticks: { color: 'rgba(0,0,0,0.55)', font: { size: 10 }, display: chunkIdx === 0 },
+            grid: { color: 'rgba(0,0,0,0.07)' },
+            title: { display: chunkIdx === 0, text: 'PAR (µmol·m⁻²·s⁻¹)', color: 'rgba(0,0,0,0.65)', font: { size: 11 } }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          datalabels: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(0, 68, 111, 0.95)',
+            titleColor: '#EBD5AF',
+            bodyColor: '#fff',
+            padding: 10
+          },
+          zoom: {
+            pan: { enabled: false },
+            zoom: {
+              drag: {
+                enabled: true,
+                backgroundColor: 'rgba(0, 68, 111, 0.15)',
+                borderColor: 'rgba(0, 68, 111, 0.4)',
+                borderWidth: 1
+              },
+              mode: 'x'
+            }
+          }
+        }
+      }
+    });
+    state.calTsChartList.push(chart);
+  });
+}
+
+// Wire up cal toolbar after DOM is ready (called from setupEventListeners)
+function setupCalControls() {
+  const cb = document.getElementById('cal-show-air');
+  if (cb) {
+    cb.addEventListener('change', () => {
+      if (state.activeCalSession) renderCalTimeSeries(state.activeCalSession);
+    });
+  }
+  const sm = document.getElementById('cal-smoothing-select');
+  if (sm) {
+    sm.addEventListener('change', () => {
+      if (state.activeCalSession) renderCalTimeSeries(state.activeCalSession);
+    });
+  }
+  const rz = document.getElementById('cal-reset-zoom');
+  if (rz) {
+    rz.addEventListener('click', () => {
+      if (state.calTsChartList) {
+        for (const c of state.calTsChartList) {
+          try { c.resetZoom(); } catch(e) {}
+        }
+      }
+    });
+  }
+  const back = document.getElementById('cal-chunk-back');
+  if (back) {
+    back.addEventListener('click', () => {
+      state.calTsExpandedIdx = null;
+      if (state.calApplyChunkLayout) state.calApplyChunkLayout();
+    });
+  }
+}
+
+
+
+loadInitialData().catch(err => {
+  console.error(err);
+  document.getElementById('initial-loading').innerHTML = `
+    <div class="warning-banner">
+      <strong>Error loading data:</strong> ${err.message}
+    </div>`;
+});
+</script>
+
+</body>
+</html>

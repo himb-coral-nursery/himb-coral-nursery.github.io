@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Upload | PAR Visualizer | HIMB Coral Nursery</title>
+<style>
+  :root {
+    --bg: #10616A;
+    --bg-2: #0a4a52;
+    --panel: rgba(255,255,255,0.06);
+    --panel-2: rgba(255,255,255,0.10);
+    --text: #ffffff;
+    --text-2: rgba(255,255,255,0.75);
+    --text-3: rgba(255,255,255,0.55);
+    --accent: #45BBE6;
+    --accent-2: #C2E5DF;
+    --warm: #EBD5AF;
+    --alert: #dc2626;
+    --good: #76C7C3;
+    --border: rgba(255,255,255,0.12);
+    --card-bg: #00446F;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  .site-header {
+    background: #fff;
+    padding: 12px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid var(--accent);
+  }
+  .logo {
+    color: var(--bg);
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+  }
+  .logo span { color: var(--accent); font-weight: 500; }
+  .title {
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--bg);
+  }
+  .title strong { color: var(--accent); font-weight: 600; }
+  .header-right {
+    font-size: 0.85rem;
+    color: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+  .header-right a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.8rem;
+  }
+  .header-right a:hover { text-decoration: underline; }
+  .header-right .meta {
+    font-size: 0.72rem;
+    color: rgba(0,0,0,0.5);
+  }
+  
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 40px;
+  }
+  
+  .panel {
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+    border: 1px solid var(--border);
+  }
+  .panel-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .panel-title {
+    font-size: 1.3rem;
+    font-weight: 500;
+  }
+  .panel-title strong { color: var(--accent); font-weight: 600; }
+  .panel-meta {
+    color: var(--text-3);
+    font-size: 0.85rem;
+  }
+  
+  /* Drop zone */
+  .drop-zone {
+    border: 3px dashed var(--accent);
+    border-radius: 12px;
+    padding: 50px 20px;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: pointer;
+    background: rgba(0,0,0,0.15);
+  }
+  .drop-zone.dragover {
+    background: rgba(69,187,230,0.15);
+    border-color: var(--warm);
+    transform: scale(1.005);
+  }
+  .drop-zone .big { font-size: 1.3rem; color: var(--warm); margin-bottom: 4px; }
+  .drop-zone .small { font-size: 0.9rem; color: var(--text-3); }
+  
+  .filename-help {
+    font-size: 0.85rem;
+    color: var(--text-3);
+    margin-bottom: 16px;
+  }
+  .filename-help code {
+    background: rgba(0,0,0,0.3);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.85em;
+    margin: 0 2px;
+  }
+  
+  .file-list { margin-top: 16px; }
+  .file-item {
+    background: rgba(0,0,0,0.2);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .file-item.valid { border-left: 4px solid var(--good); }
+  .file-item.error { border-left: 4px solid var(--alert); }
+  .file-item .name {
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.9rem;
+  }
+  .file-item .meta {
+    font-size: 0.8rem;
+    color: var(--text-3);
+    margin-top: 2px;
+  }
+  .file-item .remove {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: var(--text);
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+  .file-item .remove:hover { background: rgba(220, 38, 38, 0.4); }
+  
+  .errors {
+    background: rgba(220, 38, 38, 0.15);
+    border-left: 4px solid var(--alert);
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin: 12px 0;
+  }
+  .errors ul { margin: 8px 0 0 20px; padding: 0; }
+  
+  .upload-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .upload-summary .stat {
+    background: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 6px;
+  }
+  .upload-summary .stat .label {
+    font-size: 0.75rem;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .upload-summary .stat .value {
+    font-size: 1.3rem;
+    color: var(--warm);
+    font-weight: 600;
+    margin-top: 2px;
+  }
+  .upload-summary .stat .value.small { font-size: 0.9rem; }
+  
+  .status-msg {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 8px 0;
+    font-size: 0.9rem;
+  }
+  .status-info { background: rgba(69,187,230,0.15); border-left: 4px solid var(--accent); }
+  .status-success { background: rgba(118,199,195,0.15); border-left: 4px solid var(--good); }
+  .status-warn { background: rgba(235,213,175,0.15); border-left: 4px solid var(--warm); }
+  .status-error { background: rgba(220,38,38,0.15); border-left: 4px solid var(--alert); }
+  
+  /* Upload form fields */
+  .upload-form {
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+  }
+  .upload-form h3 {
+    color: var(--accent-2);
+    margin-bottom: 12px;
+    font-size: 1rem;
+  }
+  .form-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .form-row input[type="text"],
+  .form-row input[type="password"] {
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 2px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.2);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 1rem;
+    flex: 1;
+    min-width: 200px;
+  }
+  .form-row input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .upload-btn {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 10px 24px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  .upload-btn:hover { background: var(--warm); }
+  .upload-btn:disabled {
+    background: rgba(255,255,255,0.2);
+    color: var(--text-3);
+    cursor: not-allowed;
+  }
+  
+  /* Recent uploads history */
+  .history-item {
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 8px 0;
+    border-left: 4px solid var(--accent);
+    transition: 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .history-item:hover {
+    background: rgba(0,0,0,0.3);
+    border-left-color: var(--warm);
+  }
+  .history-item.calibration { border-left-color: var(--good); }
+  .history-item.licor { border-left-color: #C2E5DF; }
+  .history-item .info {
+    flex: 1;
+    min-width: 0;
+  }
+  .history-item .filename {
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+  }
+  .history-item .filename-link {
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.12s;
+  }
+  .history-item .filename-link:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  .history-item .details {
+    font-size: 0.8rem;
+    color: var(--text-3);
+  }
+  .history-item .details span {
+    margin-right: 12px;
+  }
+  .history-item .uploader {
+    color: var(--warm);
+    font-weight: 600;
+  }
+  .history-item .download-btn {
+    background: transparent;
+    color: var(--text-2);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .history-item .download-btn:hover {
+    color: var(--text);
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.05);
+  }
+  
+  code {
+    background: rgba(0,0,0,0.3);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+  details {
+    margin-top: 8px;
+  }
+  details summary {
+    cursor: pointer;
+    color: var(--accent-2);
+    font-size: 0.85rem;
+  }
+  details pre {
+    background: rgba(0,0,0,0.3);
+    padding: 8px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 0.8rem;
+    max-height: 200px;
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo">HIMB <span>CORAL NURSERY</span></div>
+  <div class="title">PAR <strong>Visualizer</strong> · Upload</div>
+  <div class="header-right">
+    <a href="par.html">← back to dashboard</a>
+    <div class="meta">private upload tool</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">Upload <strong>data</strong></div>
+      <div class="panel-meta">Drop Odyssey CSVs or LI-COR TXT files</div>
+    </div>
+    
+    <div class="filename-help">
+      Valid filename patterns (case-insensitive, <code>.csv</code> or <code>.txt</code>):<br>
+      <code>MARINARA_YYMMDD_YYMMDD.csv</code>
+      <code>ALFREDO_YYMMDD_YYMMDD.csv</code> (regular data) ·
+      <code>MARINARA_YYMMDD_YYMMDD_CAL.csv</code>
+      <code>LICOR_YYMMDD_YYMMDD_CAL.txt</code> (calibration)
+    </div>
+    
+    <div class="drop-zone" id="dropZone">
+      <p class="big">Drop files here</p>
+      <p class="small">or click to browse</p>
+      <input type="file" id="fileInput" multiple accept=".csv,.txt" style="display:none;">
+    </div>
+    
+    <div class="file-list" id="fileList"></div>
+    
+    <div id="resultsArea"></div>
+    
+    <div id="uploadArea" style="display:none;" class="upload-form">
+      <h3>Upload to Firebase</h3>
+      <div id="uploadStatus"></div>
+      <div class="form-row">
+        <input type="text" id="uploaderName" placeholder="Your name (required)" maxlength="40">
+      </div>
+      <div class="form-row">
+        <input type="password" id="passwordInput" placeholder="Upload password">
+        <button id="uploadBtn" class="upload-btn">Check &amp; Upload</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">Recent <strong>uploads</strong></div>
+      <div class="panel-meta">Click ↓ CSV to download a clean data export</div>
+    </div>
+    <div id="upload-history">
+      <p style="color:var(--text-3);padding:20px;text-align:center;">Loading…</p>
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+  getDatabase, ref, get, update, query, orderByChild, startAt, endAt, limitToLast
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyChmuNkSPugArKlJ8VFMMwKi-dfaFCqBAw",
+  authDomain: "himbcoralnurserypar.firebaseapp.com",
+  databaseURL: "https://himbcoralnurserypar-default-rtdb.firebaseio.com",
+  projectId: "himbcoralnurserypar",
+  storageBucket: "himbcoralnurserypar.firebasestorage.app",
+  messagingSenderId: "39037465136",
+  appId: "1:39037465136:web:b730f264e7c5230ddcb3f5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const UPLOAD_PASSWORD = "Corals99!";
+
+// ============================================================
+// FILENAME VALIDATION
+// ============================================================
+const FILENAME_RE = /^(MARINARA|ALFREDO|LICOR)_(\d{6})_(\d{6})(_CAL)?\.(csv|txt)$/i;
+
+function validateFilename(name) {
+  const m = name.match(FILENAME_RE);
+  if (!m) {
+    return { 
+      valid: false, 
+      error: 'Filename does not match required pattern: LOGGER_YYMMDD_YYMMDD[_CAL].csv'
+    };
+  }
+  const [_, logger, startStr, endStr, calFlag, ext] = m;
+  const start = parseYYMMDD(startStr);
+  const end = parseYYMMDD(endStr);
+  if (!start) return { valid: false, error: `Invalid start date: ${startStr}` };
+  if (!end) return { valid: false, error: `Invalid end date: ${endStr}` };
+  if (start > end) return { valid: false, error: 'Start date is after end date' };
+  
+  const upperLogger = logger.toUpperCase();
+  const isCal = !!calFlag;
+  
+  if (upperLogger === 'LICOR' && !isCal) {
+    return { valid: false, error: 'LICOR files must have _CAL suffix' };
+  }
+  
+  return {
+    valid: true,
+    logger: upperLogger,
+    start, end,
+    isCalibration: isCal,
+    fileKind: upperLogger === 'LICOR' ? 'licor' : 'odyssey'
+  };
+}
+
+function parseYYMMDD(s) {
+  const yy = parseInt(s.slice(0,2), 10);
+  const mm = parseInt(s.slice(2,4), 10);
+  const dd = parseInt(s.slice(4,6), 10);
+  const yyyy = 2000 + yy;
+  if (mm < 1 || mm > 12) return null;
+  if (dd < 1 || dd > 31) return null;
+  const d = new Date(yyyy, mm-1, dd);
+  if (d.getFullYear() !== yyyy || d.getMonth() !== mm-1 || d.getDate() !== dd) return null;
+  return d;
+}
+
+function fmtDate(d) {
+  return d.toISOString().slice(0,10);
+}
+
+// ============================================================
+// ODYSSEY PARSER
+// ============================================================
+function parseOdyssey(text) {
+  const lines = text.split(/\r?\n/);
+  const meta = {};
+  const data = [];
+  const errors = [];
+  let i = 0;
+  
+  while (i < lines.length) {
+    const line = lines[i].trim();
+    if (!line) { i++; continue; }
+    
+    if (/^Scan\s*No/i.test(line)) {
+      i++;
+      while (i < lines.length && /^[\s,]*$/.test(lines[i].trim()) === false && !/^\d/.test(lines[i].trim())) {
+        if (/^\s*\d/.test(lines[i])) break;
+        i++;
+        if (i > 20) break;
+      }
+      break;
+    }
+    
+    const parts = line.split(/[\t,]+/).map(s => s.trim()).filter(s => s);
+    if (parts.length >= 2) {
+      meta[parts[0]] = parts.slice(1).join(' ');
+    }
+    i++;
+  }
+  
+  for (; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    
+    const parts = line.split(/[\t,]+|\s{2,}/).map(s => s.trim()).filter(s => s);
+    if (parts.length < 5) continue;
+    
+    const scanNo = parts[0];
+    const dateStr = parts[1];
+    const timeStr = parts[2];
+    const rawStr = parts[3];
+    const calStr = parts[4];
+    
+    if (!/^\d+$/.test(scanNo)) continue;
+    
+    const dateMatch = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (!dateMatch) {
+      errors.push(`Line ${i+1}: cannot parse date "${dateStr}"`);
+      continue;
+    }
+    const [, dd, mm, yyyy] = dateMatch;
+    
+    const timeMatch = timeStr.match(/^(\d{1,2}):(\d{2}):(\d{2})$/);
+    if (!timeMatch) {
+      errors.push(`Line ${i+1}: cannot parse time "${timeStr}"`);
+      continue;
+    }
+    const [, hh, mn, ss] = timeMatch;
+    
+    const iso = `${yyyy}-${mm.padStart(2,'0')}-${dd.padStart(2,'0')}T${hh.padStart(2,'0')}:${mn}:${ss}`;
+    
+    const raw = parseFloat(rawStr);
+    const cal = parseFloat(calStr);
+    if (isNaN(raw) || isNaN(cal)) {
+      errors.push(`Line ${i+1}: non-numeric raw/calibrated values`);
+      continue;
+    }
+    
+    data.push({ t: iso, raw, calibrated: cal });
+  }
+  
+  return { meta, data, errors };
+}
+
+// ============================================================
+// LI-COR PARSER
+// ============================================================
+function parseLicor(text) {
+  const lines = text.split(/\r?\n/);
+  const meta = {};
+  const data = [];
+  const errors = [];
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim()) continue;
+    
+    const parts = line.split('\t').map(s => s.trim());
+    
+    if (parts[0] === 'DATAH') continue;
+    
+    if (parts[0] === 'DATA') {
+      if (parts.length < 7) {
+        errors.push(`Line ${i+1}: DATA row has fewer than 7 fields`);
+        continue;
+      }
+      const dateStr = parts[2];
+      const timeStr = parts[3];
+      const air = parseFloat(parts[4]);
+      const uw1 = parseFloat(parts[5]);
+      const uw2 = parseFloat(parts[6]);
+      
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+        errors.push(`Line ${i+1}: bad date "${dateStr}"`);
+        continue;
+      }
+      if (!/^\d{2}:\d{2}:\d{2}$/.test(timeStr)) {
+        errors.push(`Line ${i+1}: bad time "${timeStr}"`);
+        continue;
+      }
+      if (isNaN(air) || isNaN(uw1) || isNaN(uw2)) {
+        errors.push(`Line ${i+1}: non-numeric values`);
+        continue;
+      }
+      
+      data.push({ t: `${dateStr}T${timeStr}`, air, uw1, uw2 });
+    } else if (parts[0] && parts[0].endsWith(':')) {
+      const key = parts[0].replace(/:$/, '').trim();
+      const val = parts.slice(1).filter(s => s).join(' ');
+      meta[key] = val;
+    }
+  }
+  
+  return { meta, data, errors };
+}
+
+// ============================================================
+// UI STATE
+// ============================================================
+const filesState = new Map();
+
+// Load remembered uploader name from localStorage
+const savedName = localStorage.getItem('par_uploader_name');
+if (savedName) {
+  document.getElementById('uploaderName').value = savedName;
+}
+
+// ============================================================
+// FILE HANDLING
+// ============================================================
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+const fileList = document.getElementById('fileList');
+const resultsArea = document.getElementById('resultsArea');
+
+dropZone.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+dropZone.addEventListener('dragover', e => {
+  e.preventDefault();
+  dropZone.classList.add('dragover');
+});
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+});
+
+async function handleFiles(files) {
+  for (const file of files) {
+    const validation = validateFilename(file.name);
+    let parsed = null;
+    
+    if (validation.valid) {
+      try {
+        const text = await file.text();
+        if (validation.fileKind === 'odyssey') {
+          parsed = parseOdyssey(text);
+        } else {
+          parsed = parseLicor(text);
+        }
+      } catch (e) {
+        parsed = { errors: [`Parse failed: ${e.message}`], data: [] };
+      }
+    }
+    
+    filesState.set(file.name, { validation, file, parsed });
+  }
+  render();
+}
+
+function removeFile(name) {
+  filesState.delete(name);
+  render();
+}
+
+function render() {
+  fileList.innerHTML = '';
+  for (const [name, state] of filesState) {
+    const div = document.createElement('div');
+    div.className = 'file-item ' + (state.validation.valid ? 'valid' : 'error');
+    
+    let metaText;
+    if (state.validation.valid) {
+      const v = state.validation;
+      metaText = `${v.logger} · ${fmtDate(v.start)} → ${fmtDate(v.end)} · ${v.isCalibration ? 'CALIBRATION' : 'regular data'}`;
+      if (state.parsed) metaText += ` · ${state.parsed.data.length} rows`;
+    } else {
+      metaText = state.validation.error;
+    }
+    
+    div.innerHTML = `
+      <div>
+        <div class="name">${name}</div>
+        <div class="meta">${metaText}</div>
+      </div>
+      <button class="remove">Remove</button>
+    `;
+    div.querySelector('.remove').addEventListener('click', () => removeFile(name));
+    fileList.appendChild(div);
+  }
+  
+  // Results
+  resultsArea.innerHTML = '';
+  const validFiles = Array.from(filesState.values()).filter(s => s.validation.valid && s.parsed);
+  
+  for (const state of validFiles) {
+    const v = state.validation;
+    const p = state.parsed;
+    
+    const panel = document.createElement('div');
+    panel.style.cssText = 'background:rgba(0,0,0,0.15);border-radius:8px;padding:14px;margin-top:12px;';
+    
+    let html = `<div style="font-family:Monaco,monospace;font-size:0.85rem;color:var(--accent-2);margin-bottom:8px;">${state.file.name}</div>`;
+    
+    if (p.errors && p.errors.length > 0) {
+      html += `<div class="errors"><strong>Parse warnings (${p.errors.length}):</strong><ul>`;
+      html += p.errors.slice(0, 5).map(e => `<li>${e}</li>`).join('');
+      if (p.errors.length > 5) html += `<li>...and ${p.errors.length - 5} more</li>`;
+      html += `</ul></div>`;
+    }
+    
+    if (p.data.length > 0) {
+      html += `<div class="upload-summary">`;
+      html += `<div class="stat"><div class="label">Rows</div><div class="value">${p.data.length.toLocaleString()}</div></div>`;
+      html += `<div class="stat"><div class="label">First reading</div><div class="value small">${p.data[0].t}</div></div>`;
+      html += `<div class="stat"><div class="label">Last reading</div><div class="value small">${p.data[p.data.length-1].t}</div></div>`;
+      
+      if (v.fileKind === 'odyssey') {
+        const uncalibrated = p.data.every(d => d.raw === d.calibrated);
+        if (uncalibrated) {
+          html += `<div class="stat" style="background:rgba(235,213,175,0.2);border-left:3px solid var(--warm);"><div class="label" style="color:var(--warm);">⚠ Status</div><div class="value small" style="color:var(--warm);">Uncalibrated</div></div>`;
+        }
+      }
+      html += `</div>`;
+    }
+    
+    panel.innerHTML = html;
+    resultsArea.appendChild(panel);
+  }
+  
+  const uploadArea = document.getElementById('uploadArea');
+  const hasUploadable = validFiles.some(s => s.parsed && s.parsed.data.length > 0);
+  uploadArea.style.display = hasUploadable ? 'block' : 'none';
+}
+
+// ============================================================
+// UPLOAD LOGIC
+// ============================================================
+const uploadBtn = document.getElementById('uploadBtn');
+const passwordInput = document.getElementById('passwordInput');
+const uploaderNameInput = document.getElementById('uploaderName');
+const uploadStatus = document.getElementById('uploadStatus');
+
+uploadBtn.addEventListener('click', handleUpload);
+passwordInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleUpload();
+});
+
+function setStatus(html, replace = false) {
+  if (replace) uploadStatus.innerHTML = html;
+  else uploadStatus.innerHTML += html;
+}
+
+function statusMsg(type, html) {
+  return `<div class="status-msg status-${type}">${html}</div>`;
+}
+
+async function handleUpload() {
+  const uploaderName = uploaderNameInput.value.trim();
+  
+  if (!uploaderName) {
+    setStatus(statusMsg('error', '❌ Please enter your name.'), true);
+    uploaderNameInput.focus();
+    return;
+  }
+  
+  if (passwordInput.value !== UPLOAD_PASSWORD) {
+    setStatus(statusMsg('error', '❌ Incorrect password.'), true);
+    return;
+  }
+  
+  // Save name for next time
+  localStorage.setItem('par_uploader_name', uploaderName);
+  
+  const validFiles = Array.from(filesState.values())
+    .filter(s => s.validation.valid && s.parsed && s.parsed.data.length > 0);
+  
+  if (validFiles.length === 0) {
+    setStatus(statusMsg('error', 'No valid files to upload.'), true);
+    return;
+  }
+  
+  uploadBtn.disabled = true;
+  passwordInput.disabled = true;
+  uploaderNameInput.disabled = true;
+  setStatus('', true);
+  
+  // Track uncalibrated uploads
+  const uncalibratedUploads = [];
+  
+  for (let i = 0; i < validFiles.length; i++) {
+    const state = validFiles[i];
+    setStatus(statusMsg('info', `Processing file ${i+1}/${validFiles.length}: <code>${state.file.name}</code>`));
+    
+    try {
+      const result = await uploadFile(state, uploaderName);
+      setStatus(statusMsg('success', formatUploadResult(state, result)));
+      if (result.type === 'odyssey' && result.uncalibrated) {
+        uncalibratedUploads.push({
+          filename: state.file.name,
+          sensor: result.sensor,
+          rows: result.added
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus(statusMsg('error', `❌ Failed on <code>${state.file.name}</code>: ${err.message}<br>Stopping. Fix and retry.`));
+      uploadBtn.disabled = false;
+      passwordInput.disabled = false;
+      uploaderNameInput.disabled = false;
+      return;
+    }
+  }
+  
+  setStatus(statusMsg('success', '✓ All files processed.'));
+  
+  // Sensor prompt after Odyssey upload
+  const odyUploaded = validFiles.find(s => s.validation.fileKind === 'odyssey');
+  if (odyUploaded) {
+    await promptActiveSensor(odyUploaded.validation.logger);
+  }
+  
+  // Show uncalibrated warning modal if applicable
+  if (uncalibratedUploads.length > 0) {
+    await showUncalibratedWarning(uncalibratedUploads);
+  }
+  
+  uploadBtn.disabled = false;
+  passwordInput.disabled = false;
+  uploaderNameInput.disabled = false;
+  
+  // Clear state and reload history
+  filesState.clear();
+  render();
+  await loadUploadHistory();
+}
+
+async function uploadFile(state, uploaderName) {
+  const { validation: v, file, parsed } = state;
+  if (v.fileKind === 'odyssey') {
+    return await uploadOdyssey(v, file, parsed, uploaderName);
+  } else {
+    return await uploadLicor(v, file, parsed, uploaderName);
+  }
+}
+
+async function uploadOdyssey(v, file, parsed, uploaderName) {
+  const sensor = v.logger;
+  const startMs = new Date(parsed.data[0].t).getTime();
+  const endMs = new Date(parsed.data[parsed.data.length - 1].t).getTime();
+  
+  const uncalibrated = parsed.data.every(d => d.raw === d.calibrated);
+  
+  const existingRef = query(
+    ref(db, `readings/${sensor}`),
+    orderByChild('t_ms'),
+    startAt(startMs),
+    endAt(endMs)
+  );
+  const snap = await get(existingRef);
+  const existing = new Set();
+  if (snap.exists()) {
+    snap.forEach(child => {
+      const val = child.val();
+      if (val && typeof val.t_ms === 'number') existing.add(val.t_ms);
+    });
+  }
+  
+  const updates = {};
+  const skipped = [];
+  let added = 0;
+  
+  for (const row of parsed.data) {
+    const ms = new Date(row.t).getTime();
+    if (existing.has(ms)) {
+      skipped.push(row.t);
+      continue;
+    }
+    updates[`readings/${sensor}/${ms}`] = {
+      t: row.t,
+      t_ms: ms,
+      raw: row.raw,
+      calibrated: row.calibrated,
+      src: file.name,
+      uncalibrated: row.raw === row.calibrated
+    };
+    added++;
+  }
+  
+  const uploadId = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9]/g, '_')}`;
+  updates[`uploads/${uploadId}`] = {
+    filename: file.name,
+    uploaded_at: Date.now(),
+    uploaded_by: uploaderName,
+    sensor: sensor,
+    type: v.isCalibration ? 'calibration_data' : 'data',
+    start_date: fmtDate(v.start),
+    end_date: fmtDate(v.end),
+    rows_in_file: parsed.data.length,
+    rows_added: added,
+    rows_skipped: skipped.length,
+    uncalibrated: uncalibrated
+  };
+  
+  await update(ref(db), updates);
+  
+  return { type: 'odyssey', added, skipped, totalInFile: parsed.data.length, sensor, uncalibrated };
+}
+
+async function uploadLicor(v, file, parsed, uploaderName) {
+  const startMs = new Date(parsed.data[0].t).getTime();
+  const endMs = new Date(parsed.data[parsed.data.length - 1].t).getTime();
+  
+  const existingRef = query(
+    ref(db, 'licor_checks'),
+    orderByChild('t_ms'),
+    startAt(startMs),
+    endAt(endMs)
+  );
+  const snap = await get(existingRef);
+  const existing = new Set();
+  if (snap.exists()) {
+    snap.forEach(child => {
+      const val = child.val();
+      if (val && typeof val.t_ms === 'number') existing.add(val.t_ms);
+    });
+  }
+  
+  const multipliers = {
+    m1: parseFloat(parsed.meta['MULT_1']) || null,
+    m2: parseFloat(parsed.meta['MULT_2']) || null,
+    m3: parseFloat(parsed.meta['MULT_3']) || null
+  };
+  
+  const updates = {};
+  const skipped = [];
+  let added = 0;
+  
+  for (const row of parsed.data) {
+    const ms = new Date(row.t).getTime();
+    if (existing.has(ms)) {
+      skipped.push(row.t);
+      continue;
+    }
+    updates[`licor_checks/${ms}`] = {
+      t: row.t,
+      t_ms: ms,
+      air: row.air,
+      uw1: row.uw1,
+      uw2: row.uw2,
+      multipliers,
+      src: file.name
+    };
+    added++;
+  }
+  
+  const uploadId = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9]/g, '_')}`;
+  updates[`uploads/${uploadId}`] = {
+    filename: file.name,
+    uploaded_at: Date.now(),
+    uploaded_by: uploaderName,
+    sensor: 'LICOR',
+    type: 'licor_check',
+    start_date: fmtDate(v.start),
+    end_date: fmtDate(v.end),
+    rows_in_file: parsed.data.length,
+    rows_added: added,
+    rows_skipped: skipped.length
+  };
+  
+  await update(ref(db), updates);
+  
+  return { type: 'licor', added, skipped, totalInFile: parsed.data.length };
+}
+
+function formatUploadResult(state, result) {
+  const name = state.file.name;
+  let html = `✓ <code>${name}</code>: uploaded <strong>${result.added}</strong> of ${result.totalInFile} rows`;
+  if (result.skipped.length > 0) {
+    html += ` <span style="color:#dc2626;font-weight:600;">(${result.skipped.length} duplicates skipped)</span>`;
+  }
+  if (result.uncalibrated) {
+    html += `<br><span style="color:var(--warm);">⚠ Data is uncalibrated — set calibration coefficients in logger software</span>`;
+  }
+  return html;
+}
+
+async function showUncalibratedWarning(uncalUploads) {
+  // Build summary list of uncalibrated uploads
+  const itemsHtml = uncalUploads.map(u => 
+    `<li style="margin:6px 0;"><code style="background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;font-family:Monaco,monospace;font-size:0.85rem;">${u.filename}</code> · ${u.sensor} · ${u.rows.toLocaleString()} rows</li>`
+  ).join('');
+  
+  const modalHtml = `
+    <div id="uncalModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;z-index:10001;padding:20px;">
+      <div style="background:#10616A;padding:28px 30px;border-radius:12px;max-width:580px;border:2px solid #EBD5AF;">
+        <h2 style="margin-top:0;color:#EBD5AF;font-weight:500;">⚠ Uncalibrated data detected</h2>
+        <p style="color:rgba(255,255,255,0.85);margin:14px 0;">
+          The Odyssey logger software wasn't configured with calibration coefficients, so raw and calibrated columns are identical. The dashboard will retroactively calibrate these readings using your LI-COR cross-checks, but accuracy improves dramatically with logger-applied calibration.
+        </p>
+        <div style="background:rgba(0,0,0,0.2);border-radius:6px;padding:12px 16px;margin:14px 0;">
+          <div style="font-size:0.8rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Uncalibrated files</div>
+          <ul style="list-style:none;padding:0;margin:0;color:rgba(255,255,255,0.85);font-size:0.9rem;">${itemsHtml}</ul>
+        </div>
+        <p style="color:rgba(255,255,255,0.85);margin:14px 0;font-weight:500;">
+          Before next deployment: open the Odyssey logger software, enter the calibration coefficient from the most recent LI-COR session, and verify the "Calibrated value" column differs from "Raw value" in test readings.
+        </p>
+        <div style="display:flex;justify-content:flex-end;margin-top:20px;">
+          <button id="uncalAck" style="padding:10px 24px;border:none;border-radius:6px;background:#EBD5AF;color:#10616A;font-weight:600;cursor:pointer;font-size:1rem;">Acknowledged</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+  
+  return new Promise(resolve => {
+    document.getElementById('uncalAck').addEventListener('click', () => {
+      document.getElementById('uncalModal').remove();
+      resolve();
+    });
+  });
+}
+
+async function promptActiveSensor(justUploadedSensor) {
+  const suggested = justUploadedSensor === 'MARINARA' ? 'ALFREDO' : 'MARINARA';
+  
+  const modalHtml = `
+    <div id="sensorModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:10000;">
+      <div style="background:#10616A;padding:30px;border-radius:12px;max-width:500px;border:2px solid #45BBE6;">
+        <h2 style="margin-top:0;color:#fff;">Which sensor is being deployed now?</h2>
+        <p style="color:rgba(255,255,255,0.8);margin:12px 0 20px;">You just uploaded data from <strong>${justUploadedSensor}</strong>. Which sensor is going back in the water?</p>
+        <div style="display:flex;gap:12px;">
+          <button class="sensor-choice" data-sensor="MARINARA" style="flex:1;padding:14px;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;${suggested==='MARINARA'?'background:#EBD5AF;color:#10616A;':'background:rgba(255,255,255,0.2);color:#fff;'}">MARINARA${suggested==='MARINARA'?' (suggested)':''}</button>
+          <button class="sensor-choice" data-sensor="ALFREDO" style="flex:1;padding:14px;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;${suggested==='ALFREDO'?'background:#EBD5AF;color:#10616A;':'background:rgba(255,255,255,0.2);color:#fff;'}">ALFREDO${suggested==='ALFREDO'?' (suggested)':''}</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+  
+  return new Promise(resolve => {
+    document.querySelectorAll('.sensor-choice').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const sensor = btn.dataset.sensor;
+        try {
+          await update(ref(db), { 'state/active_sensor': sensor, 'state/active_set_at': Date.now() });
+          setStatus(statusMsg('success', `✓ Active sensor set to <strong>${sensor}</strong>.`));
+        } catch (e) {
+          setStatus(statusMsg('error', `Failed to set active sensor: ${e.message}`));
+        }
+        document.getElementById('sensorModal').remove();
+        resolve();
+      });
+    });
+  });
+}
+
+// ============================================================
+// UPLOAD HISTORY
+// ============================================================
+async function loadUploadHistory() {
+  const container = document.getElementById('upload-history');
+  
+  try {
+    const snap = await get(ref(db, 'uploads'));
+    if (!snap.exists()) {
+      container.innerHTML = '<p style="color:var(--text-3);padding:20px;text-align:center;">No uploads yet.</p>';
+      return;
+    }
+    
+    const uploads = [];
+    snap.forEach(child => {
+      uploads.push({ id: child.key, ...child.val() });
+    });
+    uploads.sort((a, b) => (b.uploaded_at || 0) - (a.uploaded_at || 0));
+    
+    container.innerHTML = '';
+    for (const u of uploads) {
+      const div = document.createElement('div');
+      let typeClass = '';
+      if (u.type === 'calibration_data') typeClass = 'calibration';
+      if (u.type === 'licor_check') typeClass = 'licor';
+      div.className = 'history-item ' + typeClass;
+      
+      const date = u.uploaded_at ? new Date(u.uploaded_at).toLocaleString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      }) : '—';
+      
+      const typeLabel = u.type === 'calibration_data' ? 'CAL DATA' 
+                      : u.type === 'licor_check' ? 'LI-COR'
+                      : 'DATA';
+      
+      const uploaderHtml = u.uploaded_by 
+        ? `<span class="uploader">by ${u.uploaded_by}</span>` 
+        : '<span style="color:var(--text-3);">no uploader recorded</span>';
+      
+      div.innerHTML = `
+        <div class="info">
+          <a class="filename filename-link" data-upload-id="${u.id}" href="#" title="Open in new tab">${u.filename || u.id}</a>
+          <div class="details">
+            <span>${u.sensor || '—'}</span>
+            <span>${typeLabel}</span>
+            <span>${u.start_date || '?'} → ${u.end_date || '?'}</span>
+            <span>${(u.rows_added || 0).toLocaleString()} rows added${u.rows_skipped ? ` <span style="color:#dc2626;font-weight:600;">(${u.rows_skipped} skipped)</span>` : ''}</span>
+            ${uploaderHtml}
+            <span style="color:var(--text-3);">${date}</span>
+            ${u.uncalibrated ? '<span style="color:var(--warm);">⚠ uncalibrated</span>' : ''}
+          </div>
+        </div>
+        <button class="download-btn" data-upload-id="${u.id}">↓ CSV</button>
+      `;
+      div.querySelector('.download-btn').addEventListener('click', () => {
+        downloadUploadCSV(u);
+      });
+      div.querySelector('.filename-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        viewUploadInNewTab(u);
+      });
+      container.appendChild(div);
+    }
+  } catch (e) {
+    console.error(e);
+    container.innerHTML = `<p style="color:var(--alert);padding:20px;">Failed to load history: ${e.message}</p>`;
+  }
+}
+
+// Generate a clean CSV from stored data (not the original file)
+// Format: time, date, sensor, raw, calibrated
+async function downloadUploadCSV(upload) {
+  try {
+    const startMs = new Date(upload.start_date + 'T00:00:00').getTime();
+    const endMs = new Date(upload.end_date + 'T23:59:59').getTime();
+    
+    let rows = [];
+    let headerCols, fname;
+    
+    if (upload.type === 'licor_check') {
+      // LI-COR data: time, date, air (INPUT1), uw1 (INPUT2), uw2 (INPUT3)
+      const snap = await get(query(ref(db, 'licor_checks'), orderByChild('t_ms'), startAt(startMs), endAt(endMs)));
+      if (!snap.exists()) {
+        alert('No LI-COR data found for that date range');
+        return;
+      }
+      snap.forEach(child => {
+        const v = child.val();
+        if (v.src === upload.filename) {
+          rows.push(v);
+        }
+      });
+      rows.sort((a, b) => a.t_ms - b.t_ms);
+      headerCols = 'time,date,sensor,air_input1,uw1_input2,uw2_input3';
+      fname = `licor_${upload.start_date}_${upload.end_date}.csv`;
+      
+      const lines = [headerCols];
+      for (const r of rows) {
+        const dt = new Date(r.t_ms);
+        const date = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+        const time = `${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}:${String(dt.getSeconds()).padStart(2,'0')}`;
+        lines.push(`${time},${date},LICOR,${r.air},${r.uw1},${r.uw2}`);
+      }
+      triggerDownload(lines.join('\n'), fname);
+      
+    } else {
+      // Odyssey data
+      const sensor = upload.sensor;
+      const snap = await get(query(ref(db, `readings/${sensor}`), orderByChild('t_ms'), startAt(startMs), endAt(endMs)));
+      if (!snap.exists()) {
+        alert('No data found for that date range');
+        return;
+      }
+      snap.forEach(child => {
+        const v = child.val();
+        if (v.src === upload.filename) {
+          rows.push(v);
+        }
+      });
+      rows.sort((a, b) => a.t_ms - b.t_ms);
+      headerCols = 'time,date,sensor,raw,calibrated,uncalibrated';
+      fname = `${sensor}_${upload.start_date}_${upload.end_date}.csv`;
+      
+      const lines = [headerCols];
+      for (const r of rows) {
+        const dt = new Date(r.t_ms);
+        const date = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+        const time = `${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}:${String(dt.getSeconds()).padStart(2,'0')}`;
+        const uncal = (r.uncalibrated === true || r.raw === r.calibrated) ? 'yes' : 'no';
+        lines.push(`${time},${date},${sensor},${r.raw},${r.calibrated},${uncal}`);
+      }
+      triggerDownload(lines.join('\n'), fname);
+    }
+  } catch (e) {
+    console.error(e);
+    alert('Failed to download: ' + e.message);
+  }
+}
+
+function triggerDownload(csv, fname) {
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ============================================================
+// VIEW UPLOAD IN NEW TAB
+// ============================================================
+// Generates a styled HTML page with the upload's data as a table, opens in new tab.
+async function viewUploadInNewTab(upload) {
+  // Open the new tab immediately (synchronously) to avoid popup blockers,
+  // then write the loading state, fetch data, and replace content.
+  const win = window.open('', '_blank');
+  if (!win) {
+    alert('Pop-up blocked. Allow pop-ups for this site to view files.');
+    return;
+  }
+  
+  win.document.write(`<!DOCTYPE html>
+<html><head><title>Loading… ${upload.filename || upload.id}</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif; background: #10616A; color: #fff; padding: 40px; text-align: center; }
+  .spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid rgba(255,255,255,0.2); border-top-color: #45BBE6; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style></head>
+<body><div class="spinner"></div><p style="margin-top:16px;">Loading data…</p></body></html>`);
+  
+  try {
+    const startMs = new Date(upload.start_date + 'T00:00:00').getTime();
+    const endMs = new Date(upload.end_date + 'T23:59:59').getTime();
+    let rows = [];
+    let columns;
+    let displayRows;
+    
+    if (upload.type === 'licor_check') {
+      const snap = await get(query(ref(db, 'licor_checks'), orderByChild('t_ms'), startAt(startMs), endAt(endMs)));
+      if (snap.exists()) {
+        snap.forEach(child => {
+          const v = child.val();
+          if (v.src === upload.filename) rows.push(v);
+        });
+      }
+      rows.sort((a, b) => a.t_ms - b.t_ms);
+      columns = ['time', 'date', 'sensor', 'air (INPUT1)', 'uw1 (INPUT2)', 'uw2 (INPUT3)'];
+      displayRows = rows.map(r => {
+        const dt = new Date(r.t_ms);
+        const date = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+        const time = `${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}:${String(dt.getSeconds()).padStart(2,'0')}`;
+        return [time, date, 'LICOR', r.air, r.uw1, r.uw2];
+      });
+    } else {
+      const sensor = upload.sensor;
+      const snap = await get(query(ref(db, `readings/${sensor}`), orderByChild('t_ms'), startAt(startMs), endAt(endMs)));
+      if (snap.exists()) {
+        snap.forEach(child => {
+          const v = child.val();
+          if (v.src === upload.filename) rows.push(v);
+        });
+      }
+      rows.sort((a, b) => a.t_ms - b.t_ms);
+      columns = ['time', 'date', 'sensor', 'raw', 'calibrated', 'uncalibrated'];
+      displayRows = rows.map(r => {
+        const dt = new Date(r.t_ms);
+        const date = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+        const time = `${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}:${String(dt.getSeconds()).padStart(2,'0')}`;
+        const uncal = (r.uncalibrated === true || r.raw === r.calibrated) ? 'yes' : 'no';
+        return [time, date, sensor, r.raw, r.calibrated, uncal];
+      });
+    }
+    
+    // Build the new tab's HTML
+    const uploadedAt = upload.uploaded_at 
+      ? new Date(upload.uploaded_at).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+      : '—';
+    
+    const html = buildViewerHTML({
+      filename: upload.filename || upload.id,
+      sensor: upload.sensor || '—',
+      type: upload.type || 'data',
+      startDate: upload.start_date,
+      endDate: upload.end_date,
+      uploader: upload.uploaded_by || 'unknown',
+      uploadedAt,
+      rowCount: displayRows.length,
+      addedCount: upload.rows_added || 0,
+      skippedCount: upload.rows_skipped || 0,
+      uncalibrated: !!upload.uncalibrated,
+      columns,
+      rows: displayRows
+    });
+    
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+  } catch (e) {
+    console.error(e);
+    win.document.open();
+    win.document.write(`<!DOCTYPE html><html><head><title>Error</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#10616A;color:#fff;padding:40px;}</style>
+</head><body><h1>Failed to load data</h1><p>${e.message}</p></body></html>`);
+    win.document.close();
+  }
+}
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function buildViewerHTML(d) {
+  const typeLabel = d.type === 'calibration_data' ? 'CALIBRATION DATA'
+                  : d.type === 'licor_check' ? 'LI-COR CHECK'
+                  : 'DEPLOYMENT DATA';
+  
+  // Build table rows — chunked into batches of 500 for browser performance
+  const tableRows = d.rows.map(r => 
+    '<tr>' + r.map(c => `<td>${escapeHtml(c)}</td>`).join('') + '</tr>'
+  ).join('');
+  
+  const tableHeaders = d.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('');
+  
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>${escapeHtml(d.filename)} | PAR Visualizer</title>
+<style>
+  :root {
+    --bg: #10616A;
+    --bg-2: #0a4a52;
+    --accent: #45BBE6;
+    --warm: #EBD5AF;
+    --good: #76C7C3;
+    --alert: #dc2626;
+    --border: rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: #f3eedd;
+    color: #1a3a44;
+    line-height: 1.5;
+    padding: 20px 24px 40px;
+  }
+  .header {
+    background: #fff;
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+    border-left: 4px solid var(--accent);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  }
+  .header h1 {
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 1.15rem;
+    color: var(--bg);
+    font-weight: 600;
+    margin-bottom: 4px;
+    word-break: break-all;
+  }
+  .header .org {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: rgba(0,0,0,0.5);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .header .org strong { color: var(--accent); font-weight: 500; }
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+    font-size: 0.85rem;
+  }
+  .meta .item .lbl {
+    font-size: 0.65rem;
+    color: rgba(0,0,0,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 2px;
+  }
+  .meta .item .val {
+    color: var(--bg);
+    font-weight: 500;
+  }
+  .meta .item .val.alert { color: var(--alert); }
+  .meta .item .val.warm { color: #b87b1b; }
+  .badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: var(--bg);
+    color: #fff;
+    letter-spacing: 0.04em;
+  }
+  .badge.cal { background: var(--good); color: var(--bg); }
+  .badge.licor { background: #C2E5DF; color: var(--bg); }
+  .uncal-warn {
+    background: rgba(235, 213, 175, 0.4);
+    border-left: 3px solid var(--warm);
+    padding: 8px 14px;
+    margin-top: 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #6b5a23;
+  }
+  .uncal-warn strong { color: #b87b1b; }
+  .table-wrap {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    font-family: 'Monaco', 'Courier New', monospace;
+  }
+  thead {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    color: #fff;
+    z-index: 2;
+  }
+  thead th {
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 500;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid var(--accent);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  tbody td {
+    padding: 6px 14px;
+    border-bottom: 1px solid var(--border);
+    color: #1a3a44;
+  }
+  tbody tr:nth-child(even) { background: rgba(0,0,0,0.015); }
+  tbody tr:hover { background: rgba(69,187,230,0.06); }
+  .empty {
+    padding: 60px 20px;
+    text-align: center;
+    color: rgba(0,0,0,0.5);
+  }
+  .row-count-footer {
+    text-align: center;
+    padding: 14px;
+    color: rgba(0,0,0,0.5);
+    font-size: 0.8rem;
+  }
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    table { font-size: 0.78rem; }
+    thead th, tbody td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="org">HIMB <strong>Coral Nursery</strong> · PAR Visualizer</div>
+    <h1>${escapeHtml(d.filename)}</h1>
+    <div class="meta">
+      <div class="item"><div class="lbl">Sensor</div><div class="val">${escapeHtml(d.sensor)}</div></div>
+      <div class="item"><div class="lbl">Type</div><div class="val"><span class="badge ${d.type === 'calibration_data' ? 'cal' : d.type === 'licor_check' ? 'licor' : ''}">${typeLabel}</span></div></div>
+      <div class="item"><div class="lbl">Period</div><div class="val">${escapeHtml(d.startDate)} → ${escapeHtml(d.endDate)}</div></div>
+      <div class="item"><div class="lbl">Rows stored</div><div class="val">${d.rowCount.toLocaleString()}</div></div>
+      <div class="item"><div class="lbl">Uploaded by</div><div class="val">${escapeHtml(d.uploader)}</div></div>
+      <div class="item"><div class="lbl">Uploaded at</div><div class="val">${escapeHtml(d.uploadedAt)}</div></div>
+    </div>
+    ${d.uncalibrated ? `<div class="uncal-warn"><strong>⚠ Uncalibrated:</strong> raw and calibrated columns are identical. The dashboard applies post-hoc LI-COR calibration. Set calibration in logger software before next deployment.</div>` : ''}
+  </div>
+  <div class="table-wrap">
+    ${d.rows.length === 0 
+      ? '<div class="empty">No rows found for this upload.</div>'
+      : `<table>
+          <thead><tr>${tableHeaders}</tr></thead>
+          <tbody>${tableRows}</tbody>
+        </table>
+        <div class="row-count-footer">${d.rows.length.toLocaleString()} rows total</div>`}
+  </div>
+</body>
+</html>`;
+}
+
+// ============================================================
+// KICK OFF
+// ============================================================
+loadUploadHistory();
+</script>
+
+</body>
+</html>
