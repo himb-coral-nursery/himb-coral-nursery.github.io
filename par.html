@@ -1537,7 +1537,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { 
-  getDatabase, ref, get, query, orderByChild, startAt, endAt, limitToLast
+  getDatabase, ref, get, query, orderByChild, startAt, endAt, limitToLast, limitToFirst
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -1563,6 +1563,7 @@ const state = {
   activeSensor: null,
   raw: [],                    // sorted array of { t, par, raw, calSource, calSlope, calIntercept, calSessionDate }
   oldestLoaded: null,
+  earliestPossibleMs: null,  // true earliest timestamp across both sensors — fetched cheaply up front so the slider can scale to full history immediately, not just what's loaded in memory
   noEarlierData: false,   // true once a backward fetch confirms we've hit the true start of history
   loadingEarlier: false,  // guards against overlapping background fetches
   newestLoaded: null,
@@ -1958,12 +1959,36 @@ async function loadAllReadings(sinceMs, untilMs = null) {
   return [...marinara, ...alfredo].sort((a, b) => a.ms - b.ms);
 }
 
+async function loadEarliestPossibleMs() {
+  // Cheap: one row per sensor, not the actual dataset.
+  const [marSnap, alfSnap] = await Promise.all([
+    get(query(ref(db, 'readings/MARINARA'), orderByChild('t_ms'), limitToFirst(1))),
+    get(query(ref(db, 'readings/ALFREDO'), orderByChild('t_ms'), limitToFirst(1)))
+  ]);
+  let earliest = null;
+  for (const snap of [marSnap, alfSnap]) {
+    if (!snap.exists()) continue;
+    snap.forEach(child => {
+      const v = child.val();
+      if (v && typeof v.t_ms === 'number') {
+        if (earliest === null || v.t_ms < earliest) earliest = v.t_ms;
+      }
+    });
+  }
+  state.earliestPossibleMs = earliest;
+  updateRangeSlider();  // rescale the track once we know the true full range
+}
+
 async function loadInitialData() {
   state.activeSensor = await loadActiveSensor();
   updateActiveSensorUI();
   
   const thirtyDaysAgo = Date.now() - 30 * DAY_MS;
   const readings = await loadAllReadings(thirtyDaysAgo);
+  
+  // Fire-and-forget: doesn't block first paint, just rescales the slider
+  // track once it resolves (usually near-instant, it's a 1-row query).
+  loadEarliestPossibleMs().catch(e => console.error('Failed to load earliest timestamp:', e));
   
   state.raw = readings;
   if (readings.length > 0) {
@@ -2005,16 +2030,16 @@ async function loadInitialData() {
 }
 
 // ============================================================
-// LAZY-LOAD EARLIER DATA (edge-triggered, debounced)
+// LAZY-LOAD EARLIER DATA (drag-triggered, debounced)
 // ============================================================
-// Instead of a "load more" button, dragging the slider (or typing a date)
-// near/past the earliest data currently in memory quietly fetches more in
-// the background. limitToLast means each fetch jumps straight to the next
-// CHUNK_SIZE readings back regardless of gaps — no need to know or guess
-// how far back real data goes.
+// The slider track is scaled to the TRUE full history (state.earliestPossibleMs),
+// not just what's loaded — so a single drag can land anywhere, including well
+// past what's currently in memory. On any such move, wait for the drag to
+// pause (debounce), then catch data loading up to wherever the handle landed.
+// limitToLast-based chunking means each fetch jumps straight to the next
+// batch of readings back regardless of deployment gaps — no guessing needed.
 const EARLIER_CHUNK_SIZE = 3000;       // ~10 days of 5-min data per sensor per fetch
 const EARLIER_FETCH_DEBOUNCE_MS = 600;
-const EARLIER_EDGE_TRIGGER_MS = 3 * DAY_MS;  // start fetching when within 3 days of the loaded edge
 
 let earlierFetchTimer = null;
 
@@ -2023,87 +2048,61 @@ function setEarlierLoadingIndicator(visible) {
   if (el) el.style.display = visible ? 'flex' : 'none';
 }
 
-// Call after any zoom/pan change that might have moved close to the left edge.
+// Call after any zoom/pan change that might have moved past what's loaded.
 function maybeScheduleEarlierFetch() {
-  if (state.noEarlierData || state.loadingEarlier) return;
+  if (state.noEarlierData) return;
   if (!state.zoom || state.oldestLoaded == null) return;
   const zoomStartMs = state.zoom[0].getTime();
-  if (zoomStartMs - state.oldestLoaded > EARLIER_EDGE_TRIGGER_MS) return;  // not near the edge
+  if (zoomStartMs >= state.oldestLoaded) return;  // nothing missing
   
   if (earlierFetchTimer) clearTimeout(earlierFetchTimer);
   earlierFetchTimer = setTimeout(() => {
-    loadEarlierChunk();
-  }, EARLIER_FETCH_DEBOUNCE_MS);
-}
-
-// Fetch data older than what's currently loaded until either we get some,
-// or a fetch comes back empty for both sensors (meaning we've hit the true
-// beginning of the record — safe to stop trying).
-async function loadEarlierChunk() {
-  if (state.noEarlierData || state.loadingEarlier || state.oldestLoaded == null) return;
-  
-  state.loadingEarlier = true;
-  setEarlierLoadingIndicator(true);
-  
-  try {
-    const untilMs = state.oldestLoaded - 1;
-    const [marChunk, alfChunk] = await Promise.all([
-      loadReadingsChunkBefore('MARINARA', untilMs, EARLIER_CHUNK_SIZE),
-      loadReadingsChunkBefore('ALFREDO', untilMs, EARLIER_CHUNK_SIZE)
-    ]);
-    const more = [...marChunk, ...alfChunk].sort((a, b) => a.ms - b.ms);
-    
-    if (more.length === 0) {
-      state.noEarlierData = true;
-    } else {
-      state.raw = [...more, ...state.raw];
-      state.oldestLoaded = state.raw[0].ms;
-      applyAllCalibrations();
+    ensureDataLoadedBack(zoomStartMs).then(() => {
       updateRangeSlider();
       refreshChart();
       refreshAfterZoom();
       updateHeatmap();
-      // If the newly-loaded edge is still close to the zoom window's start,
-      // keep going (handles cases where a chunk lands entirely outside the
-      // visible range, e.g. deep in a different deployment gap).
-      maybeScheduleEarlierFetch();
+    });
+  }, EARLIER_FETCH_DEBOUNCE_MS);
+}
+
+// Fetches data older than what's currently loaded, chunk by chunk, until
+// either targetMs is covered or a fetch comes back empty for both sensors
+// (meaning we've hit the true beginning of the record — safe to stop).
+// Used both by drag-triggered lazy loading and by the date-range "Apply"
+// controls, so typing an old date "just works" without needing to drag first.
+async function ensureDataLoadedBack(targetMs) {
+  if (state.loadingEarlier) return;  // a fetch is already in flight; the next trigger will catch up
+  state.loadingEarlier = true;
+  setEarlierLoadingIndicator(true);
+  
+  let guard = 0;
+  try {
+    while (
+      !state.noEarlierData &&
+      state.oldestLoaded != null &&
+      targetMs < state.oldestLoaded &&
+      guard < 20  // ~20 chunks of 3000 = up to 60k rows per sensor; plenty of headroom
+    ) {
+      const untilMs = state.oldestLoaded - 1;
+      const [marChunk, alfChunk] = await Promise.all([
+        loadReadingsChunkBefore('MARINARA', untilMs, EARLIER_CHUNK_SIZE),
+        loadReadingsChunkBefore('ALFREDO', untilMs, EARLIER_CHUNK_SIZE)
+      ]);
+      const more = [...marChunk, ...alfChunk].sort((a, b) => a.ms - b.ms);
+      if (more.length === 0) {
+        state.noEarlierData = true;
+        break;
+      }
+      state.raw = [...more, ...state.raw];
+      state.oldestLoaded = state.raw[0].ms;
+      guard++;
     }
-  } catch (e) {
-    console.error('Failed to load earlier data:', e);
+    applyAllCalibrations();
   } finally {
     state.loadingEarlier = false;
     setEarlierLoadingIndicator(false);
   }
-}
-
-// Used by the date-range "Apply" controls: if the requested start predates
-// what's loaded, pull chunks synchronously (with a sane cap) before zooming,
-// so typing an old date "just works" without needing to drag first.
-async function ensureDataLoadedBack(targetMs) {
-  let guard = 0;
-  while (
-    !state.noEarlierData &&
-    state.oldestLoaded != null &&
-    targetMs < state.oldestLoaded &&
-    guard < 20  // ~20 chunks of 3000 = up to 60k rows per sensor; plenty of headroom
-  ) {
-    setEarlierLoadingIndicator(true);
-    const untilMs = state.oldestLoaded - 1;
-    const [marChunk, alfChunk] = await Promise.all([
-      loadReadingsChunkBefore('MARINARA', untilMs, EARLIER_CHUNK_SIZE),
-      loadReadingsChunkBefore('ALFREDO', untilMs, EARLIER_CHUNK_SIZE)
-    ]);
-    const more = [...marChunk, ...alfChunk].sort((a, b) => a.ms - b.ms);
-    if (more.length === 0) {
-      state.noEarlierData = true;
-      break;
-    }
-    state.raw = [...more, ...state.raw];
-    state.oldestLoaded = state.raw[0].ms;
-    guard++;
-  }
-  setEarlierLoadingIndicator(false);
-  applyAllCalibrations();
 }
 
 // ============================================================
@@ -3086,10 +3085,19 @@ function initializeRangeSlider() {
   
   function getSliderRect() { return slider.getBoundingClientRect(); }
   
+  // Full-history bounds for scaling the track — uses the true earliest
+  // timestamp once known, not just what's currently loaded in memory, so
+  // the left handle can be dragged all the way to real history without
+  // getting stuck at the edge of whatever's loaded so far.
+  function sliderBounds() {
+    const minMs = state.earliestPossibleMs ?? state.raw[0].t.getTime();
+    const maxMs = state.raw[state.raw.length - 1].t.getTime();
+    return { minMs, maxMs };
+  }
+  
   function update() {
     if (state.raw.length === 0) return;
-    const minMs = state.raw[0].t.getTime();
-    const maxMs = state.raw[state.raw.length-1].t.getTime();
+    const { minMs, maxMs } = sliderBounds();
     const range = maxMs - minMs;
     if (range <= 0) return;
     
@@ -3129,8 +3137,7 @@ function initializeRangeSlider() {
     const rect = getSliderRect();
     const x = (ev.touches ? ev.touches[0].clientX : ev.clientX) - rect.left;
     
-    const minMs = state.raw[0].t.getTime();
-    const maxMs = state.raw[state.raw.length-1].t.getTime();
+    const { minMs, maxMs } = sliderBounds();
     
     if (dragging === 'pan' && panStartZoom) {
       // Move whole window keeping size fixed
