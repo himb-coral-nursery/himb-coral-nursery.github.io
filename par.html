@@ -419,6 +419,24 @@
     margin-top: 14px;
     padding: 0 14px;
   }
+  .earlier-loading-indicator {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 0.78rem;
+    color: var(--text-3);
+    justify-content: flex-start;
+  }
+  .earlier-spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
   .range-slider {
     position: relative;
     height: 32px;
@@ -1248,6 +1266,10 @@
             <div class="handle" id="slider-handle-start"></div>
             <div class="handle" id="slider-handle-end"></div>
           </div>
+          <div id="earlier-loading-indicator" class="earlier-loading-indicator">
+            <span class="earlier-spinner"></span>
+            Loading earlier data…
+          </div>
         </div>
         
         <!-- Date pickers + Export below slider -->
@@ -1541,6 +1563,8 @@ const state = {
   activeSensor: null,
   raw: [],                    // sorted array of { t, par, raw, calSource, calSlope, calIntercept, calSessionDate }
   oldestLoaded: null,
+  noEarlierData: false,   // true once a backward fetch confirms we've hit the true start of history
+  loadingEarlier: false,  // guards against overlapping background fetches
   newestLoaded: null,
   intervalSec: 300,
   zoom: null,
@@ -1891,6 +1915,38 @@ async function loadUploadBoundaries() {
   }
 }
 
+// Pulls up to `limit` readings ending at/before untilMs, whatever their
+// actual spacing in time — this way a "load earlier" step doesn't have to
+// guess a time window, and naturally jumps across deployment gaps instead
+// of coming back empty just because the previous sensor was pulled for a
+// while before the next one went in.
+async function loadReadingsChunkBefore(sensor, untilMs, limit) {
+  const q = query(
+    ref(db, `readings/${sensor}`),
+    orderByChild('t_ms'),
+    endAt(untilMs),
+    limitToLast(limit)
+  );
+  const snap = await get(q);
+  if (!snap.exists()) return [];
+  const out = [];
+  snap.forEach(child => {
+    const v = child.val();
+    if (v && typeof v.t_ms === 'number' && typeof v.calibrated === 'number') {
+      out.push({
+        t: new Date(v.t_ms),
+        par: v.calibrated,
+        raw: v.raw,
+        ms: v.t_ms,
+        sensor,
+        uncalibrated: v.uncalibrated === true || v.raw === v.calibrated
+      });
+    }
+  });
+  out.sort((a, b) => a.ms - b.ms);
+  return out;
+}
+
 async function loadAllReadings(sinceMs, untilMs = null) {
   // Sensors are deployed one at a time (never simultaneously), but we still
   // want to see the full continuous history across both. active_sensor is
@@ -1906,8 +1962,8 @@ async function loadInitialData() {
   state.activeSensor = await loadActiveSensor();
   updateActiveSensorUI();
   
-  const ninetyDaysAgo = Date.now() - 90 * DAY_MS;
-  const readings = await loadAllReadings(ninetyDaysAgo);
+  const thirtyDaysAgo = Date.now() - 30 * DAY_MS;
+  const readings = await loadAllReadings(thirtyDaysAgo);
   
   state.raw = readings;
   if (readings.length > 0) {
@@ -1948,25 +2004,106 @@ async function loadInitialData() {
   refreshAll();
 }
 
-async function loadEarlierData() {
-  if (!state.oldestLoaded) return;
-  const earlierUntil = state.oldestLoaded - 1;
-  const earlierSince = earlierUntil - 90 * DAY_MS;
+// ============================================================
+// LAZY-LOAD EARLIER DATA (edge-triggered, debounced)
+// ============================================================
+// Instead of a "load more" button, dragging the slider (or typing a date)
+// near/past the earliest data currently in memory quietly fetches more in
+// the background. limitToLast means each fetch jumps straight to the next
+// CHUNK_SIZE readings back regardless of gaps — no need to know or guess
+// how far back real data goes.
+const EARLIER_CHUNK_SIZE = 3000;       // ~10 days of 5-min data per sensor per fetch
+const EARLIER_FETCH_DEBOUNCE_MS = 600;
+const EARLIER_EDGE_TRIGGER_MS = 3 * DAY_MS;  // start fetching when within 3 days of the loaded edge
+
+let earlierFetchTimer = null;
+
+function setEarlierLoadingIndicator(visible) {
+  const el = document.getElementById('earlier-loading-indicator');
+  if (el) el.style.display = visible ? 'flex' : 'none';
+}
+
+// Call after any zoom/pan change that might have moved close to the left edge.
+function maybeScheduleEarlierFetch() {
+  if (state.noEarlierData || state.loadingEarlier) return;
+  if (!state.zoom || state.oldestLoaded == null) return;
+  const zoomStartMs = state.zoom[0].getTime();
+  if (zoomStartMs - state.oldestLoaded > EARLIER_EDGE_TRIGGER_MS) return;  // not near the edge
   
-  const btn = document.getElementById('load-more');
-  btn.disabled = true;
-  btn.textContent = 'Loading…';
+  if (earlierFetchTimer) clearTimeout(earlierFetchTimer);
+  earlierFetchTimer = setTimeout(() => {
+    loadEarlierChunk();
+  }, EARLIER_FETCH_DEBOUNCE_MS);
+}
+
+// Fetch data older than what's currently loaded until either we get some,
+// or a fetch comes back empty for both sensors (meaning we've hit the true
+// beginning of the record — safe to stop trying).
+async function loadEarlierChunk() {
+  if (state.noEarlierData || state.loadingEarlier || state.oldestLoaded == null) return;
   
-  const more = await loadAllReadings(earlierSince, earlierUntil);
-  if (more.length > 0) {
-    state.raw = [...more, ...state.raw];
-    state.oldestLoaded = more[0].ms;
-    applyAllCalibrations();
-    refreshAll();
+  state.loadingEarlier = true;
+  setEarlierLoadingIndicator(true);
+  
+  try {
+    const untilMs = state.oldestLoaded - 1;
+    const [marChunk, alfChunk] = await Promise.all([
+      loadReadingsChunkBefore('MARINARA', untilMs, EARLIER_CHUNK_SIZE),
+      loadReadingsChunkBefore('ALFREDO', untilMs, EARLIER_CHUNK_SIZE)
+    ]);
+    const more = [...marChunk, ...alfChunk].sort((a, b) => a.ms - b.ms);
+    
+    if (more.length === 0) {
+      state.noEarlierData = true;
+    } else {
+      state.raw = [...more, ...state.raw];
+      state.oldestLoaded = state.raw[0].ms;
+      applyAllCalibrations();
+      updateRangeSlider();
+      refreshChart();
+      refreshAfterZoom();
+      updateHeatmap();
+      // If the newly-loaded edge is still close to the zoom window's start,
+      // keep going (handles cases where a chunk lands entirely outside the
+      // visible range, e.g. deep in a different deployment gap).
+      maybeScheduleEarlierFetch();
+    }
+  } catch (e) {
+    console.error('Failed to load earlier data:', e);
+  } finally {
+    state.loadingEarlier = false;
+    setEarlierLoadingIndicator(false);
   }
-  
-  btn.disabled = false;
-  btn.textContent = 'Load earlier data';
+}
+
+// Used by the date-range "Apply" controls: if the requested start predates
+// what's loaded, pull chunks synchronously (with a sane cap) before zooming,
+// so typing an old date "just works" without needing to drag first.
+async function ensureDataLoadedBack(targetMs) {
+  let guard = 0;
+  while (
+    !state.noEarlierData &&
+    state.oldestLoaded != null &&
+    targetMs < state.oldestLoaded &&
+    guard < 20  // ~20 chunks of 3000 = up to 60k rows per sensor; plenty of headroom
+  ) {
+    setEarlierLoadingIndicator(true);
+    const untilMs = state.oldestLoaded - 1;
+    const [marChunk, alfChunk] = await Promise.all([
+      loadReadingsChunkBefore('MARINARA', untilMs, EARLIER_CHUNK_SIZE),
+      loadReadingsChunkBefore('ALFREDO', untilMs, EARLIER_CHUNK_SIZE)
+    ]);
+    const more = [...marChunk, ...alfChunk].sort((a, b) => a.ms - b.ms);
+    if (more.length === 0) {
+      state.noEarlierData = true;
+      break;
+    }
+    state.raw = [...more, ...state.raw];
+    state.oldestLoaded = state.raw[0].ms;
+    guard++;
+  }
+  setEarlierLoadingIndicator(false);
+  applyAllCalibrations();
 }
 
 // ============================================================
@@ -2973,6 +3110,8 @@ function initializeRangeSlider() {
     selected.style.right = ((1-pEnd) * 100) + '%';
     
     // Slider date labels removed in v15
+    
+    maybeScheduleEarlierFetch();
   }
   
   function startDrag(which, ev) {
@@ -3039,6 +3178,7 @@ function initializeRangeSlider() {
     update();
     applyZoomToChart();
     debouncedRefresh();
+    maybeScheduleEarlierFetch();
   }
   
   function endDrag() { 
@@ -3189,7 +3329,7 @@ function setupEventListeners() {
     return true;
   }
   
-  document.getElementById('apply-range').addEventListener('click', () => {
+  document.getElementById('apply-range').addEventListener('click', async () => {
     const startStr = document.getElementById('start-input').value;
     const endStr = document.getElementById('end-input').value;
     if (!startStr || !endStr) return;
@@ -3198,6 +3338,11 @@ function setupEventListeners() {
     if (e <= s) {
       alert('End must be after start');
       return;
+    }
+    // Pull in earlier chunks first if the requested start predates what's loaded
+    if (state.oldestLoaded != null && s.getTime() < state.oldestLoaded) {
+      await ensureDataLoadedBack(s.getTime());
+      updateRangeSlider();
     }
     if (!validateRequestedRange(s, e)) return;
     state.zoom = [s, e];
@@ -3209,13 +3354,17 @@ function setupEventListeners() {
   document.getElementById('export-btn').addEventListener('click', exportVisibleCSV);
   
   // Heatmap tab controls
-  document.getElementById('hm-apply-range').addEventListener('click', () => {
+  document.getElementById('hm-apply-range').addEventListener('click', async () => {
     const startStr = document.getElementById('hm-start-input').value;
     const endStr = document.getElementById('hm-end-input').value;
     if (!startStr || !endStr) return;
     const s = new Date(startStr);
     const e = new Date(endStr);
     if (e <= s) { alert('End must be after start'); return; }
+    if (state.oldestLoaded != null && s.getTime() < state.oldestLoaded) {
+      await ensureDataLoadedBack(s.getTime());
+      updateRangeSlider();
+    }
     if (!validateRequestedRange(s, e)) return;
     state.hmZoom = [s, e];
     updateHeatmap();
