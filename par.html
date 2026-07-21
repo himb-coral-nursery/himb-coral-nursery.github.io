@@ -1891,12 +1891,23 @@ async function loadUploadBoundaries() {
   }
 }
 
+async function loadAllReadings(sinceMs, untilMs = null) {
+  // Sensors are deployed one at a time (never simultaneously), but we still
+  // want to see the full continuous history across both. active_sensor is
+  // purely a label for "what's in the water now" — it doesn't gate data.
+  const [marinara, alfredo] = await Promise.all([
+    loadReadings('MARINARA', sinceMs, untilMs),
+    loadReadings('ALFREDO', sinceMs, untilMs)
+  ]);
+  return [...marinara, ...alfredo].sort((a, b) => a.ms - b.ms);
+}
+
 async function loadInitialData() {
   state.activeSensor = await loadActiveSensor();
   updateActiveSensorUI();
   
   const ninetyDaysAgo = Date.now() - 90 * DAY_MS;
-  const readings = await loadReadings(state.activeSensor, ninetyDaysAgo);
+  const readings = await loadAllReadings(ninetyDaysAgo);
   
   state.raw = readings;
   if (readings.length > 0) {
@@ -1946,7 +1957,7 @@ async function loadEarlierData() {
   btn.disabled = true;
   btn.textContent = 'Loading…';
   
-  const more = await loadReadings(state.activeSensor, earlierSince, earlierUntil);
+  const more = await loadAllReadings(earlierSince, earlierUntil);
   if (more.length > 0) {
     state.raw = [...more, ...state.raw];
     state.oldestLoaded = more[0].ms;
