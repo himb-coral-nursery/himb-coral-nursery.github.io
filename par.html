@@ -346,6 +346,33 @@
     z-index: 5;
   }
   
+  .chart-loading-overlay {
+    position: absolute;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    pointer-events: none;
+    background: rgba(0, 68, 111, 0.05);
+    border-radius: 4px;
+    z-index: 4;
+    transition: left 0.1s linear, width 0.1s linear;
+  }
+  .chart-loading-overlay .mini-spinner {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+    border: 2px solid rgba(0, 68, 111, 0.15);
+    border-top-color: var(--bg);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  .chart-loading-overlay .label {
+    font-size: 0.75rem;
+    color: rgba(0, 68, 111, 0.55);
+    white-space: nowrap;
+  }
+  
   /* Date controls */
   .date-controls {
     display: flex;
@@ -1256,6 +1283,10 @@
         <div class="chart-container">
           <canvas id="main-chart"></canvas>
           <div class="chart-hint-overlay">drag to zoom · double-click to reset</div>
+          <div class="chart-loading-overlay" id="chart-loading-overlay">
+            <span class="mini-spinner"></span>
+            <span class="label">loading earlier data…</span>
+          </div>
         </div>
         
         <!-- Range slider directly below chart -->
@@ -1983,8 +2014,8 @@ async function loadInitialData() {
   state.activeSensor = await loadActiveSensor();
   updateActiveSensorUI();
   
-  const thirtyDaysAgo = Date.now() - 30 * DAY_MS;
-  const readings = await loadAllReadings(thirtyDaysAgo);
+  const sixMonthsAgo = Date.now() - 182 * DAY_MS;
+  const readings = await loadAllReadings(sixMonthsAgo);
   
   // Fire-and-forget: doesn't block first paint, just rescales the slider
   // track once it resolves (usually near-instant, it's a 1-row query).
@@ -2046,6 +2077,46 @@ let earlierFetchTimer = null;
 function setEarlierLoadingIndicator(visible) {
   const el = document.getElementById('earlier-loading-indicator');
   if (el) el.style.display = visible ? 'flex' : 'none';
+  updateChartLoadingOverlay();
+}
+
+// Positions a subtle spinner+label directly over the blank region of the
+// chart that's still loading — from the visible left edge of the zoom
+// window out to wherever real data currently begins (state.oldestLoaded).
+function updateChartLoadingOverlay() {
+  const overlay = document.getElementById('chart-loading-overlay');
+  if (!overlay) return;
+  
+  const chart = state.mainChart;
+  if (!state.loadingEarlier || !chart || state.oldestLoaded == null) {
+    overlay.style.display = 'none';
+    return;
+  }
+  
+  const { chartArea: ca, scales } = chart;
+  if (!ca || !scales.x) { overlay.style.display = 'none'; return; }
+  
+  const canvas = document.getElementById('main-chart');
+  const container = canvas.parentElement;  // .chart-container
+  const canvasRect = canvas.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+  const offsetLeft = canvasRect.left - containerRect.left;
+  const offsetTop = canvasRect.top - containerRect.top;
+  
+  const oldestPx = scales.x.getPixelForValue(state.oldestLoaded);
+  const leftPx = ca.left;
+  const rightPx = Math.min(ca.right, oldestPx);
+  
+  if (rightPx <= leftPx) {
+    overlay.style.display = 'none';
+    return;
+  }
+  
+  overlay.style.display = 'flex';
+  overlay.style.left = (offsetLeft + leftPx) + 'px';
+  overlay.style.top = (offsetTop + ca.top) + 'px';
+  overlay.style.width = (rightPx - leftPx) + 'px';
+  overlay.style.height = (ca.bottom - ca.top) + 'px';
 }
 
 // Call after any zoom/pan change that might have moved past what's loaded.
@@ -3420,6 +3491,7 @@ function setupEventListeners() {
   window.addEventListener('resize', () => {
     if (state.mainChart) state.mainChart.resize();
     updateHeatmap();
+    updateChartLoadingOverlay();
   });
   
   // Dataset meta — show last upload info
