@@ -1188,28 +1188,33 @@ async function uploadOdyssey(v, file, parsed, dateRange, uploaderName, isCalibra
     added++;
   }
   
-  const uploadId = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9]/g, '_')}`;
-  updates[`uploads/${uploadId}`] = {
-    filename: file.name,
-    uploaded_at: Date.now(),
-    uploaded_by: uploaderName,
-    sensor: sensor,
-    type: isCalibration ? 'calibration_data' : 'data',
-    start_date: fmtDate(dateRange.start),
-    end_date: fmtDate(dateRange.end),
-    rows_in_file: parsed.data.length,
-    rows_added: added,
-    rows_skipped: skipped.length,
-    uncalibrated: uncalibrated
-  };
+  // Only log a new uploads/ history entry and touch the calibration flag
+  // when this upload actually added data — a pure re-upload of already-seen
+  // rows (added === 0) just clutters the history list.
+  if (added > 0) {
+    const uploadId = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9]/g, '_')}`;
+    updates[`uploads/${uploadId}`] = {
+      filename: file.name,
+      uploaded_at: Date.now(),
+      uploaded_by: uploaderName,
+      sensor: sensor,
+      type: isCalibration ? 'calibration_data' : 'data',
+      start_date: fmtDate(dateRange.start),
+      end_date: fmtDate(dateRange.end),
+      rows_in_file: parsed.data.length,
+      rows_added: added,
+      rows_skipped: skipped.length,
+      uncalibrated: uncalibrated
+    };
 
-  // Persistent per-sensor flag: cleared only once the logger itself ships
-  // calibrated data (i.e. a non-calibration upload where raw != calibrated).
-  if (!isCalibration) {
-    if (uncalibrated) {
-      updates['state/needs_calibration/' + sensor] = { since: Date.now(), last_upload: file.name };
-    } else {
-      updates['state/needs_calibration/' + sensor] = null;
+    // Persistent per-sensor flag: cleared only once the logger itself ships
+    // calibrated data (i.e. a non-calibration upload where raw != calibrated).
+    if (!isCalibration) {
+      if (uncalibrated) {
+        updates['state/needs_calibration/' + sensor] = { since: Date.now(), last_upload: file.name };
+      } else {
+        updates['state/needs_calibration/' + sensor] = null;
+      }
     }
   }
 
@@ -1265,20 +1270,22 @@ async function uploadLicor(v, file, parsed, dateRange, uploaderName) {
     added++;
   }
   
-  const uploadId = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9]/g, '_')}`;
-  updates[`uploads/${uploadId}`] = {
-    filename: file.name,
-    uploaded_at: Date.now(),
-    uploaded_by: uploaderName,
-    sensor: 'LICOR',
-    type: 'licor_check',
-    start_date: fmtDate(dateRange.start),
-    end_date: fmtDate(dateRange.end),
-    rows_in_file: parsed.data.length,
-    rows_added: added,
-    rows_skipped: skipped.length
-  };
-  
+  if (added > 0) {
+    const uploadId = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9]/g, '_')}`;
+    updates[`uploads/${uploadId}`] = {
+      filename: file.name,
+      uploaded_at: Date.now(),
+      uploaded_by: uploaderName,
+      sensor: 'LICOR',
+      type: 'licor_check',
+      start_date: fmtDate(dateRange.start),
+      end_date: fmtDate(dateRange.end),
+      rows_in_file: parsed.data.length,
+      rows_added: added,
+      rows_skipped: skipped.length
+    };
+  }
+
   await update(ref(db), updates);
   
   return { type: 'licor', added, skipped, totalInFile: parsed.data.length };
