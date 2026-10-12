@@ -2024,7 +2024,8 @@ async function loadInitialData() {
   // Build derived calibrations from CAL sessions, then apply to data
   await buildDerivedCalibrations();
   applyAllCalibrations();
-  
+  computeAnomalyExclusions();
+
   // Load upload boundaries for chart vertical lines
   await loadUploadBoundaries();
   
@@ -2164,6 +2165,7 @@ async function ensureDataLoadedBack(targetMs) {
       guard++;
     }
     applyAllCalibrations();
+    computeAnomalyExclusions();
   } finally {
     state.loadingEarlier = false;
     setEarlierLoadingIndicator(false);
@@ -2174,10 +2176,11 @@ async function ensureDataLoadedBack(targetMs) {
 // HELPERS
 // ============================================================
 function getFilteredRawData() {
-  if (!state.excludeIncomplete || state.raw.length < 2) return state.raw;
-  const firstKey = state.raw[0].t.toDateString();
-  const lastKey = state.raw[state.raw.length - 1].t.toDateString();
-  return state.raw.filter(d => {
+  let data = getAnomalyFilteredRaw();
+  if (!state.excludeIncomplete || data.length < 2) return data;
+  const firstKey = data[0].t.toDateString();
+  const lastKey = data[data.length - 1].t.toDateString();
+  return data.filter(d => {
     const k = d.t.toDateString();
     return k !== firstKey && k !== lastKey;
   });
@@ -2740,6 +2743,66 @@ function filterIncomplete(days) {
 }
 
 // ============================================================
+// ANOMALY EXCLUSION — sensor knocked over, buried, deeply shaded, etc.
+// A day with DLI below the threshold is flagged; it only gets excluded
+// (gap in the chart, left out of all stats) once it's part of a run of
+// 2+ consecutive flagged days for that sensor, since a single dark day
+// is plausibly just weather. Nothing is deleted from Firebase — this
+// only filters what the dashboard plots/averages.
+// ============================================================
+const LOW_DLI_THRESHOLD = 3;       // mol·m⁻²·d⁻¹
+const MIN_CONSECUTIVE_FOR_ERROR = 2;
+
+function computeAnomalyExclusions() {
+  state.excludedAnomalyDayKeys = new Set();
+  state.anomalyFlaggedDays = []; // for future UI annotation: {sensor, dateKey, date, dli}
+
+  for (const sensor of ['MARINARA', 'ALFREDO']) {
+    const sensorData = state.raw.filter(d => d.sensor === sensor);
+    if (sensorData.length === 0) continue;
+
+    // Exclude that sensor's own first/last (likely partial) day before
+    // judging DLI, same logic as the "exclude incomplete days" toggle.
+    const days = sensorData.length >= 2
+      ? (() => {
+          const firstKey = sensorData[0].t.toDateString();
+          const lastKey = sensorData[sensorData.length - 1].t.toDateString();
+          return analyzeDays(sensorData).filter(d => d.date.toDateString() !== firstKey && d.date.toDateString() !== lastKey);
+        })()
+      : analyzeDays(sensorData);
+
+    let i = 0;
+    while (i < days.length) {
+      if (days[i].dli >= LOW_DLI_THRESHOLD) { i++; continue; }
+      let j = i;
+      // extend the run while consecutive calendar days are also flagged
+      while (j + 1 < days.length && days[j + 1].dli < LOW_DLI_THRESHOLD &&
+             (days[j + 1].date - days[j].date) <= 1.5 * 24 * 3600 * 1000) {
+        j++;
+      }
+      if (j - i + 1 >= MIN_CONSECUTIVE_FOR_ERROR) {
+        for (let k = i; k <= j; k++) {
+          state.excludedAnomalyDayKeys.add(`${sensor}|${days[k].key}`);
+          state.anomalyFlaggedDays.push({ sensor, dateKey: days[k].key, date: days[k].date, dli: days[k].dli });
+        }
+      }
+      i = j + 1;
+    }
+  }
+}
+
+function isAnomalyExcluded(reading) {
+  if (!state.excludedAnomalyDayKeys || state.excludedAnomalyDayKeys.size === 0) return false;
+  const key = `${reading.t.getFullYear()}-${String(reading.t.getMonth() + 1).padStart(2, '0')}-${String(reading.t.getDate()).padStart(2, '0')}`;
+  return state.excludedAnomalyDayKeys.has(`${reading.sensor}|${key}`);
+}
+
+function getAnomalyFilteredRaw() {
+  if (!state.excludedAnomalyDayKeys || state.excludedAnomalyDayKeys.size === 0) return state.raw;
+  return state.raw.filter(d => !isAnomalyExcluded(d));
+}
+
+// ============================================================
 // STATS UPDATE
 // ============================================================
 function updateStats() {
@@ -2962,9 +3025,9 @@ function updateHeatmap() {
     const [t0Raw, t1Raw] = state.hmZoom;
     const t0 = new Date(t0Raw.getFullYear(), t0Raw.getMonth(), t0Raw.getDate(), 0, 0, 0, 0);
     const t1 = new Date(t1Raw.getFullYear(), t1Raw.getMonth(), t1Raw.getDate(), 23, 59, 59, 999);
-    visible = state.raw.filter(d => d.t >= t0 && d.t <= t1);
+    visible = getAnomalyFilteredRaw().filter(d => d.t >= t0 && d.t <= t1);
   } else {
-    visible = state.raw;
+    visible = getAnomalyFilteredRaw();
   }
   const days = filterIncomplete(analyzeDays(visible));
   const canvas = document.getElementById('heatmap-canvas');
