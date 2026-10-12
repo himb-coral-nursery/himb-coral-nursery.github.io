@@ -1460,7 +1460,7 @@ async function loadUploadHistory() {
             <span style="color:var(--text-3);">${date}</span>
             ${u.uncalibrated ? '<span style="color:var(--warm);">⚠ uncalibrated</span>' : ''}
           </div>
-          ${u.type === 'calibration_data' && calBySrcSensor.has(`${u.filename}|${u.sensor}`) ? buildCalPointsDropdown(calBySrcSensor.get(`${u.filename}|${u.sensor}`)) : ''}
+          ${calBySrcSensor.has(`${u.filename}|${u.sensor}`) ? buildCalPointsDropdown(calBySrcSensor.get(`${u.filename}|${u.sensor}`)) : ''}
         </div>
         <button class="download-btn" data-upload-id="${u.id}">↓ CSV</button>
       `;
@@ -1630,7 +1630,7 @@ async function viewUploadInNewTab(upload) {
     // record (the 6 points that were derived from this exact upload) so
     // it can be shown without digging through Firebase by hand.
     let calSession = null;
-    if (upload.type === 'calibration_data') {
+    {
       try {
         const calSnap = await get(ref(db, 'calibration_sessions'));
         if (calSnap.exists()) {
