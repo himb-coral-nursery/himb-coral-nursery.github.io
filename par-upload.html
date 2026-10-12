@@ -316,6 +316,30 @@
     color: var(--warm);
     font-weight: 600;
   }
+  .cal-points-dropdown {
+    margin-top: 8px;
+  }
+  .cal-points-dropdown summary {
+    cursor: pointer;
+    color: var(--good);
+    font-size: 0.8rem;
+  }
+  .cal-points-dropdown table {
+    margin-top: 6px;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    font-family: 'Monaco', 'Courier New', monospace;
+  }
+  .cal-points-dropdown th, .cal-points-dropdown td {
+    padding: 2px 14px 2px 0;
+    text-align: left;
+    color: var(--text-2);
+  }
+  .cal-points-dropdown th {
+    color: var(--text-3);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+  }
   .history-item .download-btn {
     background: transparent;
     color: var(--text-2);
@@ -1285,6 +1309,20 @@ async function promptActiveSensor(justUploadedSensor) {
 // ============================================================
 // UPLOAD HISTORY
 // ============================================================
+// Small inline <details> dropdown for a calibration upload's 6 points —
+// for reading off into the ODY software later, without re-opening the
+// full viewer tab. Uploading and keying the calibration in are two
+// separate steps, so this needs to be easy to come back to.
+function buildCalPointsDropdown(calSession) {
+  const rows = calSession.selected_points
+    .map(p => `<tr><td>${p.raw}</td><td>${p.true_par.toFixed(1)}</td></tr>`)
+    .join('');
+  return `<details class="cal-points-dropdown">
+    <summary>6 calibration points (vs ${escapeHtml(calSession.licor_src)})</summary>
+    <table><thead><tr><th>Raw</th><th>True PAR</th></tr></thead><tbody>${rows}</tbody></table>
+  </details>`;
+}
+
 async function loadUploadHistory() {
   const container = document.getElementById('upload-history');
   
@@ -1300,7 +1338,22 @@ async function loadUploadHistory() {
       uploads.push({ id: child.key, ...child.val() });
     });
     uploads.sort((a, b) => (b.uploaded_at || 0) - (a.uploaded_at || 0));
-    
+
+    // Pull calibration_sessions once and index by src+sensor, so each
+    // calibration-type history row can show its 6 points without a
+    // separate fetch per row.
+    const calBySrcSensor = new Map();
+    const calSnap = await get(ref(db, 'calibration_sessions'));
+    if (calSnap.exists()) {
+      const all = [];
+      calSnap.forEach(child => all.push(child.val()));
+      all.sort((a, b) => (b.logged_at || 0) - (a.logged_at || 0));
+      for (const v of all) {
+        const key = `${v.ody_src}|${v.sensor}`;
+        if (!calBySrcSensor.has(key)) calBySrcSensor.set(key, v); // most recent wins
+      }
+    }
+
     container.innerHTML = '';
     for (const u of uploads) {
       const div = document.createElement('div');
@@ -1334,6 +1387,7 @@ async function loadUploadHistory() {
             <span style="color:var(--text-3);">${date}</span>
             ${u.uncalibrated ? '<span style="color:var(--warm);">⚠ uncalibrated</span>' : ''}
           </div>
+          ${u.type === 'calibration_data' && calBySrcSensor.has(`${u.filename}|${u.sensor}`) ? buildCalPointsDropdown(calBySrcSensor.get(`${u.filename}|${u.sensor}`)) : ''}
         </div>
         <button class="download-btn" data-upload-id="${u.id}">↓ CSV</button>
       `;
