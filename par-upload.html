@@ -371,6 +371,8 @@
 
 <div class="container">
 
+  <div id="calibration-banner"></div>
+
   <div class="panel">
     <div class="panel-header">
       <div class="panel-title">Upload <strong>data</strong></div>
@@ -378,11 +380,8 @@
     </div>
     
     <div class="filename-help">
-      Valid filename patterns (case-insensitive, <code>.csv</code> or <code>.txt</code>):<br>
-      <code>MARINARA_YYMMDD_YYMMDD.csv</code>
-      <code>ALFREDO_YYMMDD_YYMMDD.csv</code> (regular data) ·
-      <code>MARINARA_YYMMDD_YYMMDD_CAL.csv</code>
-      <code>LICOR_YYMMDD_YYMMDD_CAL.txt</code> (calibration)
+      Filename just needs to start with <code>MARINARA</code>, <code>ALFREDO</code>, or <code>LICOR</code> (case-insensitive, <code>.csv</code> or <code>.txt</code>) — name the rest however you like, e.g. <code>ALFREDO_oct9.csv</code>. Dates come from the data inside the file, not the filename.<br>
+      Drop an ODY file and a LICOR file together (same deployment window) to get the calibration-point picker.
     </div>
     
     <div class="drop-zone" id="dropZone">
@@ -444,49 +443,38 @@ const UPLOAD_PASSWORD = "Corals99!";
 // ============================================================
 // FILENAME VALIDATION
 // ============================================================
-const FILENAME_RE = /^(MARINARA|ALFREDO|LICOR)_(\d{6})_(\d{6})(_CAL)?\.(csv|txt)$/i;
+// Only the logger name matters now — name the file whatever/whenever you want
+// (upload day, pull day, "final", etc). Actual date range comes from the
+// data inside the file, not the filename, since you often don't know the
+// exact deployment start/end when you're renaming a file.
+const FILENAME_RE = /^(MARINARA|ALFREDO|LICOR)(?:[_-].*)?\.(csv|txt)$/i;
 
 function validateFilename(name) {
   const m = name.match(FILENAME_RE);
   if (!m) {
-    return { 
-      valid: false, 
-      error: 'Filename does not match required pattern: LOGGER_YYMMDD_YYMMDD[_CAL].csv'
+    return {
+      valid: false,
+      error: 'Filename must start with MARINARA, ALFREDO, or LICOR (e.g. "ALFREDO_oct9.csv") — rest of the name can be anything'
     };
   }
-  const [_, logger, startStr, endStr, calFlag, ext] = m;
-  const start = parseYYMMDD(startStr);
-  const end = parseYYMMDD(endStr);
-  if (!start) return { valid: false, error: `Invalid start date: ${startStr}` };
-  if (!end) return { valid: false, error: `Invalid end date: ${endStr}` };
-  if (start > end) return { valid: false, error: 'Start date is after end date' };
-  
+  const [_, logger, ext] = m;
   const upperLogger = logger.toUpperCase();
-  const isCal = !!calFlag;
-  
-  if (upperLogger === 'LICOR' && !isCal) {
-    return { valid: false, error: 'LICOR files must have _CAL suffix' };
-  }
-  
+
   return {
     valid: true,
     logger: upperLogger,
-    start, end,
-    isCalibration: isCal,
     fileKind: upperLogger === 'LICOR' ? 'licor' : 'odyssey'
   };
 }
 
-function parseYYMMDD(s) {
-  const yy = parseInt(s.slice(0,2), 10);
-  const mm = parseInt(s.slice(2,4), 10);
-  const dd = parseInt(s.slice(4,6), 10);
-  const yyyy = 2000 + yy;
-  if (mm < 1 || mm > 12) return null;
-  if (dd < 1 || dd > 31) return null;
-  const d = new Date(yyyy, mm-1, dd);
-  if (d.getFullYear() !== yyyy || d.getMonth() !== mm-1 || d.getDate() !== dd) return null;
-  return d;
+// Pulls the actual start/end dates from the parsed data rows — this is the
+// source of truth, not the filename (a mislabeled filename used to make the
+// dashboard think a file covered different dates than it actually did).
+function contentDateRange(parsedData) {
+  if (!parsedData || parsedData.length === 0) return null;
+  const start = new Date(parsedData[0].t);
+  const end = new Date(parsedData[parsedData.length - 1].t);
+  return { start, end };
 }
 
 function fmtDate(d) {
@@ -621,6 +609,98 @@ function parseLicor(text) {
 }
 
 // ============================================================
+// CALIBRATION SESSION HELPERS
+// (pairs an Odyssey file against a LI-COR file uploaded in the
+// same batch, filters to usable daylight points, and lets the
+// intern hand-pick calibration points for the ODY software)
+// ============================================================
+const LENSING_DISAGREE_THRESHOLD = 0.25; // exclude pairs where the 2 underwater LI-COR channels disagree by more than this
+const DAYLIGHT_AIR_THRESHOLD = 50;       // µmol/m²/s on the LI-COR air channel — below this we're in night/dawn/dusk, not usable
+const PAIR_TOLERANCE_SEC = 90;           // how close an Odyssey reading and a LI-COR reading have to be in time to call them "the same moment"
+
+// Pair every Odyssey row with its nearest-in-time LI-COR row (within tolerance),
+// average the 2 underwater LI-COR channels, and flag lensing disagreement.
+function pairOdysseyWithLicor(odysseyData, licorData) {
+  const licorByMs = licorData.map(r => ({ ms: new Date(r.t).getTime(), air: r.air, uw1: r.uw1, uw2: r.uw2 }));
+  const out = [];
+  for (const row of odysseyData) {
+    const ms = new Date(row.t).getTime();
+    let best = null, bestDiff = Infinity;
+    for (const lr of licorByMs) {
+      const diff = Math.abs(lr.ms - ms);
+      if (diff <= PAIR_TOLERANCE_SEC * 1000 && diff < bestDiff) { best = lr; bestDiff = diff; }
+    }
+    if (!best) continue;
+    const { air, uw1, uw2 } = best;
+    let lensingExcluded = false;
+    let uwAvg = null;
+    if (uw1 === 0 && uw2 === 0) {
+      uwAvg = 0;
+    } else {
+      const hi = Math.max(uw1, uw2), lo = Math.min(uw1, uw2);
+      if (lo === 0 || (hi - lo) / hi > LENSING_DISAGREE_THRESHOLD) {
+        lensingExcluded = true;
+      } else {
+        uwAvg = (uw1 + uw2) / 2;
+      }
+    }
+    out.push({ ms, t: row.t, raw: row.raw, air, uw1, uw2, uwAvg, lensingExcluded });
+  }
+  return out;
+}
+
+// Candidates an intern can actually pick from: daylight only, no lensing disagreement
+function daylightCandidates(pairs) {
+  return pairs
+    .filter(p => !p.lensingExcluded && p.air >= DAYLIGHT_AIR_THRESHOLD)
+    .sort((a, b) => a.uwAvg - b.uwAvg);
+}
+
+function linreg(xs, ys) {
+  const n = xs.length;
+  const mx = xs.reduce((a, b) => a + b, 0) / n;
+  const my = ys.reduce((a, b) => a + b, 0) / n;
+  let sxy = 0, sxx = 0, syy = 0;
+  for (let i = 0; i < n; i++) {
+    sxy += (xs[i] - mx) * (ys[i] - my);
+    sxx += (xs[i] - mx) ** 2;
+    syy += (ys[i] - my) ** 2;
+  }
+  const slope = sxy / sxx;
+  const intercept = my - slope * mx;
+  let ssRes = 0;
+  for (let i = 0; i < n; i++) {
+    const yhat = slope * xs[i] + intercept;
+    ssRes += (ys[i] - yhat) ** 2;
+  }
+  const r2 = syy > 0 ? 1 - ssRes / syy : 1;
+  const rmse = Math.sqrt(ssRes / n);
+  return { slope, intercept, r2, rmse, n };
+}
+
+// Finds Odyssey+LI-COR file pairs within one upload batch whose date ranges overlap
+function detectCalibrationSessions(validFiles) {
+  const odysseyStates = validFiles.filter(s => s.validation.fileKind === 'odyssey' && s.parsed.data.length > 0);
+  const licorStates = validFiles.filter(s => s.validation.fileKind === 'licor' && s.parsed.data.length > 0);
+  const overlaps = (a, b) => a.dateRange && b.dateRange && a.dateRange.start <= b.dateRange.end && b.dateRange.start <= a.dateRange.end;
+  const sessions = [];
+  for (const licorState of licorStates) {
+    const pairedOdyssey = odysseyStates.filter(s => overlaps(s, licorState));
+    if (pairedOdyssey.length > 0) sessions.push({ licorState, odysseyStates: pairedOdyssey });
+  }
+  return sessions;
+}
+
+// Tracks which candidate points the intern has checked, per sensor, across re-renders
+const selectedCalPoints = new Map(); // sensor -> Set of ms
+
+function toggleCalPoint(sensor, ms) {
+  if (!selectedCalPoints.has(sensor)) selectedCalPoints.set(sensor, new Set());
+  const set = selectedCalPoints.get(sensor);
+  if (set.has(ms)) set.delete(ms); else set.add(ms);
+}
+
+// ============================================================
 // UI STATE
 // ============================================================
 const filesState = new Map();
@@ -670,8 +750,9 @@ async function handleFiles(files) {
         parsed = { errors: [`Parse failed: ${e.message}`], data: [] };
       }
     }
-    
-    filesState.set(file.name, { validation, file, parsed });
+
+    const dateRange = (parsed && parsed.data && parsed.data.length) ? contentDateRange(parsed.data) : null;
+    filesState.set(file.name, { validation, file, parsed, dateRange });
   }
   render();
 }
@@ -690,7 +771,8 @@ function render() {
     let metaText;
     if (state.validation.valid) {
       const v = state.validation;
-      metaText = `${v.logger} · ${fmtDate(v.start)} → ${fmtDate(v.end)} · ${v.isCalibration ? 'CALIBRATION' : 'regular data'}`;
+      metaText = `${v.logger}`;
+      if (state.dateRange) metaText += ` · ${fmtDate(state.dateRange.start)} → ${fmtDate(state.dateRange.end)}`;
       if (state.parsed) metaText += ` · ${state.parsed.data.length} rows`;
     } else {
       metaText = state.validation.error;
@@ -746,9 +828,159 @@ function render() {
     resultsArea.appendChild(panel);
   }
   
+  // Calibration session detection: an Odyssey file + a LI-COR file in the
+  // same batch, with overlapping date ranges, means the intern deployed
+  // them together to calibrate.
+  for (const session of detectCalibrationSessions(validFiles)) {
+    resultsArea.appendChild(renderCalibrationPicker(session.odysseyStates, session.licorState));
+  }
+
   const uploadArea = document.getElementById('uploadArea');
   const hasUploadable = validFiles.some(s => s.parsed && s.parsed.data.length > 0);
   uploadArea.style.display = hasUploadable ? 'block' : 'none';
+}
+
+// ============================================================
+// CALIBRATION SESSION PICKER UI
+// ============================================================
+function renderCalibrationPicker(odysseyStates, licorState) {
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'background:rgba(118,199,195,0.08);border:1px solid var(--good);border-radius:10px;padding:16px 18px;margin-top:16px;';
+
+  let html = `<div style="font-weight:600;color:var(--good);margin-bottom:4px;">📐 Calibration session detected</div>
+  <div style="font-size:0.85rem;color:var(--text-2);margin-bottom:14px;">
+    ${odysseyStates.map(s => s.validation.logger).join(' + ')} deployed with LI-COR <code>${licorState.file.name}</code>.
+    Pick points that span low light (cloud cover ok) up to the brightest moment — avoid night/dawn/dusk, already filtered out below.
+  </div>`;
+
+  for (const odyState of odysseyStates) {
+    const sensor = odyState.validation.logger;
+    const pairs = pairOdysseyWithLicor(odyState.parsed.data, licorState.parsed.data);
+    const candidates = daylightCandidates(pairs);
+    const excludedLensing = pairs.filter(p => p.lensingExcluded).length;
+
+    if (!selectedCalPoints.has(sensor)) selectedCalPoints.set(sensor, new Set());
+    const selected = selectedCalPoints.get(sensor);
+
+    html += `<div style="margin-top:14px;">
+      <h3 style="color:var(--accent-2);font-size:0.95rem;margin-bottom:6px;">${sensor} <span style="color:var(--text-3);font-weight:400;font-size:0.8rem;">· ${candidates.length} daylight candidates${excludedLensing ? `, ${excludedLensing} excluded (lensing disagreement)` : ''}</span></h3>
+      <div style="max-height:260px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;">
+        <table style="width:100%;font-size:0.82rem;border-collapse:collapse;">
+          <thead style="position:sticky;top:0;background:rgba(0,0,0,0.3);">
+            <tr>
+              <th style="padding:6px 10px;text-align:left;width:30px;"></th>
+              <th style="padding:6px 10px;text-align:left;">Time</th>
+              <th style="padding:6px 10px;text-align:right;">Raw (${sensor})</th>
+              <th style="padding:6px 10px;text-align:right;">LI-COR true (uw avg)</th>
+            </tr>
+          </thead>
+          <tbody>`;
+
+    for (const c of candidates) {
+      const checked = selected.has(c.ms) ? 'checked' : '';
+      const dt = new Date(c.ms);
+      const timeStr = dt.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      html += `<tr>
+        <td style="padding:4px 10px;"><input type="checkbox" class="cal-point-check" data-sensor="${sensor}" data-ms="${c.ms}" ${checked}></td>
+        <td style="padding:4px 10px;font-family:Monaco,monospace;">${timeStr}</td>
+        <td style="padding:4px 10px;text-align:right;font-family:Monaco,monospace;">${c.raw}</td>
+        <td style="padding:4px 10px;text-align:right;font-family:Monaco,monospace;">${c.uwAvg.toFixed(1)}</td>
+      </tr>`;
+    }
+    html += `</tbody></table></div>
+      <div class="cal-selected-output" data-sensor="${sensor}" style="margin-top:8px;"></div>
+    </div>`;
+  }
+
+  wrap.innerHTML = html;
+
+  // Wire checkboxes
+  wrap.querySelectorAll('.cal-point-check').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const sensor = cb.dataset.sensor;
+      const ms = Number(cb.dataset.ms);
+      toggleCalPoint(sensor, ms);
+      updateCalSelectedOutput(wrap, sensor, odysseyStates, licorState);
+    });
+  });
+
+  // Initial output render for any already-selected points
+  for (const odyState of odysseyStates) {
+    updateCalSelectedOutput(wrap, odyState.validation.logger, odysseyStates, licorState);
+  }
+
+  return wrap;
+}
+
+// Writes one calibration_sessions record per sensor: the full matched
+// daylight dataset (for independent recompute later), the points the
+// intern actually keyed into the ODY software, and a regression over
+// all daylight candidates as a sanity check against that manual fit.
+async function logCalibrationSession(session, uploaderName) {
+  const { odysseyStates, licorState } = session;
+  const updates = {};
+
+  for (const odyState of odysseyStates) {
+    const sensor = odyState.validation.logger;
+    const pairs = pairOdysseyWithLicor(odyState.parsed.data, licorState.parsed.data);
+    const candidates = daylightCandidates(pairs);
+    const selected = selectedCalPoints.get(sensor) || new Set();
+    const byMs = new Map(pairs.map(p => [p.ms, p]));
+    const chosenPoints = Array.from(selected)
+      .map(ms => byMs.get(ms))
+      .filter(Boolean)
+      .sort((a, b) => a.raw - b.raw)
+      .map(p => ({ t: p.t, raw: p.raw, true_par: p.uwAvg }));
+
+    let regression = null;
+    if (candidates.length >= 2) {
+      const r = linreg(candidates.map(c => c.raw), candidates.map(c => c.uwAvg));
+      regression = { slope: r.slope, intercept: r.intercept, r2: r.r2, rmse: r.rmse, n: r.n };
+    }
+
+    const id = `${Date.now()}_${sensor}`;
+    updates[`calibration_sessions/${id}`] = {
+      sensor,
+      logged_at: Date.now(),
+      logged_by: uploaderName,
+      ody_src: odyState.file.name,
+      licor_src: licorState.file.name,
+      ody_start: fmtDate(odyState.dateRange.start),
+      ody_end: fmtDate(odyState.dateRange.end),
+      daylight_candidate_count: candidates.length,
+      lensing_excluded_count: pairs.filter(p => p.lensingExcluded).length,
+      selected_points: chosenPoints,
+      regression_over_all_daylight_points: regression,
+      // full matched daylight dataset, kept so the calibration can be
+      // independently re-derived later without redoing the field session
+      matched_points: candidates.map(c => ({ t: c.t, raw: c.raw, true_par: c.uwAvg, air: c.air }))
+    };
+  }
+
+  await update(ref(db), updates);
+}
+
+function updateCalSelectedOutput(wrap, sensor, odysseyStates, licorState) {
+  const el = wrap.querySelector(`.cal-selected-output[data-sensor="${sensor}"]`);
+  if (!el) return;
+  const selected = selectedCalPoints.get(sensor) || new Set();
+  const odyState = odysseyStates.find(s => s.validation.logger === sensor);
+  const pairs = pairOdysseyWithLicor(odyState.parsed.data, licorState.parsed.data);
+  const byMs = new Map(pairs.map(p => [p.ms, p]));
+  const chosen = Array.from(selected).map(ms => byMs.get(ms)).filter(Boolean).sort((a, b) => a.raw - b.raw);
+
+  if (chosen.length === 0) {
+    el.innerHTML = `<div style="font-size:0.8rem;color:var(--text-3);">No points selected yet — check 6 above, spanning low to max light.</div>`;
+    return;
+  }
+
+  const countColor = chosen.length === 6 ? 'var(--good)' : 'var(--warm)';
+  let html = `<div style="font-size:0.8rem;color:${countColor};margin-bottom:6px;">${chosen.length} point${chosen.length === 1 ? '' : 's'} selected${chosen.length !== 6 ? ' (ODY software typically wants 6)' : ''}</div>`;
+  html += `<div style="background:rgba(0,0,0,0.25);border-radius:6px;padding:10px 12px;font-family:Monaco,monospace;font-size:0.85rem;">`;
+  html += `<div style="color:var(--text-3);margin-bottom:4px;">Enter into ODY calibration software — Raw → True PAR (µmol/m²/s):</div>`;
+  html += chosen.map(p => `${p.raw} → ${p.uwAvg.toFixed(1)}`).join('<br>');
+  html += `</div>`;
+  el.innerHTML = html;
 }
 
 // ============================================================
@@ -805,13 +1037,18 @@ async function handleUpload() {
   
   // Track uncalibrated uploads
   const uncalibratedUploads = [];
-  
+
+  // Any Odyssey file paired with a LI-COR file in this same batch is a
+  // calibration-session upload, not routine data — figure that out up front.
+  const sessions = detectCalibrationSessions(validFiles);
+  const calibrationOdysseyStates = new Set(sessions.flatMap(s => s.odysseyStates));
+
   for (let i = 0; i < validFiles.length; i++) {
     const state = validFiles[i];
     setStatus(statusMsg('info', `Processing file ${i+1}/${validFiles.length}: <code>${state.file.name}</code>`));
-    
+
     try {
-      const result = await uploadFile(state, uploaderName);
+      const result = await uploadFile(state, uploaderName, calibrationOdysseyStates.has(state));
       setStatus(statusMsg('success', formatUploadResult(state, result)));
       if (result.type === 'odyssey' && result.uncalibrated) {
         uncalibratedUploads.push({
@@ -831,7 +1068,20 @@ async function handleUpload() {
   }
   
   setStatus(statusMsg('success', '✓ All files processed.'));
-  
+
+  // Log calibration sessions (Odyssey + LI-COR deployed together) so the
+  // field data is preserved for independent audit/recompute even though
+  // the real calibration gets keyed into the ODY software by hand.
+  for (const session of sessions) {
+    try {
+      await logCalibrationSession(session, uploaderName);
+      setStatus(statusMsg('success', `✓ Calibration session logged (${session.odysseyStates.map(s => s.validation.logger).join(', ')} vs ${session.licorState.file.name}).`));
+    } catch (e) {
+      console.error(e);
+      setStatus(statusMsg('error', `⚠ Failed to log calibration session: ${e.message}`));
+    }
+  }
+
   // Sensor prompt after Odyssey upload
   const odyUploaded = validFiles.find(s => s.validation.fileKind === 'odyssey');
   if (odyUploaded) {
@@ -849,20 +1099,22 @@ async function handleUpload() {
   
   // Clear state and reload history
   filesState.clear();
+  selectedCalPoints.clear();
   render();
   await loadUploadHistory();
+  await loadCalibrationBanner();
 }
 
-async function uploadFile(state, uploaderName) {
-  const { validation: v, file, parsed } = state;
+async function uploadFile(state, uploaderName, isCalibration) {
+  const { validation: v, file, parsed, dateRange } = state;
   if (v.fileKind === 'odyssey') {
-    return await uploadOdyssey(v, file, parsed, uploaderName);
+    return await uploadOdyssey(v, file, parsed, dateRange, uploaderName, isCalibration);
   } else {
-    return await uploadLicor(v, file, parsed, uploaderName);
+    return await uploadLicor(v, file, parsed, dateRange, uploaderName);
   }
 }
 
-async function uploadOdyssey(v, file, parsed, uploaderName) {
+async function uploadOdyssey(v, file, parsed, dateRange, uploaderName, isCalibration) {
   const sensor = v.logger;
   const startMs = new Date(parsed.data[0].t).getTime();
   const endMs = new Date(parsed.data[parsed.data.length - 1].t).getTime();
@@ -911,21 +1163,31 @@ async function uploadOdyssey(v, file, parsed, uploaderName) {
     uploaded_at: Date.now(),
     uploaded_by: uploaderName,
     sensor: sensor,
-    type: v.isCalibration ? 'calibration_data' : 'data',
-    start_date: fmtDate(v.start),
-    end_date: fmtDate(v.end),
+    type: isCalibration ? 'calibration_data' : 'data',
+    start_date: fmtDate(dateRange.start),
+    end_date: fmtDate(dateRange.end),
     rows_in_file: parsed.data.length,
     rows_added: added,
     rows_skipped: skipped.length,
     uncalibrated: uncalibrated
   };
-  
+
+  // Persistent per-sensor flag: cleared only once the logger itself ships
+  // calibrated data (i.e. a non-calibration upload where raw != calibrated).
+  if (!isCalibration) {
+    if (uncalibrated) {
+      updates['state/needs_calibration/' + sensor] = { since: Date.now(), last_upload: file.name };
+    } else {
+      updates['state/needs_calibration/' + sensor] = null;
+    }
+  }
+
   await update(ref(db), updates);
-  
+
   return { type: 'odyssey', added, skipped, totalInFile: parsed.data.length, sensor, uncalibrated };
 }
 
-async function uploadLicor(v, file, parsed, uploaderName) {
+async function uploadLicor(v, file, parsed, dateRange, uploaderName) {
   const startMs = new Date(parsed.data[0].t).getTime();
   const endMs = new Date(parsed.data[parsed.data.length - 1].t).getTime();
   
@@ -979,8 +1241,8 @@ async function uploadLicor(v, file, parsed, uploaderName) {
     uploaded_by: uploaderName,
     sensor: 'LICOR',
     type: 'licor_check',
-    start_date: fmtDate(v.start),
-    end_date: fmtDate(v.end),
+    start_date: fmtDate(dateRange.start),
+    end_date: fmtDate(dateRange.end),
     rows_in_file: parsed.data.length,
     rows_added: added,
     rows_skipped: skipped.length
@@ -1512,9 +1774,32 @@ function buildViewerHTML(d) {
 }
 
 // ============================================================
+// PERSISTENT "NEEDS CALIBRATION" BANNER
+// ============================================================
+async function loadCalibrationBanner() {
+  const el = document.getElementById('calibration-banner');
+  try {
+    const snap = await get(ref(db, 'state/needs_calibration'));
+    if (!snap.exists()) { el.innerHTML = ''; return; }
+    const flagged = [];
+    snap.forEach(child => {
+      if (child.val()) flagged.push({ sensor: child.key, ...child.val() });
+    });
+    if (flagged.length === 0) { el.innerHTML = ''; return; }
+    el.innerHTML = `<div class="status-msg status-warn">
+      ⚠ <strong>${flagged.map(f => f.sensor).join(' and ')}</strong> ${flagged.length > 1 ? 'are' : 'is'} running uncalibrated.
+      Deploy alongside the LI-COR next time out, then key the computed points into the ODY calibration software.
+    </div>`;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+// ============================================================
 // KICK OFF
 // ============================================================
 loadUploadHistory();
+loadCalibrationBanner();
 </script>
 
 </body>
