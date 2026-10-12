@@ -1721,36 +1721,30 @@ function linRegression(points) {
 async function buildDerivedCalibrations() {
   // Reset
   state.derivedCals = { MARINARA: [], ALFREDO: [] };
-  
-  // 1. Load all uploads and find CAL sessions
+
+  // 1. Load all uploads and find Odyssey calibration-session uploads.
+  // We no longer require a LI-COR upload with an exactly-matching
+  // start/end date string — real field sessions rarely line up that
+  // precisely (e.g. the LI-COR gets pulled a day or two before the ODY
+  // loggers). Instead, for each Odyssey calibration upload we just look
+  // for whatever LI-COR data overlaps its own time window.
   const uploadsSnap = await get(ref(db, 'uploads'));
   if (!uploadsSnap.exists()) return;
-  
-  // Group cal uploads by date range (Odyssey CAL + LI-COR with matching dates form a session)
-  const sessions = new Map();
+
+  const odyCalUploads = [];
   uploadsSnap.forEach(child => {
     const u = child.val();
-    if (u.type !== 'calibration_data' && u.type !== 'licor_check') return;
-    const key = `${u.start_date}_${u.end_date}`;
-    if (!sessions.has(key)) {
-      sessions.set(key, { start: u.start_date, end: u.end_date, sensor: null, hasOdy: false, hasLicor: false });
-    }
-    const s = sessions.get(key);
-    if (u.type === 'calibration_data') {
-      s.hasOdy = true;
-      s.sensor = u.sensor;
-    } else {
-      s.hasLicor = true;
+    if (u.type === 'calibration_data' && u.sensor && u.start_date && u.end_date) {
+      odyCalUploads.push({ start: u.start_date, end: u.end_date, sensor: u.sensor });
     }
   });
-  
-  // 2. For each paired session, compute calibration
-  for (const [key, session] of sessions) {
-    if (!session.hasOdy || !session.hasLicor || !session.sensor) continue;
-    
+
+  // 2. For each Odyssey calibration-session upload, compute calibration
+  // from whatever LI-COR data overlaps that same window.
+  for (const session of odyCalUploads) {
     const startMs = new Date(session.start + 'T00:00:00').getTime();
     const endMs = new Date(session.end + 'T23:59:59').getTime();
-    
+
     // Fetch Odyssey CAL data
     const odyQ = query(ref(db, `readings/${session.sensor}`), orderByChild('t_ms'), startAt(startMs), endAt(endMs));
     const licorQ = query(ref(db, 'licor_checks'), orderByChild('t_ms'), startAt(startMs), endAt(endMs));
