@@ -691,13 +691,23 @@ function detectCalibrationSessions(validFiles) {
   return sessions;
 }
 
-// Tracks which candidate points the intern has checked, per sensor, across re-renders
-const selectedCalPoints = new Map(); // sensor -> Set of ms
-
-function toggleCalPoint(sensor, ms) {
-  if (!selectedCalPoints.has(sensor)) selectedCalPoints.set(sensor, new Set());
-  const set = selectedCalPoints.get(sensor);
-  if (set.has(ms)) set.delete(ms); else set.add(ms);
+// Auto-picks N calibration points from the daylight candidates (already
+// sorted ascending by true PAR), spread across the brightness range but
+// weighted toward the high end — interns don't hand-pick these anymore.
+function pickCalibrationPoints(candidates, n = 6) {
+  if (candidates.length <= n) return candidates.slice();
+  const fractions = [0, 0.2, 0.45, 0.65, 0.85, 1.0];
+  const lastIdx = candidates.length - 1;
+  const usedIdx = new Set();
+  const picked = [];
+  for (const f of fractions) {
+    let idx = Math.round(f * lastIdx);
+    while (usedIdx.has(idx) && idx < lastIdx) idx++;
+    while (usedIdx.has(idx) && idx > 0) idx--;
+    usedIdx.add(idx);
+    picked.push(candidates[idx]);
+  }
+  return picked.sort((a, b) => a.raw - b.raw);
 }
 
 // ============================================================
@@ -841,7 +851,7 @@ function render() {
 }
 
 // ============================================================
-// CALIBRATION SESSION PICKER UI
+// CALIBRATION SESSION OUTPUT (auto-picked, read-only)
 // ============================================================
 function renderCalibrationPicker(odysseyStates, licorState) {
   const wrap = document.createElement('div');
@@ -850,7 +860,7 @@ function renderCalibrationPicker(odysseyStates, licorState) {
   let html = `<div style="font-weight:600;color:var(--good);margin-bottom:4px;">📐 Calibration session detected</div>
   <div style="font-size:0.85rem;color:var(--text-2);margin-bottom:14px;">
     ${odysseyStates.map(s => s.validation.logger).join(' + ')} deployed with LI-COR <code>${licorState.file.name}</code>.
-    Pick points that span low light (cloud cover ok) up to the brightest moment — avoid night/dawn/dusk, already filtered out below.
+    6 points picked automatically, spanning low light (cloud cover) up to the brightest moment — this is what will be logged on upload.
   </div>`;
 
   for (const odyState of odysseyStates) {
@@ -858,64 +868,30 @@ function renderCalibrationPicker(odysseyStates, licorState) {
     const pairs = pairOdysseyWithLicor(odyState.parsed.data, licorState.parsed.data);
     const candidates = daylightCandidates(pairs);
     const excludedLensing = pairs.filter(p => p.lensingExcluded).length;
-
-    if (!selectedCalPoints.has(sensor)) selectedCalPoints.set(sensor, new Set());
-    const selected = selectedCalPoints.get(sensor);
+    const picked = pickCalibrationPoints(candidates, 6);
 
     html += `<div style="margin-top:14px;">
-      <h3 style="color:var(--accent-2);font-size:0.95rem;margin-bottom:6px;">${sensor} <span style="color:var(--text-3);font-weight:400;font-size:0.8rem;">· ${candidates.length} daylight candidates${excludedLensing ? `, ${excludedLensing} excluded (lensing disagreement)` : ''}</span></h3>
-      <div style="max-height:260px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;">
-        <table style="width:100%;font-size:0.82rem;border-collapse:collapse;">
-          <thead style="position:sticky;top:0;background:rgba(0,0,0,0.3);">
-            <tr>
-              <th style="padding:6px 10px;text-align:left;width:30px;"></th>
-              <th style="padding:6px 10px;text-align:left;">Time</th>
-              <th style="padding:6px 10px;text-align:right;">Raw (${sensor})</th>
-              <th style="padding:6px 10px;text-align:right;">LI-COR true (uw avg)</th>
-            </tr>
-          </thead>
-          <tbody>`;
+      <h3 style="color:var(--accent-2);font-size:0.95rem;margin-bottom:6px;">${sensor} <span style="color:var(--text-3);font-weight:400;font-size:0.8rem;">· from ${candidates.length} daylight readings${excludedLensing ? `, ${excludedLensing} excluded (lensing disagreement)` : ''}</span></h3>`;
 
-    for (const c of candidates) {
-      const checked = selected.has(c.ms) ? 'checked' : '';
-      const dt = new Date(c.ms);
-      const timeStr = dt.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-      html += `<tr>
-        <td style="padding:4px 10px;"><input type="checkbox" class="cal-point-check" data-sensor="${sensor}" data-ms="${c.ms}" ${checked}></td>
-        <td style="padding:4px 10px;font-family:Monaco,monospace;">${timeStr}</td>
-        <td style="padding:4px 10px;text-align:right;font-family:Monaco,monospace;">${c.raw}</td>
-        <td style="padding:4px 10px;text-align:right;font-family:Monaco,monospace;">${c.uwAvg.toFixed(1)}</td>
-      </tr>`;
+    if (picked.length === 0) {
+      html += `<div style="font-size:0.85rem;color:var(--warm);">No usable daylight overlap found with this LI-COR file.</div></div>`;
+      continue;
     }
-    html += `</tbody></table></div>
-      <div class="cal-selected-output" data-sensor="${sensor}" style="margin-top:8px;"></div>
-    </div>`;
+
+    html += `<div style="background:rgba(0,0,0,0.25);border-radius:6px;padding:10px 12px;font-family:Monaco,monospace;font-size:0.85rem;">
+      <div style="color:var(--text-3);margin-bottom:4px;">Enter into ODY calibration software — Raw → True PAR (µmol/m²/s):</div>
+      ${picked.map(p => `${p.raw} → ${p.uwAvg.toFixed(1)}`).join('<br>')}
+    </div></div>`;
   }
 
   wrap.innerHTML = html;
-
-  // Wire checkboxes
-  wrap.querySelectorAll('.cal-point-check').forEach(cb => {
-    cb.addEventListener('change', () => {
-      const sensor = cb.dataset.sensor;
-      const ms = Number(cb.dataset.ms);
-      toggleCalPoint(sensor, ms);
-      updateCalSelectedOutput(wrap, sensor, odysseyStates, licorState);
-    });
-  });
-
-  // Initial output render for any already-selected points
-  for (const odyState of odysseyStates) {
-    updateCalSelectedOutput(wrap, odyState.validation.logger, odysseyStates, licorState);
-  }
-
   return wrap;
 }
 
 // Writes one calibration_sessions record per sensor: the full matched
-// daylight dataset (for independent recompute later), the points the
-// intern actually keyed into the ODY software, and a regression over
-// all daylight candidates as a sanity check against that manual fit.
+// daylight dataset (for independent recompute later), the 6 auto-picked
+// points, and a regression over all daylight candidates as a sanity
+// check against that 6-point fit.
 async function logCalibrationSession(session, uploaderName) {
   const { odysseyStates, licorState } = session;
   const updates = {};
@@ -924,12 +900,7 @@ async function logCalibrationSession(session, uploaderName) {
     const sensor = odyState.validation.logger;
     const pairs = pairOdysseyWithLicor(odyState.parsed.data, licorState.parsed.data);
     const candidates = daylightCandidates(pairs);
-    const selected = selectedCalPoints.get(sensor) || new Set();
-    const byMs = new Map(pairs.map(p => [p.ms, p]));
-    const chosenPoints = Array.from(selected)
-      .map(ms => byMs.get(ms))
-      .filter(Boolean)
-      .sort((a, b) => a.raw - b.raw)
+    const chosenPoints = pickCalibrationPoints(candidates, 6)
       .map(p => ({ t: p.t, raw: p.raw, true_par: p.uwAvg }));
 
     let regression = null;
@@ -958,29 +929,6 @@ async function logCalibrationSession(session, uploaderName) {
   }
 
   await update(ref(db), updates);
-}
-
-function updateCalSelectedOutput(wrap, sensor, odysseyStates, licorState) {
-  const el = wrap.querySelector(`.cal-selected-output[data-sensor="${sensor}"]`);
-  if (!el) return;
-  const selected = selectedCalPoints.get(sensor) || new Set();
-  const odyState = odysseyStates.find(s => s.validation.logger === sensor);
-  const pairs = pairOdysseyWithLicor(odyState.parsed.data, licorState.parsed.data);
-  const byMs = new Map(pairs.map(p => [p.ms, p]));
-  const chosen = Array.from(selected).map(ms => byMs.get(ms)).filter(Boolean).sort((a, b) => a.raw - b.raw);
-
-  if (chosen.length === 0) {
-    el.innerHTML = `<div style="font-size:0.8rem;color:var(--text-3);">No points selected yet — check 6 above, spanning low to max light.</div>`;
-    return;
-  }
-
-  const countColor = chosen.length === 6 ? 'var(--good)' : 'var(--warm)';
-  let html = `<div style="font-size:0.8rem;color:${countColor};margin-bottom:6px;">${chosen.length} point${chosen.length === 1 ? '' : 's'} selected${chosen.length !== 6 ? ' (ODY software typically wants 6)' : ''}</div>`;
-  html += `<div style="background:rgba(0,0,0,0.25);border-radius:6px;padding:10px 12px;font-family:Monaco,monospace;font-size:0.85rem;">`;
-  html += `<div style="color:var(--text-3);margin-bottom:4px;">Enter into ODY calibration software — Raw → True PAR (µmol/m²/s):</div>`;
-  html += chosen.map(p => `${p.raw} → ${p.uwAvg.toFixed(1)}`).join('<br>');
-  html += `</div>`;
-  el.innerHTML = html;
 }
 
 // ============================================================
@@ -1099,7 +1047,6 @@ async function handleUpload() {
   
   // Clear state and reload history
   filesState.clear();
-  selectedCalPoints.clear();
   render();
   await loadUploadHistory();
   await loadCalibrationBanner();
@@ -1552,11 +1499,28 @@ async function viewUploadInNewTab(upload) {
       });
     }
     
+    // For a calibration upload, pull the matching calibration_sessions
+    // record (the 6 points that were derived from this exact upload) so
+    // it can be shown without digging through Firebase by hand.
+    let calSession = null;
+    if (upload.type === 'calibration_data') {
+      const calSnap = await get(ref(db, 'calibration_sessions'));
+      if (calSnap.exists()) {
+        const matches = [];
+        calSnap.forEach(child => {
+          const v = child.val();
+          if (v && v.ody_src === upload.filename && v.sensor === upload.sensor) matches.push(v);
+        });
+        matches.sort((a, b) => (b.logged_at || 0) - (a.logged_at || 0));
+        calSession = matches[0] || null;
+      }
+    }
+
     // Build the new tab's HTML
-    const uploadedAt = upload.uploaded_at 
+    const uploadedAt = upload.uploaded_at
       ? new Date(upload.uploaded_at).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
       : '—';
-    
+
     const html = buildViewerHTML({
       filename: upload.filename || upload.id,
       sensor: upload.sensor || '—',
@@ -1569,6 +1533,7 @@ async function viewUploadInNewTab(upload) {
       addedCount: upload.rows_added || 0,
       skippedCount: upload.rows_skipped || 0,
       uncalibrated: !!upload.uncalibrated,
+      calSession,
       columns,
       rows: displayRows
     });
@@ -1692,6 +1657,19 @@ function buildViewerHTML(d) {
     color: #6b5a23;
   }
   .uncal-warn strong { color: #b87b1b; }
+  .cal-points-box {
+    background: rgba(118,199,195,0.15);
+    border-left: 3px solid var(--good);
+    padding: 10px 14px;
+    margin-top: 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+  }
+  .cal-points-title { color: var(--bg); font-weight: 600; margin-bottom: 6px; }
+  .cal-points-table { border-collapse: collapse; font-size: 0.82rem; margin-bottom: 6px; }
+  .cal-points-table th, .cal-points-table td { padding: 3px 12px 3px 0; text-align: left; }
+  .cal-points-table th { color: rgba(0,0,0,0.5); font-weight: 500; }
+  .cal-points-reg { color: rgba(0,0,0,0.55); font-size: 0.78rem; }
   .table-wrap {
     background: #fff;
     border-radius: 10px;
@@ -1759,6 +1737,14 @@ function buildViewerHTML(d) {
       <div class="item"><div class="lbl">Uploaded at</div><div class="val">${escapeHtml(d.uploadedAt)}</div></div>
     </div>
     ${d.uncalibrated ? `<div class="uncal-warn"><strong>⚠ Uncalibrated:</strong> raw and calibrated columns are identical. The dashboard applies post-hoc LI-COR calibration. Set calibration in logger software before next deployment.</div>` : ''}
+    ${d.calSession ? `<div class="cal-points-box">
+      <div class="cal-points-title">Calibration points derived from this upload (vs <code>${escapeHtml(d.calSession.licor_src)}</code>)</div>
+      <table class="cal-points-table">
+        <thead><tr><th>Raw</th><th>True PAR (µmol/m²/s)</th></tr></thead>
+        <tbody>${d.calSession.selected_points.map(p => `<tr><td>${p.raw}</td><td>${p.true_par.toFixed(1)}</td></tr>`).join('')}</tbody>
+      </table>
+      ${d.calSession.regression_over_all_daylight_points ? `<div class="cal-points-reg">Full-session regression (n=${d.calSession.regression_over_all_daylight_points.n}): slope ${d.calSession.regression_over_all_daylight_points.slope.toFixed(4)}, intercept ${d.calSession.regression_over_all_daylight_points.intercept.toFixed(1)}, R² ${d.calSession.regression_over_all_daylight_points.r2.toFixed(3)}</div>` : ''}
+    </div>` : ''}
   </div>
   <div class="table-wrap">
     ${d.rows.length === 0 
