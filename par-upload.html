@@ -588,7 +588,7 @@ function parseLicor(text) {
         errors.push(`Line ${i+1}: bad date "${dateStr}"`);
         continue;
       }
-      if (!/^\d{2}:\d{2}:\d{2}$/.test(timeStr)) {
+      if (!/^\d{2}:\d{2}:\d{2}(\.\d+)?$/.test(timeStr)) {
         errors.push(`Line ${i+1}: bad time "${timeStr}"`);
         continue;
       }
